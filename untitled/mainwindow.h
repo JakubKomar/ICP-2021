@@ -2,7 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-
+#include <QGraphicsScene>
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -18,7 +18,6 @@ private slots:
     void zoom(int value);
 private:
     void initScene();
-
     Ui::MainWindow *ui;
 };
 #endif // MAINWINDOW_H

@@ -2,6 +2,8 @@
 #include "ui_mainwindow.h"
 #include <QGraphicsItem>
 #include <QObject>
+#include <QDebug>
+#include "myscene.h"
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -11,7 +13,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->zoomSlider,&QSlider::valueChanged,this,&MainWindow::zoom);
     ui->graphicsView->setRenderHint(QPainter::Antialiasing);
 
-    auto *scene= new QGraphicsScene(ui->graphicsView);
+    auto *scene= new MyScene(ui->graphicsView);
     ui->graphicsView->setScene(scene);
     auto rect = scene->addRect(100,100,100,100,QPen({Qt::black},3),QBrush({Qt::red}));
     rect->setFlag(QGraphicsItem::ItemIsSelectable);
@@ -33,4 +35,6 @@ void MainWindow::zoom(int value)
 
     ui->graphicsView->setTransform(QTransform(scale,org.m12(),org.m21(),scale,org.dx(),org.dy()));
 }
+
+
 
