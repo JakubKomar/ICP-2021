@@ -13,10 +13,10 @@
   <property name="windowTitle">
    <string>fileSelector</string>
   </property>
-  <widget class="QWidget" name="centralwidget">
+  <widget class="QWidget" name="mainLayout">
    <layout class="QVBoxLayout" name="verticalLayout_3">
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_4">
+     <layout class="QHBoxLayout" name="staticMenu">
       <item>
        <spacer name="horizontalSpacer">
         <property name="orientation">
@@ -49,9 +49,9 @@
     <item>
      <widget class="QStackedWidget" name="screenSwitch">
       <property name="currentIndex">
-       <number>2</number>
+       <number>3</number>
       </property>
-      <widget class="QWidget" name="fileSelector_2">
+      <widget class="QWidget" name="fileSelect">
        <layout class="QHBoxLayout" name="horizontalLayout_9">
         <item>
          <widget class="QTreeView" name="treeView"/>
@@ -273,6 +273,9 @@
                </size>
               </property>
              </widget>
+            </item>
+            <item>
+             <widget class="QWidget" name="lineNums" native="true"/>
             </item>
             <item>
              <widget class="QPlainTextEdit" name="plainTextEdit"/>

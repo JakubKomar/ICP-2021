@@ -9,16 +9,14 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    linenumarea.cpp \
-    main.cpp \
-    fileselector.cpp
+    core/main.cpp \
+    core/fileselector.cpp
 
 HEADERS += \
-    fileselector.h \
-    linenumarea.h
+    core/fileselector.h
 
 FORMS += \
-    fileselector.ui
+    gui/fileselector.ui
 
 TRANSLATIONS += \
     ICP-projekt-2021_cs_CZ.ts
