@@ -31,16 +31,16 @@
        </spacer>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_2">
+       <widget class="QPushButton" name="pushButton">
         <property name="text">
-         <string>next Page</string>
+         <string>prev Page</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton">
+       <widget class="QPushButton" name="pushButton_2">
         <property name="text">
-         <string>prev Page</string>
+         <string>next Page</string>
         </property>
        </widget>
       </item>
