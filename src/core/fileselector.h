@@ -2,6 +2,7 @@
 #define FILESELECTOR_H
 
 #include <QMainWindow>
+#include  "./gui/aplicationview.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class fileSelector; }
@@ -21,6 +22,7 @@ private slots:
     void on_pushButton_clicked();
 
 private:
+    void initView();
     Ui::fileSelector *ui;
 };
 #endif // FILESELECTOR_H

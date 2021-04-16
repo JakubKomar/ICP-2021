@@ -10,10 +10,12 @@ CONFIG += c++11
 
 SOURCES += \
     core/main.cpp \
-    core/fileselector.cpp
+    core/fileselector.cpp \
+    gui/aplicationview.cpp
 
 HEADERS += \
-    core/fileselector.h
+    core/fileselector.h \
+    gui/aplicationview.h
 
 FORMS += \
     gui/fileselector.ui

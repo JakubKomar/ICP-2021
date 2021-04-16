@@ -49,7 +49,7 @@
     <item>
      <widget class="QStackedWidget" name="screenSwitch">
       <property name="currentIndex">
-       <number>3</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="fileSelect">
        <layout class="QHBoxLayout" name="horizontalLayout_9">
