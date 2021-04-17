@@ -10,19 +10,19 @@ CONFIG += c++11
 
 SOURCES += \
     core/atomicblock.cpp \
-    core/main.cpp \
-    core/fileselector.cpp \
+    main.cpp \
+    mainwindow.cpp \
     core/port.cpp \
     gui/aplicationview.cpp
 
 HEADERS += \
     core/atomicblock.h \
-    core/fileselector.h \
+    mainwindow.h \
     core/port.h \
     gui/aplicationview.h
 
 FORMS += \
-    gui/fileselector.ui
+    mainwindow.ui
 
 TRANSLATIONS += \
     ICP-projekt-2021_cs_CZ.ts

@@ -13,11 +13,15 @@ void aplicationView::mousePressEvent(QGraphicsSceneMouseEvent *event)
     qDebug()<<event->scenePos();
     if(event->button()==Qt::RightButton)
     {
-        auto rect =addRect(event->scenePos().rx(),event->scenePos().ry(),100,100,QPen({Qt::black},3),QBrush({Qt::green}));
-        rect->setFlag(QGraphicsItem::ItemIsSelectable);
-        rect->setFlag(QGraphicsItem::ItemIsMovable);
+        addBlock(event->scenePos().rx(),event->scenePos().ry());
     }
 
     QGraphicsScene::mousePressEvent(event);
+}
+void aplicationView::addBlock(int x,int y){
+     atomicBlock generated;
+     auto rect =addRect(x,y,100,100,QPen({Qt::black},3),QBrush(Qt::green));
+     rect->setFlag(QGraphicsItem::ItemIsSelectable);
+     rect->setFlag(QGraphicsItem::ItemIsMovable);
 }
 

@@ -1,20 +1,20 @@
-#ifndef FILESELECTOR_H
-#define FILESELECTOR_H
+#ifndef mainWindow_H
+#define mainWindow_H
 
 #include <QMainWindow>
 #include  "./gui/aplicationview.h"
 
 QT_BEGIN_NAMESPACE
-namespace Ui { class fileSelector; }
+namespace Ui { class mainWindow; }
 QT_END_NAMESPACE
 
-class fileSelector : public QMainWindow
+class mainWindow : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    fileSelector(QWidget *parent = nullptr);
-    ~fileSelector();
+    mainWindow(QWidget *parent = nullptr);
+    ~mainWindow();
 
 private slots:
     void on_pushButton_2_clicked();
@@ -23,6 +23,6 @@ private slots:
 
 private:
     void initView();
-    Ui::fileSelector *ui;
+    Ui::mainWindow *ui;
 };
 #endif // FILESELECTOR_H

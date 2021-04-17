@@ -1,11 +1,11 @@
-#include "fileselector.h"
-#include "ui_fileselector.h"
+#include "mainwindow.h"
+#include "ui_mainwindow.h"
 #include <QGraphicsItem>
 #include <QObject>
 #include <qdebug.h>
-fileSelector::fileSelector(QWidget *parent)
+mainWindow::mainWindow(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::fileSelector)
+    , ui(new Ui::mainWindow)
 {
 
     ui->setupUi(this);
@@ -14,17 +14,17 @@ fileSelector::fileSelector(QWidget *parent)
 
 }
 
-fileSelector::~fileSelector()
+mainWindow::~mainWindow()
 {
     delete ui;
 }
 
-void fileSelector::on_pushButton_2_clicked()
+void mainWindow::on_pushButton_2_clicked()
 {
     ui->screenSwitch->setCurrentIndex( (ui->screenSwitch->currentIndex())-1 );
 }
 
-void fileSelector::on_pushButton_clicked()
+void mainWindow::on_pushButton_clicked()
 {
     ui->screenSwitch->setCurrentIndex( (ui->screenSwitch->currentIndex())+1 );
 }
