@@ -3,7 +3,7 @@
 
 #include <QMainWindow>
 #include  "./gui/aplicationview.h"
-
+#include  "./core/aplikation.h"
 QT_BEGIN_NAMESPACE
 namespace Ui { class mainWindow; }
 QT_END_NAMESPACE
@@ -23,6 +23,9 @@ private slots:
 
 private:
     void initView();
+    void createNewAp(QString name);
     Ui::mainWindow *ui;
+    aplikation * currentAp=NULL;
+
 };
 #endif // FILESELECTOR_H
