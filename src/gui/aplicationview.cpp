@@ -19,7 +19,6 @@ void aplicationView::mousePressEvent(QGraphicsSceneMouseEvent *event)
     QGraphicsScene::mousePressEvent(event);
 }
 void aplicationView::addBlock(int x,int y){
-     atomicBlock generated;
      auto rect =addRect(x,y,100,100,QPen({Qt::black},3),QBrush(Qt::green));
      rect->setFlag(QGraphicsItem::ItemIsSelectable);
      rect->setFlag(QGraphicsItem::ItemIsMovable);

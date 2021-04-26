@@ -8,11 +8,7 @@ class port : public QObject
     Q_OBJECT
 public:
     explicit port(QObject *parent = nullptr);
-protected:
-    QString type="";
-    QString data="";
-    QString name;
-    port *connected=NULL;
+
 signals:
 
 };

@@ -3,7 +3,6 @@
 
 #include <QGraphicsScene>
 
-#include "./core/atomicblock.h"
 class aplicationView : public QGraphicsScene
 {
     Q_OBJECT

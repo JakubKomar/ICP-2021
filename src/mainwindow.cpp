@@ -7,13 +7,9 @@ mainWindow::mainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::mainWindow)
 {
-
     ui->setupUi(this);
     auto *scene= new aplicationView(ui->apkView);
     ui->apkView->setScene(scene);
-
-
-
 }
 
 mainWindow::~mainWindow()
@@ -31,8 +27,3 @@ void mainWindow::on_pushButton_clicked()
     ui->screenSwitch->setCurrentIndex( (ui->screenSwitch->currentIndex())+1 );
 }
 
-void mainWindow::createNewAp(QString name)
-{
-    currentAp=new(aplikation);
-
-}
