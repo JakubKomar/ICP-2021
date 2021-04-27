@@ -49,21 +49,28 @@
     <item>
      <widget class="QStackedWidget" name="screenSwitch">
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
-      <widget class="QWidget" name="fileSelect">
-       <layout class="QHBoxLayout" name="horizontalLayout_9">
-        <item>
-         <widget class="QTreeView" name="treeView"/>
-        </item>
-       </layout>
-      </widget>
       <widget class="QWidget" name="apkEditor">
        <layout class="QHBoxLayout" name="horizontalLayout_8">
         <item>
          <layout class="QVBoxLayout" name="verticalLayout">
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_3">
+            <item>
+             <widget class="QPushButton" name="newApk">
+              <property name="text">
+               <string>New</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="loadApk">
+              <property name="text">
+               <string>Load</string>
+              </property>
+             </widget>
+            </item>
             <item>
              <widget class="QPushButton" name="Build">
               <property name="text">
@@ -134,6 +141,20 @@
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_10">
             <item>
+             <widget class="QPushButton" name="compClear">
+              <property name="text">
+               <string>Clear</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="compLoad">
+              <property name="text">
+               <string>Load</string>
+              </property>
+             </widget>
+            </item>
+            <item>
              <widget class="QPushButton" name="pushButton_5">
               <property name="text">
                <string>Add atomic</string>
@@ -144,6 +165,20 @@
              <widget class="QPushButton" name="pushButton_6">
               <property name="text">
                <string>Add compozit</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="addInputComp">
+              <property name="text">
+               <string>Add Input</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="addOutComp">
+              <property name="text">
+               <string>Add Output</string>
               </property>
              </widget>
             </item>
@@ -244,6 +279,20 @@
              <widget class="QPushButton" name="redo">
               <property name="text">
                <string>redo</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="addImputAtom">
+              <property name="text">
+               <string>add Input</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="addOutAtom">
+              <property name="text">
+               <string>add Out</string>
               </property>
              </widget>
             </item>

@@ -3,26 +3,20 @@
 
 #include <QObject>
 #include "./core/port.h"
-class block : public QObject
+class port;
+class block
 {
-    Q_OBJECT
 public:
-    //block();
-    explicit block(QObject *parent = nullptr);
+    block();
 private:
-    port * inputs;
-    port * outputs;
+    QVector<port> inputs;
+    QVector<port> outputs;
     QString name;
     int id;
 signals:
 
 };
-/*
-block::block()
-{
-    this->inputs=NULL;
-    this->outputs=NULL;
-    this->name="";
-}
-*/
+
+
+
 #endif // BLOCK_H

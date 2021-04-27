@@ -1,6 +1,7 @@
 #include "port.h"
 
-port::port(QObject *parent) : QObject(parent)
+port::port()
 {
-
+    this->conector1=NULL;
+    this->conector2=NULL;
 }

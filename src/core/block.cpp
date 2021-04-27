@@ -1,6 +1,6 @@
 #include "block.h"
 
-block::block(QObject *parent) : QObject(parent)
+block::block()
 {
-
+    this->name="";
 }

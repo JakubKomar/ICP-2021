@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include  "./gui/aplicationview.h"
+#include  "./core/aplication.h"
 QT_BEGIN_NAMESPACE
 namespace Ui { class mainWindow; }
 QT_END_NAMESPACE
@@ -18,8 +19,12 @@ public:
 private slots:
     void on_pushButton_2_clicked();
     void on_pushButton_clicked();
+    void on_newApk_clicked();
+
+    void on_loadApk_clicked();
 
 private:
+    aplication * curentApk;
     void initView();
     Ui::mainWindow *ui;
 };

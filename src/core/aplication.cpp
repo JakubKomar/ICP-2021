@@ -2,5 +2,5 @@
 
 aplication::aplication()
 {
-
+    qDebug()<<"aplication constructor engade";
 }

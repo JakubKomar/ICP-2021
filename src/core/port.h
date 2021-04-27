@@ -2,13 +2,15 @@
 #define PORT_H
 
 #include <QObject>
-
-class port : public QObject
+#include "./core/block.h"
+class block;
+class port
 {
-    Q_OBJECT
 public:
-    explicit port(QObject *parent = nullptr);
-
+    port();
+private:
+    block *conector1;
+    block *conector2;
 signals:
 
 };
