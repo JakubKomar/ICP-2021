@@ -8,11 +8,13 @@ class block
 {
 public:
     block();
-private:
+protected :
     QVector<port> inputs;
     QVector<port> outputs;
     QString name;
     int id;
+private:
+
 signals:
 
 };

@@ -3,14 +3,21 @@
 
 #include <QObject>
 #include "./core/block.h"
+#include <QDebug>
 class block;
 class port
 {
 public:
     port();
-private:
+    ~port()
+    {
+         qDebug()<<"port destructor engage";
+    }
+protected:
     block *conector1;
     block *conector2;
+private:
+
 signals:
 
 };

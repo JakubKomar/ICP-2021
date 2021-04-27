@@ -2,5 +2,8 @@
 
 aplication::aplication()
 {
-    qDebug()<<"aplication constructor engade";
+    this->name="My Apk";
+
+    qDebug()<<"aplication constructor engage";
 }
+

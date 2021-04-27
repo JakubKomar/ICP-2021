@@ -20,8 +20,10 @@ private slots:
     void on_pushButton_2_clicked();
     void on_pushButton_clicked();
     void on_newApk_clicked();
-
     void on_loadApk_clicked();
+
+
+    void on_apkAddAtom_clicked();
 
 private:
     aplication * curentApk;

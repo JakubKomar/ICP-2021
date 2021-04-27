@@ -79,7 +79,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="pushButton_3">
+             <widget class="QPushButton" name="apkAddAtom">
               <property name="text">
                <string>Add Atomic</string>
               </property>

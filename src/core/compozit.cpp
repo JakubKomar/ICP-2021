@@ -2,5 +2,5 @@
 
 compozit::compozit()
 {
-
+    qDebug()<<"compozit constructor engage";
 }

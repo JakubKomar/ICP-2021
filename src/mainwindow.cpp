@@ -45,3 +45,9 @@ void mainWindow::on_loadApk_clicked()
     this->curentApk=new aplication;
 
 }
+
+
+void mainWindow::on_apkAddAtom_clicked()
+{
+
+}

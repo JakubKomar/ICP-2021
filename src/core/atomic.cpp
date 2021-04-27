@@ -2,5 +2,5 @@
 
 atomic::atomic()
 {
-
+    qDebug()<<"atomic constructor engage";
 }

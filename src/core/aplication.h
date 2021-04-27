@@ -4,15 +4,18 @@
 #include "compozit.h"
 #include <QObject>
 #include <QDebug>
+#include "atomic.h"
+
 class aplication : public compozit
 {
 public:
     aplication();
     ~aplication()
     {
-         qDebug()<<"aplication destructor engade";
+         qDebug()<<"aplication destructor engage";
     }
-
+    QVector<compozit> compVect;
+    QVector<atomic> atomVect;
 private:
 
 };
