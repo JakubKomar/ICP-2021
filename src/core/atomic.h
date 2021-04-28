@@ -10,8 +10,9 @@ public:
     atomic();
     ~atomic()
     {
-         qDebug()<<"atmoic destructor engage";
+         qDebug()<<"atomic destructor engage";
     }
+    void sayHallo();
 };
 
 #endif // ATOMIC_H

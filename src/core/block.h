@@ -8,6 +8,8 @@ class block
 {
 public:
     block();
+     void setId(int newId);
+     void setName(QString newName);
 protected :
     QVector<port> inputs;
     QVector<port> outputs;
@@ -18,6 +20,8 @@ private:
 signals:
 
 };
+
+
 
 
 

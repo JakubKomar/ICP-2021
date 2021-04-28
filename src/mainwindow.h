@@ -25,6 +25,8 @@ private slots:
 
     void on_apkAddAtom_clicked();
 
+    void on_pushButton_4_clicked();
+
 private:
     aplication * curentApk;
     void initView();

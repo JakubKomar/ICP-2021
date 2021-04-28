@@ -49,5 +49,16 @@ void mainWindow::on_loadApk_clicked()
 
 void mainWindow::on_apkAddAtom_clicked()
 {
+      if(curentApk!=NULL)
+      {
+            curentApk->addAtom();
+      }
+}
 
+void mainWindow::on_pushButton_4_clicked()
+{
+    if(curentApk!=NULL)
+    {
+          curentApk->firstSays();
+    }
 }
