@@ -15,8 +15,9 @@ void aplication::addAtom()
     atomVect.append(New);
 }
 
-void aplication::firstSays()
+void aplication::firstSays()    //debug  method
 {
-    atomVect.last().sayHallo();
+    if(!atomVect.empty())
+        atomVect.last().sayHallo();
 }
 

@@ -3,14 +3,13 @@
 #include <QGraphicsItem>
 #include <QObject>
 #include <qdebug.h>
-mainWindow::mainWindow(QWidget *parent)
-    : QMainWindow(parent)
-    , ui(new Ui::mainWindow)
+mainWindow::mainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::mainWindow)
 {
     ui->setupUi(this);
     auto *scene= new aplicationView(ui->apkView);
     ui->apkView->setScene(scene);
     this->curentApk=NULL;
+
 }
 
 mainWindow::~mainWindow()
@@ -43,7 +42,6 @@ void mainWindow::on_loadApk_clicked()
     if(curentApk!=NULL)
         delete curentApk;
     this->curentApk=new aplication;
-
 }
 
 

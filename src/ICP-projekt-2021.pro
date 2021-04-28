@@ -2,7 +2,7 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-CONFIG += c++11
+CONFIG += c++17
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
@@ -16,7 +16,8 @@ SOURCES += \
     core/port.cpp \
     main.cpp \
     mainwindow.cpp \
-    gui/aplicationview.cpp
+    gui/aplicationview.cpp\
+    gui/blockmodel.cpp \
 
 HEADERS += \
     core/aplication.h \
@@ -24,6 +25,7 @@ HEADERS += \
     core/block.h \
     core/compozit.h \
     core/port.h \
+    gui/blockmodel.h \
     mainwindow.h \
     gui/aplicationview.h
 

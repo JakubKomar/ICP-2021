@@ -2,6 +2,8 @@
 #define APLICATIONVIEW_H
 
 #include <QGraphicsScene>
+#include <QtCore>
+#include <QtGui>
 
 class aplicationView : public QGraphicsScene
 {
@@ -10,6 +12,7 @@ public:
     explicit aplicationView(QObject *parent = nullptr);
     bool selectedAddAtom=false;
     bool selectedAddComp=false;
+
 protected:
     virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
     void addBlock(int x,int y);
