@@ -9,12 +9,21 @@ class block
 public:
     block();
      void setId(int newId);
-     void setName(QString newName);
+     int getId();
+     QString getName();
+     void setName(QString newName);;
+     enum Type{
+         Tnone,
+         Tatomic,
+         Tcompozit,
+         TonlyPort,
+     };
+     Type type;      //selektor pro grafickou reprezentace
 protected :
     QVector<port> inputs;
     QVector<port> outputs;
     QString name;
-    int id;
+    int id; 
 private:
 
 signals:

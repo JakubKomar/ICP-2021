@@ -7,16 +7,18 @@ aplication::aplication():idStack(0)
     qDebug()<<"aplication constructor engage";
 }
 
-void aplication::addAtom()
+atomic* aplication::addAtom()
 {
-    atomic New;
-    New.setId(idStack);
+    atomic * New=new atomic;
+    New->setId(idStack);
     idStack++;
     atomVect.append(New);
+    return New;
 }
 
-void aplication::firstSays()
+void aplication::firstSays()    //debug  method
 {
-    atomVect.last().sayHallo();
+    if(!atomVect.empty())
+        atomVect.last()->sayHallo();
 }
 
