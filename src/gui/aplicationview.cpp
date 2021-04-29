@@ -3,10 +3,17 @@
 #include <QDebug>
 #include <QGraphicsSceneMouseEvent>
 #include <QGraphicsItem>
-#include "blockmodel.h"
+
 aplicationView::aplicationView(QObject *parent) : QGraphicsScene(parent)
 {
 
+
+}
+
+aplicationView::~aplicationView()
+{
+    for(auto *item:blockModels)
+        delete item;
 }
 
 void aplicationView::mousePressEvent(QGraphicsSceneMouseEvent *event)
@@ -16,12 +23,28 @@ void aplicationView::mousePressEvent(QGraphicsSceneMouseEvent *event)
     {
         addBlock(event->scenePos().rx(),event->scenePos().ry());
     }
-    else
+    else if(event->button()==Qt::LeftButton)
     {
         for(auto * item:items(event->scenePos()))
         {
             if(auto rect=dynamic_cast<QGraphicsRectItem*>(item);rect){
                 qDebug()<<"clicket on rectangle";
+            }
+            else if (auto myrect=dynamic_cast<blockModel*>(item);myrect){
+                 qDebug()<<"clicket on custom item";
+            }
+        }     
+    }
+    else  if(event->button()==Qt::MiddleButton)
+    {
+        for(auto * item:items(event->scenePos()))
+        {
+            if(auto rect=dynamic_cast<QGraphicsRectItem*>(item);rect){
+                qDebug()<<"clicket on rectangle";
+            }
+            else if (auto myrect=dynamic_cast<blockModel*>(item);myrect){
+                 qDebug()<<"clicket on custom item";
+                 delete myrect;
             }
         }
     }
@@ -29,7 +52,8 @@ void aplicationView::mousePressEvent(QGraphicsSceneMouseEvent *event)
     QGraphicsScene::mousePressEvent(event);
 }
 void aplicationView::addBlock(int x,int y){
-
-
+    blockModel * newBlock = new blockModel;
+    blockModels.append(newBlock);
+    addItem(newBlock);
 }
 

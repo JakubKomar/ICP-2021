@@ -2,18 +2,20 @@
 #define BLOCKMODEL_H
 #include <QPainter>
 #include <QGraphicsItem>
-#include <QDebug>
-class blockModel: public QGraphicsItem
+
+class blockModel : public QGraphicsItem
 {
 public:
-    blockModel(QGraphicsItem * parent=NULL) ;
-    QRectF boundigRect()const;
-    void paint(QPainter *painter,const QStyleOptionGraphicsItem *option,QWidget *widget) override;
+    blockModel();
+    ~blockModel();
+    QRectF boundingRect() const;
+    void paint(QPainter * painter,const QStyleOptionGraphicsItem * option,QWidget * widget);
 protected:
-    //void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
-    int height=0;
-    int width=0;
-
+    void mousePressEvent(QGraphicsSceneMouseEvent *event);
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+private:
+    int height;
+    int width;
 };
 
 #endif // BLOCKMODEL_H

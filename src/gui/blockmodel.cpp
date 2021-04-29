@@ -1,27 +1,36 @@
 #include "blockmodel.h"
-
-blockModel::blockModel(QGraphicsItem * parent):QGraphicsItem(parent),height(120),width(100)
+#include <QDebug>
+blockModel::blockModel()
 {
+    setFlag(ItemIsMovable);
+    qDebug()<<"model created";
+}
 
+blockModel::~blockModel()
+{
+    qDebug()<<"model deleted";
+}
+
+QRectF blockModel::boundingRect() const
+{
+    return QRectF(0,0,100,100);
 }
 
 void blockModel::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-    QRectF rec=boundigRect();
-    QBrush brush(Qt::red);
-    painter->fillRect(rec,brush);
-    painter->drawRect(rec);
+    QRectF rect = boundingRect();
+    QPen pen(Qt::red, 3);
+    painter->setPen(pen);
+    painter->drawEllipse(rect);
+
 }
-/*
+
 void blockModel::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    qDebug()<< "extra kek";
-    QGraphicsItem::mousePressEvent(event);
+    qDebug()<<"fuuu";
 }
-*/
-QRectF blockModel::boundigRect()const
+
+void blockModel::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-    return QRectF(0,0,height,width);
+
 }
-
-

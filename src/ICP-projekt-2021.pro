@@ -14,10 +14,10 @@ SOURCES += \
     core/aplication.cpp \
     core/compozit.cpp \
     core/port.cpp \
+    gui/blockmodel.cpp \
     main.cpp \
     mainwindow.cpp \
     gui/aplicationview.cpp\
-    gui/blockmodel.cpp \
 
 HEADERS += \
     core/aplication.h \
