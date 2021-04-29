@@ -9,6 +9,8 @@ class block
 public:
     block();
      void setId(int newId);
+     int getId();
+     QString getName();
      void setName(QString newName);
 protected :
     QVector<port> inputs;

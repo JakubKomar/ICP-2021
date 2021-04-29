@@ -3,16 +3,18 @@
 #include <QPainter>
 #include <QGraphicsItem>
 #include "./core/block.h"
-#include <QSet>
+
 
 class blockModel : public QGraphicsItem
 {
 public:
-    blockModel();
+    blockModel(block * coreRep);
     ~blockModel();
     QRectF boundingRect() const;
     void paint(QPainter * painter,const QStyleOptionGraphicsItem * option,QWidget * widget);
     void resize(int newWidth,int newHeight);
+    QString getName();
+    int getId();
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);

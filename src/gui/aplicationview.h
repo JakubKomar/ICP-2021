@@ -11,13 +11,11 @@ class aplicationView : public QGraphicsScene
 public:
     explicit aplicationView(QObject *parent = nullptr);
     ~aplicationView();
-    bool selectedAddAtom=false;
-    bool selectedAddComp=false;
-
+     void addGrapicRepr(int x,int y,block * coreRep);
 protected:
-    virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
-    void addBlock(int x,int y);
+    virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;  
     QVector<blockModel*>blockModels;
+    aplicationView * editor;
 signals:
 
 };

@@ -6,7 +6,7 @@
 mainWindow::mainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::mainWindow)
 {
     ui->setupUi(this);
-    auto *scene= new aplicationView(ui->apkView);
+    scene= new aplicationView(ui->apkView);
     ui->apkView->setScene(scene);
     ui->compoziteView->setScene(scene);
     this->curentApk=NULL;
@@ -45,13 +45,13 @@ void mainWindow::on_loadApk_clicked()
     this->curentApk=new aplication;
 }
 
-
 void mainWindow::on_apkAddAtom_clicked()
 {
-      if(curentApk!=NULL)
-      {
-            curentApk->addAtom();
-      }
+    if(curentApk!=NULL)
+    {
+        atomic * pointer=curentApk->addAtom();
+        scene->addGrapicRepr(0,0,pointer);
+    }
 }
 
 void mainWindow::on_pushButton_4_clicked()

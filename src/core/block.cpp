@@ -10,6 +10,16 @@ void block::setId(int newId)
     id=newId;
 }
 
+int block::getId()
+{
+    return id;
+}
+
+QString block::getName()
+{
+    return name;
+}
+
 void block::setName(QString newName)
 {
     name=newName;

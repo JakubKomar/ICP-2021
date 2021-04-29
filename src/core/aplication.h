@@ -14,11 +14,11 @@ public:
     {
          qDebug()<<"aplication destructor engage";
     }
-    void addAtom();
+    atomic* addAtom();
     void firstSays();
 private:
-    QVector<compozit> compVect;
-    QVector<atomic> atomVect;
+    QVector<compozit *> compVect;
+    QVector<atomic *> atomVect;
     int idStack;
 };
 

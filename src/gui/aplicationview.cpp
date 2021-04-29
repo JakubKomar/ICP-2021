@@ -23,7 +23,7 @@ void aplicationView::mousePressEvent(QGraphicsSceneMouseEvent *event)
     qDebug()<<event->scenePos();
     if(event->button()==Qt::RightButton)
     {
-        addBlock(event->scenePos().rx(),event->scenePos().ry());
+        addGrapicRepr(event->scenePos().rx(),event->scenePos().ry(),NULL);
     }
     else if(event->button()==Qt::LeftButton)
     {
@@ -33,7 +33,7 @@ void aplicationView::mousePressEvent(QGraphicsSceneMouseEvent *event)
                 qDebug()<<"clicket on rectangle";
             }
             else if (auto myrect=dynamic_cast<blockModel*>(item);myrect){
-                 qDebug()<<"clicket on custom item";
+                 qDebug()<<"clicket on custom item id:"<<myrect->getId()<<" name:"<<myrect->getName();
             }
         }     
     }
@@ -53,9 +53,8 @@ void aplicationView::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
     QGraphicsScene::mousePressEvent(event);
 }
-void aplicationView::addBlock(int x,int y){
-    blockModel * newBlock = new blockModel;
-
+void aplicationView::addGrapicRepr(int x,int y,block * CoreRep){
+    blockModel * newBlock = new blockModel(CoreRep);
     blockModels.append(newBlock);
     addItem(newBlock);
 }
