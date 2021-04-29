@@ -5,6 +5,8 @@
 #include <QtCore>
 #include <QtGui>
 #include "blockmodel.h"
+#include "./core/atomic.h"
+#include "./core/compozit.h"
 class aplicationView : public QGraphicsScene
 {
     Q_OBJECT

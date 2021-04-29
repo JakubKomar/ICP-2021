@@ -13,6 +13,8 @@ public:
          qDebug()<<"atomic destructor engage";
     }
     void sayHallo();
+private:
+    QString code;
 };
 
 #endif // ATOMIC_H

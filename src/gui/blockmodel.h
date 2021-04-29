@@ -15,6 +15,7 @@ public:
     void resize(int newWidth,int newHeight);
     QString getName();
     int getId();
+    block * getCrPtr();
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);

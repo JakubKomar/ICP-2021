@@ -11,19 +11,19 @@ public:
      void setId(int newId);
      int getId();
      QString getName();
-     void setName(QString newName);
+     void setName(QString newName);;
+     enum Type{
+         Tnone,
+         Tatomic,
+         Tcompozit,
+         TonlyPort,
+     };
+     Type type;      //selektor pro grafickou reprezentace
 protected :
     QVector<port> inputs;
     QVector<port> outputs;
     QString name;
-    int id;
-    enum Type{
-        Tnone,
-        Tatomic,
-        Tcompozit,
-        TonlyPort,
-    };
-    Type type;      //selektor grafické reprezentace
+    int id; 
 private:
 
 signals:
