@@ -10,9 +10,11 @@ public:
     ~blockModel();
     QRectF boundingRect() const;
     void paint(QPainter * painter,const QStyleOptionGraphicsItem * option,QWidget * widget);
+     void resize(int newWidth,int newHeight);
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+
 private:
     int height;
     int width;

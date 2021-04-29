@@ -12,8 +12,10 @@ aplicationView::aplicationView(QObject *parent) : QGraphicsScene(parent)
 
 aplicationView::~aplicationView()
 {
-    for(auto *item:blockModels)
-        delete item;
+   /* if (!blockModels.empty()){
+        for(auto *item:blockModels)
+            delete item;
+    }*/
 }
 
 void aplicationView::mousePressEvent(QGraphicsSceneMouseEvent *event)
