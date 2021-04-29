@@ -3,6 +3,7 @@
 atomic::atomic()
 {
     qDebug()<<"atomic constructor engage";
+    this->type=Tatomic;
 }
 void atomic::sayHallo()
 {

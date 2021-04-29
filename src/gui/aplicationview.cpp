@@ -55,6 +55,7 @@ void aplicationView::mousePressEvent(QGraphicsSceneMouseEvent *event)
 }
 void aplicationView::addBlock(int x,int y){
     blockModel * newBlock = new blockModel;
+
     blockModels.append(newBlock);
     addItem(newBlock);
 }

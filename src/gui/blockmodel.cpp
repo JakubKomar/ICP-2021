@@ -1,6 +1,6 @@
 #include "blockmodel.h"
 #include <QDebug>
-blockModel::blockModel():height(120),width(100)
+blockModel::blockModel():height(120),width(100),coreRepr(NULL)
 {
     setFlag(ItemIsMovable);
     qDebug()<<"model created";

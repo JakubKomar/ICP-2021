@@ -15,6 +15,13 @@ protected :
     QVector<port> outputs;
     QString name;
     int id;
+    enum Type{
+        Tnone,
+        Tatomic,
+        Tcompozit,
+        TonlyPort,
+    };
+    Type type;      //selektor grafické reprezentace
 private:
 
 signals:

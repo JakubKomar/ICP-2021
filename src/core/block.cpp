@@ -1,6 +1,6 @@
 #include "block.h"
 
-block::block()
+block::block():type(Tnone)
 {
     this->name="";
 }

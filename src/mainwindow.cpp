@@ -8,8 +8,8 @@ mainWindow::mainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::mainWin
     ui->setupUi(this);
     auto *scene= new aplicationView(ui->apkView);
     ui->apkView->setScene(scene);
+    ui->compoziteView->setScene(scene);
     this->curentApk=NULL;
-
 }
 
 mainWindow::~mainWindow()
@@ -19,6 +19,7 @@ mainWindow::~mainWindow()
         delete curentApk;
 }
 
+//----------debug buttons---------
 void mainWindow::on_pushButton_2_clicked()
 {
     ui->screenSwitch->setCurrentIndex( (ui->screenSwitch->currentIndex())-1 );
@@ -28,7 +29,7 @@ void mainWindow::on_pushButton_clicked()
 {
     ui->screenSwitch->setCurrentIndex( (ui->screenSwitch->currentIndex())+1 );
 }
-
+//------------------------------
 
 void mainWindow::on_newApk_clicked()
 {

@@ -2,6 +2,8 @@
 #define BLOCKMODEL_H
 #include <QPainter>
 #include <QGraphicsItem>
+#include "./core/block.h"
+#include <QSet>
 
 class blockModel : public QGraphicsItem
 {
@@ -10,7 +12,7 @@ public:
     ~blockModel();
     QRectF boundingRect() const;
     void paint(QPainter * painter,const QStyleOptionGraphicsItem * option,QWidget * widget);
-     void resize(int newWidth,int newHeight);
+    void resize(int newWidth,int newHeight);
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
@@ -18,6 +20,7 @@ protected:
 private:
     int height;
     int width;
+    block * coreRepr;
 };
 
 #endif // BLOCKMODEL_H
