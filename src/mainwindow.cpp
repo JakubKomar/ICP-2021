@@ -30,6 +30,12 @@ void mainWindow::swich(int page)
     ui->screenSwitch->setCurrentIndex(page);
 }
 
+void mainWindow::updateAtEditor()
+{
+    ui->AtNameEdit->insert(editedAtBlock->getName());
+    ui->codeTextEditor->insertPlainText(editedAtBlock->code);
+}
+
 //----------debug buttons---------
 void mainWindow::on_pushButton_2_clicked()
 {
@@ -72,4 +78,19 @@ void mainWindow::on_pushButton_4_clicked()
         compozit * pointer=curentApk->addCompozite();
         scene->addGrapicRepr(0,0,pointer);
     }
+}
+
+void mainWindow::on_RenameAtom_clicked()
+{
+    editedAtBlock->setName( ui->AtNameEdit->text());
+}
+
+void mainWindow::on_AtNameEdit_cursorPositionChanged(int arg1, int arg2)
+{
+
+}
+
+void mainWindow::on_pushButton_8_clicked()
+{
+    editedAtBlock->code=ui->codeTextEditor->toPlainText();
 }

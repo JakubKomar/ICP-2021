@@ -33,7 +33,8 @@ void aplicationView::mousePressEvent(QGraphicsSceneMouseEvent *event)
                  qDebug()<<"clicked on custom item id:"<<myrect->getId()<<" name:"<<myrect->getName();
                  if(myrect->getCrPtr()->type==block::Tatomic){
                       if(auto Cast=static_cast<atomic*>(myrect->getCrPtr());Cast){
-                          qDebug()<<"castnutej atomickej blok";
+                          mainUi->editedAtBlock=Cast;
+
                           mainUi->swich(2);
                       }
                   }

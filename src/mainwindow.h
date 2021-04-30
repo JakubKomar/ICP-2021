@@ -18,6 +18,8 @@ public:
     ~mainWindow();
     void kek();
     void swich(int page);
+    atomic * editedAtBlock;
+    void updateAtEditor();
 private slots:
     void on_pushButton_2_clicked();
     void on_pushButton_clicked();
@@ -25,6 +27,11 @@ private slots:
     void on_loadApk_clicked();
     void on_apkAddAtom_clicked();
     void on_pushButton_4_clicked();
+
+    void on_RenameAtom_clicked();
+
+    void on_AtNameEdit_cursorPositionChanged(int arg1, int arg2);
+    void on_pushButton_8_clicked();
 
 private:
     aplication * curentApk;
