@@ -21,7 +21,6 @@ protected:
     virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;  
     QVector<blockModel*>blockModels;
     mainWindow * mainUi;
-
 signals:
 
 };

@@ -25,6 +25,11 @@ void mainWindow::kek()
     qDebug()<<"kek from main";
 }
 
+void mainWindow::swich(int page)
+{
+    ui->screenSwitch->setCurrentIndex(page);
+}
+
 //----------debug buttons---------
 void mainWindow::on_pushButton_2_clicked()
 {
