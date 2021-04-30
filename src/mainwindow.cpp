@@ -1,12 +1,10 @@
 #include "mainwindow.h"
-#include "ui_mainwindow.h"
-#include <QGraphicsItem>
-#include <QObject>
-#include <qdebug.h>
+
+
 mainWindow::mainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::mainWindow)
 {
     ui->setupUi(this);
-    scene= new aplicationView(ui->apkView);
+    scene= new aplicationView(ui->apkView,this);
     ui->apkView->setScene(scene);
     ui->compoziteView->setScene(scene);
     this->curentApk=NULL;
@@ -17,6 +15,24 @@ mainWindow::~mainWindow()
     delete ui;
     if(curentApk)
         delete curentApk;
+}
+
+void mainWindow::kek()
+{
+    qDebug()<<"kek from main";
+}
+
+void mainWindow::swich(int page)
+{
+    ui->screenSwitch->setCurrentIndex(page);
+}
+
+void mainWindow::updateAtEditor()
+{
+    ui->AtNameEdit->clear();
+    ui->codeTextEditor->clear();
+    ui->AtNameEdit->insert(editedAtBlock->getName());
+    ui->codeTextEditor->insertPlainText(editedAtBlock->code);
 }
 
 //----------debug buttons---------
@@ -58,6 +74,87 @@ void mainWindow::on_pushButton_4_clicked()
 {
     if(curentApk!=NULL)
     {
-          curentApk->firstSays();
+        compozit * pointer=curentApk->addCompozite();
+        scene->addGrapicRepr(0,0,pointer);
     }
 }
+
+void mainWindow::on_RenameAtom_clicked()
+{
+    editedAtBlock->setName( ui->AtNameEdit->text());
+}
+
+void mainWindow::on_AtNameEdit_cursorPositionChanged(int arg1, int arg2)
+{
+
+}
+
+void mainWindow::on_pushButton_8_clicked()
+{
+    editedAtBlock->code=ui->codeTextEditor->toPlainText();
+}
+
+void mainWindow::on_AtAddInput_clicked()
+{
+    addAtInput(ui->atInputArea);
+}
+void mainWindow::on_AtAddOutput_clicked()
+{
+    addAtInput(ui->AtOutputArea);
+}
+void mainWindow::addAtInput(QWidget * place)
+{
+    QVBoxLayout * layout=qobject_cast<QVBoxLayout*>(place->layout());
+    QHBoxLayout * newHorizontal1=new QHBoxLayout(place);
+    QHBoxLayout * newHorizontal2=new QHBoxLayout(place);
+    QVBoxLayout * newVertical=new QVBoxLayout(place);
+    QString name=tr("input%1 ").arg(layout->count());
+
+    const QSize BUTTON_SIZE = QSize(20, 20);
+    QPushButton* button=new QPushButton("x",place);
+    button->setMaximumSize(BUTTON_SIZE);
+    portItemMap.insert(button,newVertical);
+    QObject::connect(button,&QPushButton::clicked,this,&mainWindow::removePort);
+
+    QLineEdit* lineEdit=new QLineEdit(name,place);
+
+    QComboBox* comboBox=new QComboBox(place);
+    comboBox->addItems({"int","string","bool","double"});
+
+    newHorizontal1->insertWidget(0,button);
+    newHorizontal1->insertWidget(0,lineEdit);
+    newVertical->insertLayout(0,newHorizontal1);
+
+    newHorizontal2->insertWidget(0,comboBox);
+    newVertical->insertLayout(1,newHorizontal2);
+
+    layout->insertLayout(layout->count()-1,newVertical);
+
+}
+
+void mainWindow::removePort()
+{
+   QPushButton* button=qobject_cast<QPushButton*>(sender());
+   QVBoxLayout* Vertikal=portItemMap.value(button);
+
+   while(Vertikal->count()!=0)
+   {
+       QLayoutItem* item=Vertikal->takeAt(0);
+       auto horizontal=dynamic_cast<QHBoxLayout*>(item);
+       if(horizontal!=NULL)
+       {
+           while(horizontal->count()!=0)
+           {
+               QLayoutItem* titem=horizontal->takeAt(0);
+               delete titem->widget();
+               delete titem;
+           }
+       }
+       delete horizontal->widget();
+       delete horizontal;
+   }
+   delete Vertikal->widget();
+   delete Vertikal;
+}
+
+

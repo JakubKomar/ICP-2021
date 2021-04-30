@@ -16,6 +16,15 @@ atomic* aplication::addAtom()
     return New;
 }
 
+compozit *aplication::addCompozite()
+{
+    compozit * New=new compozit;
+    New->setId(idStack);
+    idStack++;
+    compVect.append(New);
+    return New;
+}
+
 void aplication::firstSays()    //debug  method
 {
     if(!atomVect.empty())
