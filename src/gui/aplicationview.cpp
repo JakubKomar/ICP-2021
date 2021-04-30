@@ -50,6 +50,7 @@ void aplicationView::mousePressEvent(QGraphicsSceneMouseEvent *event)
             if (auto myrect=dynamic_cast<blockModel*>(item);myrect){
                  delete myrect->getCrPtr();
                  delete myrect;
+                 break;
             }
         }
     }

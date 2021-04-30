@@ -15,6 +15,7 @@ public:
          qDebug()<<"aplication destructor engage";
     }
     atomic* addAtom();
+    compozit* addCompozite();
     void firstSays();
 private:
     QVector<compozit *> compVect;

@@ -58,6 +58,7 @@ void mainWindow::on_pushButton_4_clicked()
 {
     if(curentApk!=NULL)
     {
-          curentApk->firstSays();
+        compozit * pointer=curentApk->addCompozite();
+        scene->addGrapicRepr(0,0,pointer);
     }
 }
