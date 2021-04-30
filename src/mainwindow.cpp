@@ -3,10 +3,11 @@
 #include <QGraphicsItem>
 #include <QObject>
 #include <qdebug.h>
+
 mainWindow::mainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::mainWindow)
 {
     ui->setupUi(this);
-    scene= new aplicationView(ui->apkView);
+    scene= new aplicationView(ui->apkView,this);
     ui->apkView->setScene(scene);
     ui->compoziteView->setScene(scene);
     this->curentApk=NULL;
@@ -17,6 +18,11 @@ mainWindow::~mainWindow()
     delete ui;
     if(curentApk)
         delete curentApk;
+}
+
+void mainWindow::kek()
+{
+    qDebug()<<"kek from main";
 }
 
 //----------debug buttons---------

@@ -8,7 +8,7 @@
 QT_BEGIN_NAMESPACE
 namespace Ui { class mainWindow; }
 QT_END_NAMESPACE
-
+class aplicationView;
 class mainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -16,6 +16,7 @@ class mainWindow : public QMainWindow
 public:
     mainWindow(QWidget *parent = nullptr);
     ~mainWindow();
+    void kek();
 
 private slots:
     void on_pushButton_2_clicked();

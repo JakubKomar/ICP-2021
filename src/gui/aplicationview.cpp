@@ -4,7 +4,7 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QGraphicsItem>
 
-aplicationView::aplicationView(QObject *parent) : QGraphicsScene(parent)
+aplicationView::aplicationView(QObject *parent,mainWindow *mainUI) : QGraphicsScene(parent),mainUi(mainUI)
 {
 
 
@@ -33,6 +33,7 @@ void aplicationView::mousePressEvent(QGraphicsSceneMouseEvent *event)
                  qDebug()<<"clicked on custom item id:"<<myrect->getId()<<" name:"<<myrect->getName();
                   if (auto uhOh=static_cast<atomic*>(myrect->getCrPtr());uhOh){
                       qDebug()<<"castnutej atomickej blok";
+                      mainUi->kek();
                   }
                   else if (auto uhOh=static_cast<compozit*>(myrect->getCrPtr());uhOh){
                       qDebug()<<"castnutej atomickej blok";
