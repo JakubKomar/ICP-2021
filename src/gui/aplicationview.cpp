@@ -34,7 +34,7 @@ void aplicationView::mousePressEvent(QGraphicsSceneMouseEvent *event)
                  if(myrect->getCrPtr()->type==block::Tatomic){
                       if(auto Cast=static_cast<atomic*>(myrect->getCrPtr());Cast){
                           mainUi->editedAtBlock=Cast;
-
+                          mainUi->updateAtEditor();
                           mainUi->swich(2);
                       }
                   }
