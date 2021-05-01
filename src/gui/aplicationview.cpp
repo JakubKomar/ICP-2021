@@ -8,16 +8,8 @@
  */
 #include "aplicationview.h"
 
-aplicationView::aplicationView(QObject *parent,mainWindow *mainUI) : QGraphicsScene(parent),mainUi(mainUI)
-{
-
-
-}
-
-aplicationView::~aplicationView()
-{
-
-}
+aplicationView::aplicationView(QObject *parent,mainWindow *mainUI) : QGraphicsScene(parent),mainUi(mainUI){}
+aplicationView::~aplicationView(){}
 
 void aplicationView::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
@@ -31,15 +23,12 @@ void aplicationView::mousePressEvent(QGraphicsSceneMouseEvent *event)
                  qDebug()<<"clicked on custom item id:"<<myrect->getId()<<" name:"<<myrect->getName();
                  if(myrect->getCrPtr()->type==block::Tatomic){
                       if(auto Cast=static_cast<atomic*>(myrect->getCrPtr());Cast){
-
-                          mainUi->editedAtBlock=Cast;
-                          mainUi->updateAtEditor();
-                          mainUi->swich(2);
+                          mainUi->swichToAtomic(Cast);
                       }
                   }
                   else if(myrect->getCrPtr()->type==block::Tcompozit){
                       if (auto Cast=static_cast<compozit*>(myrect->getCrPtr());Cast){
-                          mainUi->swich(1);
+                          mainUi->swichToComp(Cast);
                       }
                   }
                   else
@@ -59,7 +48,6 @@ void aplicationView::mousePressEvent(QGraphicsSceneMouseEvent *event)
             }
         }
     }
-
     QGraphicsScene::mousePressEvent(event);
 }
 void aplicationView::addGrapicRepr(int x,int y,block * CoreRep){
@@ -85,5 +73,10 @@ void aplicationView::loadScene(compozit * CompPtr)
     {
         addGrapicRepr(0,0,item);
     }
+}
+
+void aplicationView::swichEditedComp(compozit *targetPtr)
+{
+    mainUi->swichToComp(targetPtr);
 }
 

@@ -31,16 +31,9 @@
        </spacer>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton">
+       <widget class="QPushButton" name="goBack">
         <property name="text">
-         <string>prev Page</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="pushButton_2">
-        <property name="text">
-         <string>next Page</string>
+         <string>Go Back</string>
         </property>
        </widget>
       </item>
@@ -89,20 +82,6 @@
              <widget class="QPushButton" name="pushButton_4">
               <property name="text">
                <string>Add Compozit</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="clear">
-              <property name="text">
-               <string>clear</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="refresh">
-              <property name="text">
-               <string>refresh</string>
               </property>
              </widget>
             </item>

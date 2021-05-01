@@ -39,13 +39,16 @@ public:
     void swich(int page);
     atomic * editedAtBlock;
     void deleteExactBlock(block *ptr);
+    void callBackPush();
+    void callBackPop();
+    void swichToComp(compozit * targetPtr);
+    void swichToAtomic(atomic * targetPtr);
+    void refresh();
     /**
      * update editor before swiching to this page
     */
     void updateAtEditor();
 private slots:
-    void on_pushButton_2_clicked();
-    void on_pushButton_clicked();
     void on_newApk_clicked();
     void on_loadApk_clicked();
     void on_apkAddAtom_clicked();
@@ -55,10 +58,7 @@ private slots:
     void on_pushButton_8_clicked();
     void on_AtAddInput_clicked();
     void on_AtAddOutput_clicked();
-    void on_clear_clicked();
-
-    void on_refresh_clicked();
-
+    void on_goBack_clicked();
 private:
     /**
      * ading input to frame
@@ -69,6 +69,7 @@ private:
      * removing all elements from port grapohic rep.
     */
     void removePort();
+    QStack<compozit*> callBackStack;
     aplication * curentApk;
     compozit * viewedBlock;
     aplicationView * scene;

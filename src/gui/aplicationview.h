@@ -38,6 +38,7 @@ public:
     void addGrapicRepr(int x,int y,block * coreRep);
     void cleanScene();
     void loadScene(compozit * CompPtr);
+    void swichEditedComp(compozit *targetPtr);
 protected:
     virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;  
     QVector<blockModel*>blockModels;

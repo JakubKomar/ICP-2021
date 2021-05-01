@@ -31,22 +31,23 @@ void mainWindow::deleteExactBlock(block *ptr){
     viewedBlock->deleteBlock(ptr);
 }
 
+void mainWindow::callBackPush(){
+    this->callBackStack.push(viewedBlock);
+}
+void mainWindow::callBackPop()
+{
+    if(!callBackStack.empty())
+        viewedBlock=this->callBackStack.pop();
+    else
+        viewedBlock=this->curentApk;
+}
+
 void mainWindow::updateAtEditor(){
     ui->AtNameEdit->clear();
     ui->codeTextEditor->clear();
     ui->AtNameEdit->insert(editedAtBlock->getName());
     ui->codeTextEditor->insertPlainText(editedAtBlock->code);
 }
-
-//----------debug buttons---------
-void mainWindow::on_pushButton_2_clicked(){
-    ui->screenSwitch->setCurrentIndex( (ui->screenSwitch->currentIndex())-1 );
-}
-
-void mainWindow::on_pushButton_clicked(){
-    ui->screenSwitch->setCurrentIndex( (ui->screenSwitch->currentIndex())+1 );
-}
-//------------------------------
 
 void mainWindow::on_newApk_clicked(){
     scene->clear();
@@ -152,12 +153,36 @@ void mainWindow::removePort(){
    delete Vertikal;
 }
 
-void mainWindow::on_clear_clicked(){
-    scene->clear();
-}
 
-void mainWindow::on_refresh_clicked()
+void mainWindow::refresh()
 {
     scene->clear();
     scene->loadScene(this->viewedBlock);
 }
+
+void mainWindow::on_goBack_clicked()
+{
+    callBackPop();
+    refresh();
+    if(curentApk==viewedBlock)
+        swich(0);
+    else
+        swich(1);
+}
+
+void mainWindow::swichToComp(compozit *targetPtr)
+{
+    callBackPush();
+    viewedBlock=targetPtr;
+    refresh();
+    swich(1);
+}
+
+void mainWindow::swichToAtomic(atomic *targetPtr)
+{
+    callBackPush();
+    editedAtBlock=targetPtr;
+    updateAtEditor();
+    swich(2);
+}
+
