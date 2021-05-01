@@ -20,8 +20,8 @@ public:
      };
      Type type;      //selektor pro grafickou reprezentace
 protected :
-    QVector<port> inputs;
-    QVector<port> outputs;
+    QVector<port*> inputs;
+    QVector<port*> outputs;
     QString name;
     int id; 
 private:
