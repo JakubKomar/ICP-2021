@@ -70,7 +70,7 @@ private:
     */
     void removePort();
     aplication * curentApk;
-    compozit * curentView;
+    compozit * viewedBlock;
     aplicationView * scene;
     Ui::mainWindow *ui;
     QHash<QPushButton*,QVBoxLayout*>portItemMap;
