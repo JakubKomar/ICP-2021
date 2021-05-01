@@ -55,6 +55,10 @@ protected:
 private:
     int height;
     int width;
+    int xPos;
+    int yPos;
+    int xDelta;
+    int yDelta;
     block * coreRepr;
 };
 

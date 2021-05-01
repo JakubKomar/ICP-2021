@@ -20,7 +20,7 @@
       <item>
        <widget class="QStackedWidget" name="screenSwitch">
         <property name="currentIndex">
-         <number>1</number>
+         <number>0</number>
         </property>
         <widget class="QWidget" name="apkEditor">
          <layout class="QHBoxLayout" name="horizontalLayout_8">
@@ -99,7 +99,20 @@
              </layout>
             </item>
             <item>
-             <widget class="QGraphicsView" name="apkView"/>
+             <widget class="QGraphicsView" name="apkView">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>500</width>
+                <height>500</height>
+               </size>
+              </property>
+             </widget>
             </item>
            </layout>
           </item>

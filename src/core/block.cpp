@@ -8,7 +8,7 @@
  */
 #include "block.h"
 
-block::block():type(Tnone)
+block::block():type(Tnone),x(0),y(0)
 {
     this->name="";
 }

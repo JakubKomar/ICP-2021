@@ -10,7 +10,7 @@
 
 #include "blockmodel.h"
 
-blockModel::blockModel(block * coreRep):height(120),width(100),coreRepr(coreRep)
+blockModel::blockModel(block * coreRep):height(120),width(100),xPos(0),yPos(0),coreRepr(coreRep)
 {
     setFlag(ItemIsMovable);
     setFlag(ItemIsSelectable);
@@ -29,6 +29,7 @@ QRectF blockModel::boundingRect() const
 
 void blockModel::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
+
     QRectF rect = boundingRect();
     QPen border(Qt::black, 2);
     if(coreRepr->type==block::Tatomic){
@@ -51,6 +52,7 @@ void blockModel::paint(QPainter *painter, const QStyleOptionGraphicsItem *option
 
 void blockModel::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
+
 }
 
 void blockModel::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
