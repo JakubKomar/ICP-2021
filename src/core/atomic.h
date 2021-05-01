@@ -9,9 +9,10 @@
 #ifndef ATOMIC_H
 #define ATOMIC_H
 
-#include "block.h"
 #include <QObject>
 #include <QDebug>
+#include "block.h"
+
 class atomic : public block
 {
 public:

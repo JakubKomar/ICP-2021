@@ -12,10 +12,12 @@
 #include <QGraphicsScene>
 #include <QtCore>
 #include <QtGui>
+
 #include "blockmodel.h"
 #include "./core/atomic.h"
 #include "./core/compozit.h"
 #include "./mainwindow.h"
+
 class mainWindow;
 class aplicationView : public QGraphicsScene
 {

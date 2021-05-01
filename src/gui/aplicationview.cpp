@@ -6,11 +6,11 @@
  * @date    07-05-2021
  * @version 1.0
  */
-#include "aplicationview.h"
-
 #include <QDebug>
 #include <QGraphicsSceneMouseEvent>
 #include <QGraphicsItem>
+
+#include "aplicationview.h"
 #include "blockmodel.h"
 aplicationView::aplicationView(QObject *parent,mainWindow *mainUI) : QGraphicsScene(parent),mainUi(mainUI)
 {

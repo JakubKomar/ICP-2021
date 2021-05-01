@@ -8,10 +8,11 @@
  */
 #ifndef BLOCKMODEL_H
 #define BLOCKMODEL_H
+
 #include <QPainter>
 #include <QGraphicsItem>
-#include "./core/block.h"
 
+#include "./core/block.h"
 
 class blockModel : public QGraphicsItem
 {

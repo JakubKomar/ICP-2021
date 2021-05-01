@@ -19,9 +19,11 @@
 #include  "./core/aplication.h"
 #include  "./core/atomic.h"
 #include  "ui_mainwindow.h"
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class mainWindow; }
 QT_END_NAMESPACE
+
 class aplicationView;
 class mainWindow : public QMainWindow
 {

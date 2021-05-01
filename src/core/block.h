@@ -10,7 +10,9 @@
 #define BLOCK_H
 
 #include <QObject>
+
 #include "./core/port.h"
+
 class port;
 class block
 {

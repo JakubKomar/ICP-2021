@@ -10,9 +10,11 @@
 #define PORT_H
 
 #include <QObject>
+#include <QDebug>
+
 #include "./core/block.h"
 #include "./core/connection.h"
-#include <QDebug>
+
 class block;
 class connection;
 class port

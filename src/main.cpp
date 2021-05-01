@@ -6,9 +6,9 @@
  * @date    07-05-2021
  * @version 1.0
  */
-#include "mainwindow.h"
-
 #include <QApplication>
+
+#include "mainwindow.h"
 
 int main(int argc, char *argv[])
 {

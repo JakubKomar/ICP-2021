@@ -6,9 +6,10 @@
  * @date    07-05-2021
  * @version 1.0
  */
-#include "blockmodel.h"
 #include <QDebug>
+
 #include "blockmodel.h"
+
 blockModel::blockModel(block * coreRep):height(120),width(100),coreRepr(coreRep)
 {
     setFlag(ItemIsMovable);

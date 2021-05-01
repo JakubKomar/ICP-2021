@@ -8,7 +8,6 @@
  */
 #include "mainwindow.h"
 
-
 mainWindow::mainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::mainWindow)
 {
     ui->setupUi(this);

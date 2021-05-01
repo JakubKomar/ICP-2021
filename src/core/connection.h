@@ -10,7 +10,9 @@
 #define CONNECTION_H
 
 #include <QObject>
+
 #include "block.h"
+
 class block;
 class connection
 {
