@@ -9,6 +9,9 @@
 #ifndef APLICATIONVIEW_H
 #define APLICATIONVIEW_H
 
+#include <QDebug>
+#include <QGraphicsSceneMouseEvent>
+#include <QGraphicsItem>
 #include <QGraphicsScene>
 #include <QtCore>
 #include <QtGui>
@@ -17,6 +20,7 @@
 #include "./core/atomic.h"
 #include "./core/compozit.h"
 #include "./mainwindow.h"
+
 
 class mainWindow;
 class aplicationView : public QGraphicsScene
@@ -32,6 +36,9 @@ public:
      * @param block - pointer to core reprezentation
     */
     void addGrapicRepr(int x,int y,block * coreRep);
+    void cleanScene();
+    void loadScene(compozit * CompPtr);
+    void swichEditedComp(compozit *targetPtr);
 protected:
     virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;  
     QVector<blockModel*>blockModels;

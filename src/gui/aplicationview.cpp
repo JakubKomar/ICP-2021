@@ -6,25 +6,10 @@
  * @date    07-05-2021
  * @version 1.0
  */
-#include <QDebug>
-#include <QGraphicsSceneMouseEvent>
-#include <QGraphicsItem>
-
 #include "aplicationview.h"
-#include "blockmodel.h"
-aplicationView::aplicationView(QObject *parent,mainWindow *mainUI) : QGraphicsScene(parent),mainUi(mainUI)
-{
 
-
-}
-
-aplicationView::~aplicationView()
-{
-   /* if (!blockModels.empty()){
-        for(auto *item:blockModels)
-            delete item;
-    }*/
-}
+aplicationView::aplicationView(QObject *parent,mainWindow *mainUI) : QGraphicsScene(parent),mainUi(mainUI){}
+aplicationView::~aplicationView(){}
 
 void aplicationView::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
@@ -38,18 +23,17 @@ void aplicationView::mousePressEvent(QGraphicsSceneMouseEvent *event)
                  qDebug()<<"clicked on custom item id:"<<myrect->getId()<<" name:"<<myrect->getName();
                  if(myrect->getCrPtr()->type==block::Tatomic){
                       if(auto Cast=static_cast<atomic*>(myrect->getCrPtr());Cast){
-                          mainUi->editedAtBlock=Cast;
-                          mainUi->updateAtEditor();
-                          mainUi->swich(2);
+                          mainUi->swichToAtomic(Cast);
                       }
                   }
                   else if(myrect->getCrPtr()->type==block::Tcompozit){
                       if (auto Cast=static_cast<compozit*>(myrect->getCrPtr());Cast){
-                          mainUi->swich(1);
+                          mainUi->swichToComp(Cast);
                       }
                   }
                   else
                       qDebug()<<"nepovedený cast :(";
+                 break;
 
             }
         }     
@@ -59,18 +43,39 @@ void aplicationView::mousePressEvent(QGraphicsSceneMouseEvent *event)
         for(auto * item:items(event->scenePos()))
         {
             if (auto myrect=dynamic_cast<blockModel*>(item);myrect){
-                 delete myrect->getCrPtr();
+                 mainUi->deleteExactBlock(myrect->getCrPtr());
                  delete myrect;
                  break;
             }
         }
     }
-
     QGraphicsScene::mousePressEvent(event);
 }
 void aplicationView::addGrapicRepr(int x,int y,block * CoreRep){
     blockModel * newBlock = new blockModel(CoreRep);
     blockModels.append(newBlock);
     addItem(newBlock);
+}
+
+void aplicationView::cleanScene()
+{
+    while(!blockModels.empty()){
+        delete blockModels.first();
+    }
+}
+
+void aplicationView::loadScene(compozit * CompPtr)
+{
+    if(CompPtr!=NULL){
+        foreach(atomic * item,CompPtr->atomVect)
+            addGrapicRepr(0,0,item);
+        foreach(compozit * item,CompPtr->compVect)
+            addGrapicRepr(0,0,item);
+    }
+}
+
+void aplicationView::swichEditedComp(compozit *targetPtr)
+{
+    mainUi->swichToComp(targetPtr);
 }
 

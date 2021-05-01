@@ -44,7 +44,10 @@ public:
          Tcompozit,
          TonlyPort,
      };
-     Type type;      //selektor pro grafickou reprezentace
+     Type type;
+     void addPort(bool isInput);
+     int x;
+     int y;
 protected :
     QVector<port*> inputs;
     QVector<port*> outputs;

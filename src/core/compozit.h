@@ -9,10 +9,12 @@
 #ifndef COMPOZIT_H
 #define COMPOZIT_H
 
-#include "block.h"
-#include "atomic.h"
 #include <QObject>
 #include <QDebug>
+
+#include "block.h"
+#include "atomic.h"
+
 class compozit : public block
 {
 public:
@@ -23,6 +25,19 @@ public:
     }
     QVector<compozit *> compVect;
     QVector<atomic *> atomVect;
+    /**
+     * Create new atomic block
+     * @return current pointer to block
+     */
+    atomic* addAtom();
+    /**
+     * Create new compozite blcok
+     * @return current pointer to block
+     */
+    compozit* addCompozite();
+    void deleteBlock(block * ptr);
+    private:
+        int idStack;    //IDs for new blocks
 };
 
 #endif // COMPOZIT_H

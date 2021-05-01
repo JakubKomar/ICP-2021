@@ -8,86 +8,90 @@
  */
 #include "mainwindow.h"
 
-mainWindow::mainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::mainWindow)
-{
+mainWindow::mainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::mainWindow){
     ui->setupUi(this);
     scene= new aplicationView(ui->apkView,this);
     ui->apkView->setScene(scene);
     ui->compoziteView->setScene(scene);
     this->curentApk=NULL;
+    this->viewedBlock=NULL;
 }
 
-mainWindow::~mainWindow()
-{
+mainWindow::~mainWindow(){
     delete ui;
     if(curentApk)
         delete curentApk;
 }
 
-void mainWindow::swich(int page)
-{
+void mainWindow::primarySwich(int page){
     ui->screenSwitch->setCurrentIndex(page);
 }
 
-void mainWindow::updateAtEditor()
+void mainWindow::secondarySwich(int page){
+     ui->editingAreaWidget->setCurrentIndex(page);
+}
+
+void mainWindow::deleteExactBlock(block *ptr){
+    viewedBlock->deleteBlock(ptr);
+}
+
+void mainWindow::callBackPush(){
+    this->callBackStack.push(viewedBlock);
+}
+
+void mainWindow::callBackPop()
 {
+    if(!callBackStack.empty())
+        viewedBlock=this->callBackStack.pop();
+    else
+        viewedBlock=this->curentApk;
+}
+
+void mainWindow::updateAtEditor(){
     ui->AtNameEdit->clear();
     ui->codeTextEditor->clear();
     ui->AtNameEdit->insert(editedAtBlock->getName());
     ui->codeTextEditor->insertPlainText(editedAtBlock->code);
 }
 
-//----------debug buttons---------
-void mainWindow::on_pushButton_2_clicked()
-{
-    ui->screenSwitch->setCurrentIndex( (ui->screenSwitch->currentIndex())-1 );
-}
-
-void mainWindow::on_pushButton_clicked()
-{
-    ui->screenSwitch->setCurrentIndex( (ui->screenSwitch->currentIndex())+1 );
-}
-//------------------------------
-
-void mainWindow::on_newApk_clicked()
-{
+void mainWindow::on_newApk_clicked(){
+    scene->clear();
     if(curentApk!=NULL)
         delete curentApk;
     this->curentApk=new aplication;
+    this->viewedBlock=this->curentApk;
 }
 
-void mainWindow::on_loadApk_clicked()
-{
+void mainWindow::on_loadApk_clicked(){
+    scene->clear();
     if(curentApk!=NULL)
         delete curentApk;
-    this->curentApk=new aplication;
+   //to do
 }
 
-void mainWindow::on_apkAddAtom_clicked()
-{
-    if(curentApk!=NULL)
+void mainWindow::on_addAtomic2_clicked(){on_apkAddAtom_clicked();}
+void mainWindow::on_apkAddAtom_clicked(){
+    if(viewedBlock!=NULL)
     {
-        atomic * pointer=curentApk->addAtom();
+        atomic * pointer=viewedBlock->addAtom();
         scene->addGrapicRepr(0,0,pointer);
     }
 }
 
-void mainWindow::on_pushButton_4_clicked()
-{
-    if(curentApk!=NULL)
+void mainWindow::on_AddComp2_clicked(){on_addCompozite_clicked();}
+void mainWindow::on_addCompozite_clicked(){
+    if(viewedBlock!=NULL)
     {
-        compozit * pointer=curentApk->addCompozite();
+        compozit * pointer=viewedBlock->addCompozite();
         scene->addGrapicRepr(0,0,pointer);
     }
 }
 
-void mainWindow::on_RenameAtom_clicked()
-{
+void mainWindow::on_RenameAtom_clicked(){
     editedAtBlock->setName( ui->AtNameEdit->text());
 }
 
-void mainWindow::on_AtNameEdit_cursorPositionChanged(int arg1, int arg2)
-{
+void mainWindow::on_AtNameEdit_cursorPositionChanged(int arg1, int arg2){
 
 }
 
@@ -96,16 +100,14 @@ void mainWindow::on_pushButton_8_clicked()
     editedAtBlock->code=ui->codeTextEditor->toPlainText();
 }
 
-void mainWindow::on_AtAddInput_clicked()
-{
+void mainWindow::on_AtAddInput_clicked(){
+    this->editedAtBlock->addPort(TRUE);
     addAtInput(ui->atInputArea);
 }
-void mainWindow::on_AtAddOutput_clicked()
-{
+void mainWindow::on_AtAddOutput_clicked(){
     addAtInput(ui->AtOutputArea);
 }
-void mainWindow::addAtInput(QWidget * place)
-{
+void mainWindow::addAtInput(QWidget * place){
     QVBoxLayout * layout=qobject_cast<QVBoxLayout*>(place->layout());
     QHBoxLayout * newHorizontal1=new QHBoxLayout(place);
     QHBoxLayout * newHorizontal2=new QHBoxLayout(place);
@@ -134,8 +136,7 @@ void mainWindow::addAtInput(QWidget * place)
 
 }
 
-void mainWindow::removePort()
-{
+void mainWindow::removePort(){
    QPushButton* button=qobject_cast<QPushButton*>(sender());
    QVBoxLayout* Vertikal=portItemMap.value(button);
 
@@ -159,5 +160,43 @@ void mainWindow::removePort()
    delete Vertikal;
 }
 
+
+void mainWindow::refresh()
+{
+    scene->clear();
+    scene->loadScene(this->viewedBlock);
+}
+
+void mainWindow::on_goBack_clicked()
+{
+    callBackPop();
+    refresh();
+    if(curentApk==viewedBlock)
+        primarySwich(0);
+    else
+    {
+        primarySwich(1);
+        secondarySwich(1);
+    }
+
+}
+
+void mainWindow::swichToComp(compozit *targetPtr)
+{
+    callBackPush();
+    viewedBlock=targetPtr;
+    refresh();
+    primarySwich(1);
+    secondarySwich(1);
+}
+
+void mainWindow::swichToAtomic(atomic *targetPtr)
+{
+    callBackPush();
+    editedAtBlock=targetPtr;
+    updateAtEditor();
+    primarySwich(1);
+    secondarySwich(0);
+}
 
 

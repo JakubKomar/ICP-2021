@@ -8,7 +8,7 @@
  */
 #include "block.h"
 
-block::block():type(Tnone)
+block::block():type(Tnone),x(0),y(0)
 {
     this->name="";
 }
@@ -31,4 +31,17 @@ QString block::getName()
 void block::setName(QString newName)
 {
     name=newName;
+}
+
+void block::addPort(bool isInput)
+{/*
+    port * newPort=new port();
+
+    if(isInput){
+        this->inputs.append(newPort);
+    }
+    else{
+         this->outputs.append(newPort);
+    }
+*/
 }
