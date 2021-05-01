@@ -25,9 +25,3 @@ compozit *aplication::addCompozite()
     return New;
 }
 
-void aplication::firstSays()    //debug  method
-{
-    if(!atomVect.empty())
-        atomVect.last()->sayHallo();
-}
-

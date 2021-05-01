@@ -17,11 +17,6 @@ mainWindow::~mainWindow()
         delete curentApk;
 }
 
-void mainWindow::kek()
-{
-    qDebug()<<"kek from main";
-}
-
 void mainWindow::swich(int page)
 {
     ui->screenSwitch->setCurrentIndex(page);

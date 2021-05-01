@@ -16,7 +16,6 @@ public:
     explicit aplicationView(QObject *parent = nullptr,mainWindow *mainUi=nullptr);
     ~aplicationView();
     void addGrapicRepr(int x,int y,block * coreRep);
-
 protected:
     virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;  
     QVector<blockModel*>blockModels;

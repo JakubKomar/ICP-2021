@@ -12,7 +12,6 @@ public:
     {
          qDebug()<<"atomic destructor engage";
     }
-    void sayHallo();
     QString code;
 private:
 

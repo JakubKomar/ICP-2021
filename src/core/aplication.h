@@ -16,10 +16,7 @@ public:
     }
     atomic* addAtom();
     compozit* addCompozite();
-    void firstSays();
 private:
-    QVector<compozit *> compVect;
-    QVector<atomic *> atomVect;
     int idStack;
 };
 

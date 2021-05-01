@@ -3,8 +3,10 @@
 
 #include <QObject>
 #include "./core/block.h"
+#include "./core/connection.h"
 #include <QDebug>
 class block;
+class connection;
 class port
 {
 public:
@@ -13,9 +15,16 @@ public:
     {
          qDebug()<<"port destructor engage";
     }
+    enum Type{
+        Pin,
+        Pout,
+    };
+    Type type;
 protected:
-    block *conector1;
-    block *conector2;
+    block *inBlock;
+    int ID;
+    QString name;
+    connection * conect;
 private:
 
 signals:

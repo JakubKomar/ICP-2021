@@ -13,6 +13,7 @@ SOURCES += \
     core/block.cpp \
     core/aplication.cpp \
     core/compozit.cpp \
+    core/connection.cpp \
     core/port.cpp \
     gui/blockmodel.cpp \
     main.cpp \
@@ -24,6 +25,7 @@ HEADERS += \
     core/atomic.h \
     core/block.h \
     core/compozit.h \
+    core/connection.h \
     core/port.h \
     gui/blockmodel.h \
     mainwindow.h \

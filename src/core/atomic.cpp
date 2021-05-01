@@ -6,7 +6,3 @@ atomic::atomic()
     this->type=Tatomic;
     this->code="Test 1 2 3\n\ttabulator\n";
 }
-void atomic::sayHallo()
-{
-    qDebug()<<"say Hallo id:"<<id;
-}
