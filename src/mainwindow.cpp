@@ -29,6 +29,11 @@ void mainWindow::swich(int page)
     ui->screenSwitch->setCurrentIndex(page);
 }
 
+void mainWindow::deleteExactBlock(block *ptr)
+{
+    curentApk->deleteBlock(ptr);
+}
+
 void mainWindow::updateAtEditor()
 {
     ui->AtNameEdit->clear();
@@ -98,6 +103,7 @@ void mainWindow::on_pushButton_8_clicked()
 
 void mainWindow::on_AtAddInput_clicked()
 {
+    this->editedAtBlock->addPort(TRUE);
     addAtInput(ui->atInputArea);
 }
 void mainWindow::on_AtAddOutput_clicked()
@@ -159,5 +165,13 @@ void mainWindow::removePort()
    delete Vertikal;
 }
 
+void mainWindow::on_clear_clicked()
+{
+    scene->clear();
+}
 
-
+void mainWindow::on_refresh_clicked()
+{
+    scene->clear();
+    scene->loadScene(this->curentApk);
+}

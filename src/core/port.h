@@ -20,7 +20,6 @@ class connection;
 class port
 {
 public:
-    port();
     ~port()
     {
          qDebug()<<"port destructor engage";
@@ -29,7 +28,15 @@ public:
         Pin,
         Pout,
     };
+    enum TypeVal{
+        Vint,
+        Vdouble,
+        Vstring,
+        Vbool
+    };
+    port(Type type);
     Type type;
+    TypeVal valType;
 protected:
     block *inBlock;
     int ID;

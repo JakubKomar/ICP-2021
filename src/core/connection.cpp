@@ -8,7 +8,7 @@
  */
 #include "connection.h"
 
-connection::connection(block * From,block * To,TypeVal Type):type(Type),from(From),to(To)
+connection::connection(port * From,port * To,TypeVal Type):type(Type),from(From),to(To)
 {
 
 }

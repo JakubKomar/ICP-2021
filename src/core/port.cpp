@@ -8,7 +8,8 @@
  */
 #include "port.h"
 
-port::port()
+
+port::port(port::Type type):type(type)
 {
     this->conect=NULL;
 }

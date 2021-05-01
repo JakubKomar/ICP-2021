@@ -38,6 +38,7 @@ public:
     */
     void swich(int page);
     atomic * editedAtBlock;
+    void deleteExactBlock(block *ptr);
     /**
      * update editor before swiching to this page
     */
@@ -54,6 +55,10 @@ private slots:
     void on_pushButton_8_clicked();
     void on_AtAddInput_clicked();
     void on_AtAddOutput_clicked();
+    void on_clear_clicked();
+
+    void on_refresh_clicked();
+
 private:
     /**
      * ading input to frame
@@ -65,6 +70,7 @@ private:
     */
     void removePort();
     aplication * curentApk;
+    compozit * curentView;
     aplicationView * scene;
     Ui::mainWindow *ui;
     QHash<QPushButton*,QVBoxLayout*>portItemMap;

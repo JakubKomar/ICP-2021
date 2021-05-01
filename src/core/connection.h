@@ -11,9 +11,9 @@
 
 #include <QObject>
 
-#include "block.h"
+#include "port.h"
 
-class block;
+class port;
 class connection
 {
 public:
@@ -23,11 +23,11 @@ public:
         Vstring,
         Vbool
     };
-    connection(block * From,block * To,TypeVal Type);
+    connection(port * From,port * To,TypeVal Type);
     TypeVal type;
 protected:
-    block * from;
-    block * to;
+    port * from;
+    port * to;
 };
 
 #endif // CONNECTION_H

@@ -32,3 +32,16 @@ void block::setName(QString newName)
 {
     name=newName;
 }
+
+void block::addPort(bool isInput)
+{/*
+    port * newPort=new port();
+
+    if(isInput){
+        this->inputs.append(newPort);
+    }
+    else{
+         this->outputs.append(newPort);
+    }
+*/
+}
