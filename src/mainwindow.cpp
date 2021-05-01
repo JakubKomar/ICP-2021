@@ -23,8 +23,12 @@ mainWindow::~mainWindow(){
         delete curentApk;
 }
 
-void mainWindow::swich(int page){
+void mainWindow::primarySwich(int page){
     ui->screenSwitch->setCurrentIndex(page);
+}
+
+void mainWindow::secondarySwich(int page){
+     ui->editingAreaWidget->setCurrentIndex(page);
 }
 
 void mainWindow::deleteExactBlock(block *ptr){
@@ -34,6 +38,7 @@ void mainWindow::deleteExactBlock(block *ptr){
 void mainWindow::callBackPush(){
     this->callBackStack.push(viewedBlock);
 }
+
 void mainWindow::callBackPop()
 {
     if(!callBackStack.empty())
@@ -64,6 +69,7 @@ void mainWindow::on_loadApk_clicked(){
    //to do
 }
 
+void mainWindow::on_addAtomic2_clicked(){on_apkAddAtom_clicked();}
 void mainWindow::on_apkAddAtom_clicked(){
     if(viewedBlock!=NULL)
     {
@@ -72,7 +78,8 @@ void mainWindow::on_apkAddAtom_clicked(){
     }
 }
 
-void mainWindow::on_pushButton_4_clicked(){
+void mainWindow::on_AddComp2_clicked(){on_addCompozite_clicked();}
+void mainWindow::on_addCompozite_clicked(){
     if(viewedBlock!=NULL)
     {
         compozit * pointer=viewedBlock->addCompozite();
@@ -165,9 +172,13 @@ void mainWindow::on_goBack_clicked()
     callBackPop();
     refresh();
     if(curentApk==viewedBlock)
-        swich(0);
+        primarySwich(0);
     else
-        swich(1);
+    {
+        primarySwich(1);
+        secondarySwich(1);
+    }
+
 }
 
 void mainWindow::swichToComp(compozit *targetPtr)
@@ -175,7 +186,8 @@ void mainWindow::swichToComp(compozit *targetPtr)
     callBackPush();
     viewedBlock=targetPtr;
     refresh();
-    swich(1);
+    primarySwich(1);
+    secondarySwich(1);
 }
 
 void mainWindow::swichToAtomic(atomic *targetPtr)
@@ -183,6 +195,8 @@ void mainWindow::swichToAtomic(atomic *targetPtr)
     callBackPush();
     editedAtBlock=targetPtr;
     updateAtEditor();
-    swich(2);
+    primarySwich(1);
+    secondarySwich(0);
 }
+
 

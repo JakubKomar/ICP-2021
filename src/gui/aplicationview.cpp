@@ -33,6 +33,7 @@ void aplicationView::mousePressEvent(QGraphicsSceneMouseEvent *event)
                   }
                   else
                       qDebug()<<"nepovedený cast :(";
+                 break;
 
             }
         }     
@@ -65,13 +66,11 @@ void aplicationView::cleanScene()
 
 void aplicationView::loadScene(compozit * CompPtr)
 {
-    foreach(atomic * item,CompPtr->atomVect)
-    {
-        addGrapicRepr(0,0,item);
-    }
-    foreach(compozit * item,CompPtr->compVect)
-    {
-        addGrapicRepr(0,0,item);
+    if(CompPtr!=NULL){
+        foreach(atomic * item,CompPtr->atomVect)
+            addGrapicRepr(0,0,item);
+        foreach(compozit * item,CompPtr->compVect)
+            addGrapicRepr(0,0,item);
     }
 }
 

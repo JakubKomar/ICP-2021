@@ -36,7 +36,8 @@ public:
      * swich ui to page from arg
      * @arg page - number of page to swich
     */
-    void swich(int page);
+    void primarySwich(int page);
+    void secondarySwich(int page);
     atomic * editedAtBlock;
     void deleteExactBlock(block *ptr);
     void callBackPush();
@@ -52,13 +53,17 @@ private slots:
     void on_newApk_clicked();
     void on_loadApk_clicked();
     void on_apkAddAtom_clicked();
-    void on_pushButton_4_clicked();
+    void on_addCompozite_clicked();
     void on_RenameAtom_clicked();
     void on_AtNameEdit_cursorPositionChanged(int arg1, int arg2);
     void on_pushButton_8_clicked();
     void on_AtAddInput_clicked();
     void on_AtAddOutput_clicked();
     void on_goBack_clicked();
+    void on_addAtomic2_clicked();
+
+    void on_AddComp2_clicked();
+
 private:
     /**
      * ading input to frame
