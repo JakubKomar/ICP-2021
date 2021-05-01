@@ -1,3 +1,11 @@
+/**
+ * Editor a interpret hierarchicky strukturovaných funkčních bloků
+ * @brief   Main UI
+ *
+ * @authors Jakub Komárek (xkomar33), Violeta Koleva (xkolev00)
+ * @date    07-05-2021
+ * @version 1.0
+ */
 #include "mainwindow.h"
 
 

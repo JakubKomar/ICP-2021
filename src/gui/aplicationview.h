@@ -1,3 +1,11 @@
+/**
+ * Editor a interpret hierarchicky strukturovaných funkčních bloků
+ * @brief   Graphic board-here is drawed blocks
+ *
+ * @authors Jakub Komárek (xkomar33), Violeta Koleva (xkolev00)
+ * @date    07-05-2021
+ * @version 1.0
+ */
 #ifndef APLICATIONVIEW_H
 #define APLICATIONVIEW_H
 
