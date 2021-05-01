@@ -1,8 +1,16 @@
-#include "aplicationview.h"
-
+/**
+ * Editor a interpret hierarchicky strukturovaných funkčních bloků
+ * @brief   Graphic board-here is drawed blocks
+ *
+ * @authors Jakub Komárek (xkomar33), Violeta Koleva (xkolev00)
+ * @date    07-05-2021
+ * @version 1.0
+ */
 #include <QDebug>
 #include <QGraphicsSceneMouseEvent>
 #include <QGraphicsItem>
+
+#include "aplicationview.h"
 #include "blockmodel.h"
 aplicationView::aplicationView(QObject *parent,mainWindow *mainUI) : QGraphicsScene(parent),mainUi(mainUI)
 {
@@ -22,14 +30,11 @@ void aplicationView::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     qDebug()<<event->scenePos();
 
-    if(event->button()==Qt::LeftButton)
+    if(event->button()==Qt::RightButton)
     {
         for(auto * item:items(event->scenePos()))
         {
-            if(auto rect=dynamic_cast<QGraphicsRectItem*>(item);rect){
-                qDebug()<<"clicked on rectangle";
-            }
-            else if (auto myrect=dynamic_cast<blockModel*>(item);myrect){
+             if (auto myrect=dynamic_cast<blockModel*>(item);myrect){
                  qDebug()<<"clicked on custom item id:"<<myrect->getId()<<" name:"<<myrect->getName();
                  if(myrect->getCrPtr()->type==block::Tatomic){
                       if(auto Cast=static_cast<atomic*>(myrect->getCrPtr());Cast){
@@ -40,12 +45,11 @@ void aplicationView::mousePressEvent(QGraphicsSceneMouseEvent *event)
                   }
                   else if(myrect->getCrPtr()->type==block::Tcompozit){
                       if (auto Cast=static_cast<compozit*>(myrect->getCrPtr());Cast){
-                          qDebug()<<"castnutej compozitní blok";
                           mainUi->swich(1);
                       }
                   }
                   else
-                      qDebug()<<"nepovedlo se :(";
+                      qDebug()<<"nepovedený cast :(";
 
             }
         }     

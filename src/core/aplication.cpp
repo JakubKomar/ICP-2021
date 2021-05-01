@@ -1,3 +1,11 @@
+/**
+ * Editor a interpret hierarchicky strukturovaných funkčních bloků
+ * @brief   Core reprezentation of aplikation
+ *
+ * @authors Jakub Komárek (xkomar33), Violeta Koleva (xkolev00)
+ * @date    07-05-2021
+ * @version 1.0
+ */
 #include "aplication.h"
 
 aplication::aplication():idStack(0)
@@ -23,11 +31,5 @@ compozit *aplication::addCompozite()
     idStack++;
     compVect.append(New);
     return New;
-}
-
-void aplication::firstSays()    //debug  method
-{
-    if(!atomVect.empty())
-        atomVect.last()->sayHallo();
 }
 

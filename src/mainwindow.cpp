@@ -1,5 +1,12 @@
+/**
+ * Editor a interpret hierarchicky strukturovaných funkčních bloků
+ * @brief   Main UI
+ *
+ * @authors Jakub Komárek (xkomar33), Violeta Koleva (xkolev00)
+ * @date    07-05-2021
+ * @version 1.0
+ */
 #include "mainwindow.h"
-
 
 mainWindow::mainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::mainWindow)
 {
@@ -15,11 +22,6 @@ mainWindow::~mainWindow()
     delete ui;
     if(curentApk)
         delete curentApk;
-}
-
-void mainWindow::kek()
-{
-    qDebug()<<"kek from main";
 }
 
 void mainWindow::swich(int page)
@@ -156,5 +158,6 @@ void mainWindow::removePort()
    delete Vertikal->widget();
    delete Vertikal;
 }
+
 
 
