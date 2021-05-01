@@ -18,9 +18,25 @@ class block
 {
 public:
      block();
+     /**
+      * Set ID to block
+      * @param newId new ID
+     */
      void setId(int newId);
+     /**
+      * get ID of block
+      * @return ID
+     */
      int getId();
+     /**
+      * get Name of block
+      * @return name of block
+     */
      QString getName();
+     /**
+      * set Name of block
+      * @param new name of block
+     */
      void setName(QString newName);;
      enum Type{
          Tnone,

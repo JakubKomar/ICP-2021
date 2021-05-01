@@ -25,6 +25,12 @@ class aplicationView : public QGraphicsScene
 public:
     explicit aplicationView(QObject *parent = nullptr,mainWindow *mainUi=nullptr);
     ~aplicationView();
+    /**
+     * adding graphic reprezentation of block
+     * @param x - x axis pozition
+     * @param y - y axis pozition
+     * @param block - pointer to core reprezentation
+    */
     void addGrapicRepr(int x,int y,block * coreRep);
 protected:
     virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;  

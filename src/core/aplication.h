@@ -22,10 +22,18 @@ public:
     {
          qDebug()<<"aplication destructor engage";
     }
+    /**
+     * Create new atomic blcok
+     * @return current pointer to block
+     */
     atomic* addAtom();
+    /**
+     * Create new compozite blcok
+     * @return current pointer to block
+     */
     compozit* addCompozite();
 private:
-    int idStack;
+    int idStack;    //IDs for new blocks
 };
 
 #endif // APLICATION_H

@@ -32,8 +32,15 @@ class mainWindow : public QMainWindow
 public:
     mainWindow(QWidget *parent = nullptr);
     ~mainWindow();
+    /**
+     * swich ui to page from arg
+     * @arg page - number of page to swich
+    */
     void swich(int page);
     atomic * editedAtBlock;
+    /**
+     * update editor before swiching to this page
+    */
     void updateAtEditor();
 private slots:
     void on_pushButton_2_clicked();
@@ -48,11 +55,17 @@ private slots:
     void on_AtAddInput_clicked();
     void on_AtAddOutput_clicked();
 private:
+    /**
+     * ading input to frame
+     * @param place - where to put the new port
+    */
     void addAtInput(QWidget * place);
+    /**
+     * removing all elements from port grapohic rep.
+    */
     void removePort();
     aplication * curentApk;
     aplicationView * scene;
-    void initView();
     Ui::mainWindow *ui;
     QHash<QPushButton*,QVBoxLayout*>portItemMap;
 };
