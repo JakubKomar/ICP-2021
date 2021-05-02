@@ -50,6 +50,8 @@ public:
      * update editor before swiching to this page
     */
     void updateAtEditor();
+public slots:
+    void deletePortL();
 private slots:
     void on_newApk_clicked();
     void on_loadApk_clicked();

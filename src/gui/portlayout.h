@@ -1,7 +1,6 @@
 #ifndef PORTLAYOUT_H
 #define PORTLAYOUT_H
 
-#include <QMainWindow>
 #include <QGraphicsItem>
 #include <QObject>
 #include <QWidget>

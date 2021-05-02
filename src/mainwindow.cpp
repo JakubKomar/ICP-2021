@@ -64,6 +64,16 @@ void mainWindow::on_newApk_clicked(){
     this->viewedBlock=this->curentApk;
 }
 
+void mainWindow::deletePortL()
+{
+    portLayout *ptr;
+    for(int i=0;i<layoutList.count();i++){
+        if(layoutList.takeAt(i)==ptr){
+            delete  layoutList.takeAt(i);
+        }
+    }
+}
+
 void mainWindow::on_loadApk_clicked(){
 
     /*scene->clear();

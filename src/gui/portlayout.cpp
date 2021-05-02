@@ -13,7 +13,7 @@ portLayout::portLayout(QWidget * place,port * corePtr):corePtr(corePtr)
     button->setMaximumSize(BUTTON_SIZE);
 
     connect(button,&QPushButton::clicked,this,&portLayout::destructButt);
-    //connect(button,&QPushButton::clicked,this,SLOT(destructButt()));
+    //connect(button,&QPushButton::clicked,this,&mainWindow::deletePortL);
 
     QLineEdit* lineEdit=new QLineEdit(name,place);
 
