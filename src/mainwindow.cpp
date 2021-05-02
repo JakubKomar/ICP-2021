@@ -12,7 +12,9 @@ mainWindow::mainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::mainWin
     ui->setupUi(this);
     scene= new aplicationView(ui->apkView,this);
     ui->apkView->setScene(scene);
+    ui->apkView->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
     ui->compoziteView->setScene(scene);
+    ui->compoziteView->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
     this->curentApk=NULL;
     this->viewedBlock=NULL;
 }

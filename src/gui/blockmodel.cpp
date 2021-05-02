@@ -55,6 +55,7 @@ void blockModel::mousePressEvent(QGraphicsSceneMouseEvent *event)
 void blockModel::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
 
+    setPos(50,50);
 }
 
 void blockModel::resize(int newWidth, int newHeight)

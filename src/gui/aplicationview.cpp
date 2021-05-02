@@ -8,7 +8,9 @@
  */
 #include "aplicationview.h"
 
-aplicationView::aplicationView(QObject *parent,mainWindow *mainUI) : QGraphicsScene(parent),mainUi(mainUI){}
+aplicationView::aplicationView(QObject *parent,mainWindow *mainUI) : QGraphicsScene(parent),mainUi(mainUI){
+
+}
 aplicationView::~aplicationView(){}
 
 void aplicationView::mousePressEvent(QGraphicsSceneMouseEvent *event)
