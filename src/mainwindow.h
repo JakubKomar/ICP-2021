@@ -16,8 +16,10 @@
 #include <QComboBox>
 
 #include  "./gui/aplicationview.h"
+#include  "./gui/portLayout.h"
 #include  "./core/aplication.h"
 #include  "./core/atomic.h"
+#include  "./core/port.h"
 #include  "ui_mainwindow.h"
 
 QT_BEGIN_NAMESPACE

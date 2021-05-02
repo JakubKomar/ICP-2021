@@ -13,6 +13,15 @@ compozit::compozit():idStack(0)
     qDebug()<<"compozit constructor engage";
     this->type=Tcompozit;
 }
+
+compozit::~compozit()
+{
+    qDebug()<<"compozite destructor";
+    qDeleteAll(compVect.begin(), compVect.end());
+    compVect.clear();
+    qDeleteAll(atomVect.begin(), atomVect.end());
+    atomVect.clear();
+}
 atomic* compozit::addAtom()
 {
     atomic * New=new atomic;

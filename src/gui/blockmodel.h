@@ -34,7 +34,7 @@ public:
      * @param newWidth
      * @param newHeight
     */
-    void resize(int newWidth,int newHeight);
+    void resize();
     /**
      * geting name from core of block
      * @return name of block

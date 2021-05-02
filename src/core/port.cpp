@@ -9,7 +9,10 @@
 #include "port.h"
 
 
-port::port(port::Type type):type(type)
+port::port(port::Type type,int num):type(type)
 {
     this->conect=NULL;
+    this->valType=Vint;
+    this->name=QString("input%1").arg(num);
+
 }

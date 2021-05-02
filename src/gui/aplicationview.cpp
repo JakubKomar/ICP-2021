@@ -61,9 +61,8 @@ void aplicationView::addGrapicRepr(int x,int y,block * CoreRep){
 
 void aplicationView::cleanScene()
 {
-    while(!blockModels.empty()){
-        delete blockModels.first();
-    }
+    qDeleteAll(blockModels.begin(), blockModels.end());
+    blockModels.clear();
 }
 
 void aplicationView::loadScene(compozit * CompPtr)

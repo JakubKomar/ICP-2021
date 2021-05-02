@@ -65,9 +65,10 @@ void mainWindow::on_newApk_clicked(){
 }
 
 void mainWindow::on_loadApk_clicked(){
-    scene->clear();
+
+    /*scene->clear();
     if(curentApk!=NULL)
-        delete curentApk;
+        delete curentApk;*/
    //to do
 }
 
@@ -103,10 +104,11 @@ void mainWindow::on_pushButton_8_clicked()
 }
 
 void mainWindow::on_AtAddInput_clicked(){
-    this->editedAtBlock->addPort(TRUE);
-    addAtInput(ui->atInputArea);
+    port * corePtr=this->editedBlock->addPort(TRUE);
+    portLayout * ptr= new portLayout(ui->atInputArea,corePtr);
 }
 void mainWindow::on_AtAddOutput_clicked(){
+    this->editedBlock->addPort(TRUE);
     addAtInput(ui->AtOutputArea);
 }
 void mainWindow::addAtInput(QWidget * place){

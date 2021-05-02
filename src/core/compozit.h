@@ -19,10 +19,7 @@ class compozit : public block
 {
 public:
     compozit();
-    ~compozit()
-    {
-         qDebug()<<"compozit destructor engage";
-    }
+    ~compozit();
     QVector<compozit *> compVect;
     QVector<atomic *> atomVect;
     /**
