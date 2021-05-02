@@ -16,9 +16,11 @@ SOURCES += \
     core/connection.cpp \
     core/port.cpp \
     gui/blockmodel.cpp \
+    gui/portlayout.cpp \
+    gui/portmodel.cpp \
     main.cpp \
     mainwindow.cpp \
-    gui/aplicationview.cpp\
+    gui/aplicationview.cpp
 
 HEADERS += \
     core/aplication.h \
@@ -28,6 +30,8 @@ HEADERS += \
     core/connection.h \
     core/port.h \
     gui/blockmodel.h \
+    gui/portlayout.h \
+    gui/portmodel.h \
     mainwindow.h \
     gui/aplicationview.h
 

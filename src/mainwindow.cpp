@@ -12,7 +12,9 @@ mainWindow::mainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::mainWin
     ui->setupUi(this);
     scene= new aplicationView(ui->apkView,this);
     ui->apkView->setScene(scene);
+    ui->apkView->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
     ui->compoziteView->setScene(scene);
+    ui->compoziteView->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
     this->curentApk=NULL;
     this->viewedBlock=NULL;
 }
@@ -62,10 +64,21 @@ void mainWindow::on_newApk_clicked(){
     this->viewedBlock=this->curentApk;
 }
 
+void mainWindow::deletePortL()
+{
+    portLayout *ptr;
+    for(int i=0;i<layoutList.count();i++){
+        if(layoutList.takeAt(i)==ptr){
+            delete  layoutList.takeAt(i);
+        }
+    }
+}
+
 void mainWindow::on_loadApk_clicked(){
-    scene->clear();
+
+    /*scene->clear();
     if(curentApk!=NULL)
-        delete curentApk;
+        delete curentApk;*/
    //to do
 }
 
@@ -87,8 +100,8 @@ void mainWindow::on_addCompozite_clicked(){
     }
 }
 
-void mainWindow::on_RenameAtom_clicked(){
-    editedAtBlock->setName( ui->AtNameEdit->text());
+void mainWindow::on_renameBlock_clicked(){
+    editedBlock->setName( ui->AtNameEdit->text());
 }
 
 void mainWindow::on_AtNameEdit_cursorPositionChanged(int arg1, int arg2){
@@ -101,65 +114,15 @@ void mainWindow::on_pushButton_8_clicked()
 }
 
 void mainWindow::on_AtAddInput_clicked(){
-    this->editedAtBlock->addPort(TRUE);
-    addAtInput(ui->atInputArea);
+    port * corePtr=this->editedBlock->addPort(TRUE);
+    auto layout=new portLayout(ui->InputArea,corePtr);
+    layoutList.append(layout);
 }
 void mainWindow::on_AtAddOutput_clicked(){
-    addAtInput(ui->AtOutputArea);
+    port * corePtr=this->editedBlock->addPort(FALSE);
+    auto layout= new portLayout(ui->OutputArea,corePtr);
+    layoutList.append(layout);
 }
-void mainWindow::addAtInput(QWidget * place){
-    QVBoxLayout * layout=qobject_cast<QVBoxLayout*>(place->layout());
-    QHBoxLayout * newHorizontal1=new QHBoxLayout(place);
-    QHBoxLayout * newHorizontal2=new QHBoxLayout(place);
-    QVBoxLayout * newVertical=new QVBoxLayout(place);
-    QString name=tr("input%1 ").arg(layout->count());
-
-    const QSize BUTTON_SIZE = QSize(20, 20);
-    QPushButton* button=new QPushButton("x",place);
-    button->setMaximumSize(BUTTON_SIZE);
-    portItemMap.insert(button,newVertical);
-    QObject::connect(button,&QPushButton::clicked,this,&mainWindow::removePort);
-
-    QLineEdit* lineEdit=new QLineEdit(name,place);
-
-    QComboBox* comboBox=new QComboBox(place);
-    comboBox->addItems({"int","string","bool","double"});
-
-    newHorizontal1->insertWidget(0,button);
-    newHorizontal1->insertWidget(0,lineEdit);
-    newVertical->insertLayout(0,newHorizontal1);
-
-    newHorizontal2->insertWidget(0,comboBox);
-    newVertical->insertLayout(1,newHorizontal2);
-
-    layout->insertLayout(layout->count()-1,newVertical);
-
-}
-
-void mainWindow::removePort(){
-   QPushButton* button=qobject_cast<QPushButton*>(sender());
-   QVBoxLayout* Vertikal=portItemMap.value(button);
-
-   while(Vertikal->count()!=0)
-   {
-       QLayoutItem* item=Vertikal->takeAt(0);
-       auto horizontal=dynamic_cast<QHBoxLayout*>(item);
-       if(horizontal!=NULL)
-       {
-           while(horizontal->count()!=0)
-           {
-               QLayoutItem* titem=horizontal->takeAt(0);
-               delete titem->widget();
-               delete titem;
-           }
-       }
-       delete horizontal->widget();
-       delete horizontal;
-   }
-   delete Vertikal->widget();
-   delete Vertikal;
-}
-
 
 void mainWindow::refresh()
 {
@@ -177,14 +140,17 @@ void mainWindow::on_goBack_clicked()
     {
         primarySwich(1);
         secondarySwich(1);
+        editedAtBlock=NULL;
     }
 
 }
 
 void mainWindow::swichToComp(compozit *targetPtr)
 {
+    clearPortLayouts();
     callBackPush();
     viewedBlock=targetPtr;
+    editedBlock=targetPtr;
     refresh();
     primarySwich(1);
     secondarySwich(1);
@@ -194,9 +160,25 @@ void mainWindow::swichToAtomic(atomic *targetPtr)
 {
     callBackPush();
     editedAtBlock=targetPtr;
+    editedBlock=targetPtr;
     updateAtEditor();
     primarySwich(1);
     secondarySwich(0);
 }
 
+void mainWindow::on_undo_clicked()
+{
+    ui->codeTextEditor->undo();
+}
 
+void mainWindow::on_redo_clicked()
+{
+    ui->codeTextEditor->redo();
+}
+
+void mainWindow::clearPortLayouts()
+{
+    while(!layoutList.empty()){
+        delete layoutList.takeAt(0);
+    }
+}

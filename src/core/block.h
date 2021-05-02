@@ -18,6 +18,7 @@ class block
 {
 public:
      block();
+     ~block();
      /**
       * Set ID to block
       * @param newId new ID
@@ -45,9 +46,12 @@ public:
          TonlyPort,
      };
      Type type;
-     void addPort(bool isInput);
-     int x;
+     port* addPort(bool isInput);
+     int getMaxNumOfPort();
+     int getWidth();
+     int x;     //pozition on graphic scene
      int y;
+     void delPort(port * ptr);
 protected :
     QVector<port*> inputs;
     QVector<port*> outputs;

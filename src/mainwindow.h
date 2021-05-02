@@ -16,8 +16,10 @@
 #include <QComboBox>
 
 #include  "./gui/aplicationview.h"
+#include  "./gui/portLayout.h"
 #include  "./core/aplication.h"
 #include  "./core/atomic.h"
+#include  "./core/port.h"
 #include  "ui_mainwindow.h"
 
 QT_BEGIN_NAMESPACE
@@ -37,8 +39,7 @@ public:
      * @arg page - number of page to swich
     */
     void primarySwich(int page);
-    void secondarySwich(int page);
-    atomic * editedAtBlock;
+    void secondarySwich(int page); 
     void deleteExactBlock(block *ptr);
     void callBackPush();
     void callBackPop();
@@ -49,20 +50,25 @@ public:
      * update editor before swiching to this page
     */
     void updateAtEditor();
+public slots:
+    void deletePortL();
 private slots:
     void on_newApk_clicked();
     void on_loadApk_clicked();
     void on_apkAddAtom_clicked();
     void on_addCompozite_clicked();
-    void on_RenameAtom_clicked();
+    void on_renameBlock_clicked();
     void on_AtNameEdit_cursorPositionChanged(int arg1, int arg2);
     void on_pushButton_8_clicked();
     void on_AtAddInput_clicked();
     void on_AtAddOutput_clicked();
     void on_goBack_clicked();
     void on_addAtomic2_clicked();
-
     void on_AddComp2_clicked();
+
+    void on_undo_clicked();
+
+    void on_redo_clicked();
 
 private:
     /**
@@ -76,9 +82,12 @@ private:
     void removePort();
     QStack<compozit*> callBackStack;
     aplication * curentApk;
+    block * editedBlock;
+    atomic * editedAtBlock;
     compozit * viewedBlock;
     aplicationView * scene;
     Ui::mainWindow *ui;
-    QHash<QPushButton*,QVBoxLayout*>portItemMap;
+    void clearPortLayouts();
+    QList <portLayout*> layoutList;
 };
 #endif // FILESELECTOR_H

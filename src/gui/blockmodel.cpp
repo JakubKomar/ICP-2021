@@ -10,16 +10,17 @@
 
 #include "blockmodel.h"
 
-blockModel::blockModel(block * coreRep):height(120),width(100),xPos(0),yPos(0),coreRepr(coreRep)
+blockModel::blockModel(block * coreRep,int x,int y):height(60),width(100),coreRepr(coreRep)
 {
     setFlag(ItemIsMovable);
     setFlag(ItemIsSelectable);
-    qDebug()<<"model created";
+    this->setPos(x,y);
 }
 
 blockModel::~blockModel()
 {
-    qDebug()<<"model deleted";
+    coreRepr->x=this->x();
+    coreRepr->y=this->y();
 }
 
 QRectF blockModel::boundingRect() const
@@ -29,7 +30,7 @@ QRectF blockModel::boundingRect() const
 
 void blockModel::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-
+    resize();
     QRectF rect = boundingRect();
     QPen border(Qt::black, 2);
     if(coreRepr->type==block::Tatomic){
@@ -50,21 +51,14 @@ void blockModel::paint(QPainter *painter, const QStyleOptionGraphicsItem *option
         painter->drawText(15,20,coreRepr->getName());
 }
 
-void blockModel::mousePressEvent(QGraphicsSceneMouseEvent *event)
+
+void blockModel::resize()
 {
+    int baseH=60;
+    height=baseH+coreRepr->getMaxNumOfPort()*30;
 
-}
-
-void blockModel::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
-{
-
-}
-
-void blockModel::resize(int newWidth, int newHeight)
-{
-    width=newWidth;
-    height=newHeight;
-    update();
+    int baseW=100;
+    width=baseW+coreRepr->getWidth()*40;
 }
 
 QString blockModel::getName()
@@ -85,5 +79,6 @@ int blockModel::getId()
 
 block *blockModel::getCrPtr()
 {
+
     return coreRepr;
 }

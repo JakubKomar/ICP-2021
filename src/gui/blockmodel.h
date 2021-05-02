@@ -11,13 +11,14 @@
 
 #include <QPainter>
 #include <QGraphicsItem>
+#include <QDrag>
 
 #include "./core/block.h"
 
 class blockModel : public QGraphicsItem
 {
 public:
-    blockModel(block * coreRep);
+    blockModel(block * coreRep,int x,int y);
     ~blockModel();
     /**
      * bounding rectangle
@@ -33,7 +34,7 @@ public:
      * @param newWidth
      * @param newHeight
     */
-    void resize(int newWidth,int newHeight);
+    void resize();
     /**
      * geting name from core of block
      * @return name of block
@@ -50,15 +51,9 @@ public:
     */
     block * getCrPtr();
 protected:
-    void mousePressEvent(QGraphicsSceneMouseEvent *event);
-    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 private:
     int height;
     int width;
-    int xPos;
-    int yPos;
-    int xDelta;
-    int yDelta;
     block * coreRepr;
 };
 

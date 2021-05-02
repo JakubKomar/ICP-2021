@@ -12,8 +12,10 @@
 #include <QObject>
 #include <QDebug>
 
+
 #include "./core/block.h"
 #include "./core/connection.h"
+
 
 class block;
 class connection;
@@ -34,13 +36,13 @@ public:
         Vstring,
         Vbool
     };
-    port(Type type);
+    port(Type type,int num,block *inBlock);
     Type type;
     TypeVal valType;
-protected:
-    block *inBlock;
-    int ID;
     QString name;
+    block *inBlock;
+protected:
+    int ID;
     connection * conect;
 private:
 

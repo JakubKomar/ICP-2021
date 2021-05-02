@@ -8,7 +8,9 @@
  */
 #include "aplicationview.h"
 
-aplicationView::aplicationView(QObject *parent,mainWindow *mainUI) : QGraphicsScene(parent),mainUi(mainUI){}
+aplicationView::aplicationView(QObject *parent,mainWindow *mainUI) : QGraphicsScene(parent),mainUi(mainUI){
+
+}
 aplicationView::~aplicationView(){}
 
 void aplicationView::mousePressEvent(QGraphicsSceneMouseEvent *event)
@@ -52,25 +54,24 @@ void aplicationView::mousePressEvent(QGraphicsSceneMouseEvent *event)
     QGraphicsScene::mousePressEvent(event);
 }
 void aplicationView::addGrapicRepr(int x,int y,block * CoreRep){
-    blockModel * newBlock = new blockModel(CoreRep);
+    blockModel * newBlock = new blockModel(CoreRep,x,y);
     blockModels.append(newBlock);
     addItem(newBlock);
 }
 
 void aplicationView::cleanScene()
 {
-    while(!blockModels.empty()){
-        delete blockModels.first();
-    }
+    qDeleteAll(blockModels.begin(), blockModels.end());
+    blockModels.clear();
 }
 
 void aplicationView::loadScene(compozit * CompPtr)
 {
     if(CompPtr!=NULL){
         foreach(atomic * item,CompPtr->atomVect)
-            addGrapicRepr(0,0,item);
+            addGrapicRepr(item->x,item->y,item);
         foreach(compozit * item,CompPtr->compVect)
-            addGrapicRepr(0,0,item);
+            addGrapicRepr(item->x,item->y,item);
     }
 }
 
