@@ -10,14 +10,17 @@
 
 #include "blockmodel.h"
 
-blockModel::blockModel(block * coreRep):height(120),width(100),xPos(0),yPos(0),coreRepr(coreRep)
+blockModel::blockModel(block * coreRep,int x,int y):height(120),width(100),coreRepr(coreRep)
 {
     setFlag(ItemIsMovable);
+    setFlag(ItemIsSelectable);
+    this->setPos(x,y);
 }
 
 blockModel::~blockModel()
 {
-    qDebug()<<"model deleted";
+    coreRepr->x=this->x();
+    coreRepr->y=this->y();
 }
 
 QRectF blockModel::boundingRect() const
@@ -45,24 +48,13 @@ void blockModel::paint(QPainter *painter, const QStyleOptionGraphicsItem *option
         painter->drawText(15,20,QString::number(coreRepr->getId()));
     else
         painter->drawText(15,20,coreRepr->getName());
-
 }
 
-void blockModel::mousePressEvent(QGraphicsSceneMouseEvent *event)
-{
-}
-
-void blockModel::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
-{
-
-    setPos(50,50);
-}
 
 void blockModel::resize(int newWidth, int newHeight)
 {
     width=newWidth;
     height=newHeight;
-    update();
 }
 
 QString blockModel::getName()

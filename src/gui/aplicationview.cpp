@@ -54,7 +54,7 @@ void aplicationView::mousePressEvent(QGraphicsSceneMouseEvent *event)
     QGraphicsScene::mousePressEvent(event);
 }
 void aplicationView::addGrapicRepr(int x,int y,block * CoreRep){
-    blockModel * newBlock = new blockModel(CoreRep);
+    blockModel * newBlock = new blockModel(CoreRep,x,y);
     blockModels.append(newBlock);
     addItem(newBlock);
 }
@@ -70,9 +70,9 @@ void aplicationView::loadScene(compozit * CompPtr)
 {
     if(CompPtr!=NULL){
         foreach(atomic * item,CompPtr->atomVect)
-            addGrapicRepr(0,0,item);
+            addGrapicRepr(item->x,item->y,item);
         foreach(compozit * item,CompPtr->compVect)
-            addGrapicRepr(0,0,item);
+            addGrapicRepr(item->x,item->y,item);
     }
 }
 
