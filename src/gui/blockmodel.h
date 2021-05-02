@@ -53,6 +53,7 @@ protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 private:
+    bool draged;
     int height;
     int width;
     int xPos;

@@ -37,8 +37,7 @@ public:
      * @arg page - number of page to swich
     */
     void primarySwich(int page);
-    void secondarySwich(int page);
-    atomic * editedAtBlock;
+    void secondarySwich(int page); 
     void deleteExactBlock(block *ptr);
     void callBackPush();
     void callBackPop();
@@ -54,15 +53,18 @@ private slots:
     void on_loadApk_clicked();
     void on_apkAddAtom_clicked();
     void on_addCompozite_clicked();
-    void on_RenameAtom_clicked();
+    void on_renameBlock_clicked();
     void on_AtNameEdit_cursorPositionChanged(int arg1, int arg2);
     void on_pushButton_8_clicked();
     void on_AtAddInput_clicked();
     void on_AtAddOutput_clicked();
     void on_goBack_clicked();
     void on_addAtomic2_clicked();
-
     void on_AddComp2_clicked();
+
+    void on_undo_clicked();
+
+    void on_redo_clicked();
 
 private:
     /**
@@ -76,6 +78,8 @@ private:
     void removePort();
     QStack<compozit*> callBackStack;
     aplication * curentApk;
+    block * editedBlock;
+    atomic * editedAtBlock;
     compozit * viewedBlock;
     aplicationView * scene;
     Ui::mainWindow *ui;

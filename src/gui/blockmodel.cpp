@@ -13,8 +13,6 @@
 blockModel::blockModel(block * coreRep):height(120),width(100),xPos(0),yPos(0),coreRepr(coreRep)
 {
     setFlag(ItemIsMovable);
-    setFlag(ItemIsSelectable);
-    qDebug()<<"model created";
 }
 
 blockModel::~blockModel()
@@ -29,7 +27,6 @@ QRectF blockModel::boundingRect() const
 
 void blockModel::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-
     QRectF rect = boundingRect();
     QPen border(Qt::black, 2);
     if(coreRepr->type==block::Tatomic){
@@ -48,11 +45,11 @@ void blockModel::paint(QPainter *painter, const QStyleOptionGraphicsItem *option
         painter->drawText(15,20,QString::number(coreRepr->getId()));
     else
         painter->drawText(15,20,coreRepr->getName());
+
 }
 
 void blockModel::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-
 }
 
 void blockModel::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)

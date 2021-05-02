@@ -87,8 +87,8 @@ void mainWindow::on_addCompozite_clicked(){
     }
 }
 
-void mainWindow::on_RenameAtom_clicked(){
-    editedAtBlock->setName( ui->AtNameEdit->text());
+void mainWindow::on_renameBlock_clicked(){
+    editedBlock->setName( ui->AtNameEdit->text());
 }
 
 void mainWindow::on_AtNameEdit_cursorPositionChanged(int arg1, int arg2){
@@ -177,6 +177,7 @@ void mainWindow::on_goBack_clicked()
     {
         primarySwich(1);
         secondarySwich(1);
+        editedAtBlock=NULL;
     }
 
 }
@@ -185,6 +186,7 @@ void mainWindow::swichToComp(compozit *targetPtr)
 {
     callBackPush();
     viewedBlock=targetPtr;
+    editedBlock=targetPtr;
     refresh();
     primarySwich(1);
     secondarySwich(1);
@@ -194,9 +196,18 @@ void mainWindow::swichToAtomic(atomic *targetPtr)
 {
     callBackPush();
     editedAtBlock=targetPtr;
+    editedBlock=targetPtr;
     updateAtEditor();
     primarySwich(1);
     secondarySwich(0);
 }
 
+void mainWindow::on_undo_clicked()
+{
+    ui->codeTextEditor->undo();
+}
 
+void mainWindow::on_redo_clicked()
+{
+    ui->codeTextEditor->redo();
+}
