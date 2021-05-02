@@ -45,11 +45,11 @@ port* block::addPort(bool isInput)
 {
     port * newPort;
     if(isInput){
-        newPort=new port(port::Pin,inputs.count()+1);
+        newPort=new port(port::Pin,inputs.count()+1,this);
         this->inputs.append(newPort);
     }
     else{
-         newPort=new port(port::Pout,outputs.count()+1);
+         newPort=new port(port::Pout,outputs.count()+1,this);
          this->outputs.append(newPort);
     }
     return newPort;
@@ -70,3 +70,23 @@ int block::getWidth()
         i++;
     return i;
 }
+
+void block::delPort(port *ptr)
+{
+    for(int i=0;i<inputs.length();i++)
+        {
+            if(inputs[i]==ptr)
+            {
+                inputs.erase(inputs.begin()+i);
+            }
+        }
+    for(int i=0;i<outputs.length();i++)
+    {
+        if(outputs[i]==ptr)
+        {
+            outputs.erase(inputs.begin()+i);
+        }
+    }
+    delete ptr;
+}
+

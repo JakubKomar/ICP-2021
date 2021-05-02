@@ -287,7 +287,7 @@
                           <property name="widgetResizable">
                            <bool>true</bool>
                           </property>
-                          <widget class="QWidget" name="atInputArea">
+                          <widget class="QWidget" name="InputArea">
                            <property name="geometry">
                             <rect>
                              <x>0</x>
@@ -361,7 +361,7 @@
                           <property name="widgetResizable">
                            <bool>true</bool>
                           </property>
-                          <widget class="QWidget" name="AtOutputArea">
+                          <widget class="QWidget" name="OutputArea">
                            <property name="geometry">
                             <rect>
                              <x>0</x>

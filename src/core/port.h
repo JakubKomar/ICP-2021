@@ -36,12 +36,12 @@ public:
         Vstring,
         Vbool
     };
-    port(Type type,int num);
+    port(Type type,int num,block *inBlock);
     Type type;
     TypeVal valType;
     QString name;
-protected:
     block *inBlock;
+protected:
     int ID;
     connection * conect;
 private:

@@ -79,5 +79,6 @@ int blockModel::getId()
 
 block *blockModel::getCrPtr()
 {
+
     return coreRepr;
 }

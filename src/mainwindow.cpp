@@ -105,65 +105,14 @@ void mainWindow::on_pushButton_8_clicked()
 
 void mainWindow::on_AtAddInput_clicked(){
     port * corePtr=this->editedBlock->addPort(TRUE);
-    portLayout * ptr= new portLayout(ui->atInputArea,corePtr);
+    auto layout=new portLayout(ui->InputArea,corePtr);
+    layoutList.append(layout);
 }
 void mainWindow::on_AtAddOutput_clicked(){
-    this->editedBlock->addPort(TRUE);
-    addAtInput(ui->AtOutputArea);
+    port * corePtr=this->editedBlock->addPort(FALSE);
+    auto layout= new portLayout(ui->OutputArea,corePtr);
+    layoutList.append(layout);
 }
-void mainWindow::addAtInput(QWidget * place){
-    QVBoxLayout * layout=qobject_cast<QVBoxLayout*>(place->layout());
-    QHBoxLayout * newHorizontal1=new QHBoxLayout(place);
-    QHBoxLayout * newHorizontal2=new QHBoxLayout(place);
-    QVBoxLayout * newVertical=new QVBoxLayout(place);
-    QString name=tr("input%1 ").arg(layout->count());
-
-    const QSize BUTTON_SIZE = QSize(20, 20);
-    QPushButton* button=new QPushButton("x",place);
-    button->setMaximumSize(BUTTON_SIZE);
-    portItemMap.insert(button,newVertical);
-    QObject::connect(button,&QPushButton::clicked,this,&mainWindow::removePort);
-
-    QLineEdit* lineEdit=new QLineEdit(name,place);
-
-    QComboBox* comboBox=new QComboBox(place);
-    comboBox->addItems({"int","string","bool","double"});
-
-    newHorizontal1->insertWidget(0,button);
-    newHorizontal1->insertWidget(0,lineEdit);
-    newVertical->insertLayout(0,newHorizontal1);
-
-    newHorizontal2->insertWidget(0,comboBox);
-    newVertical->insertLayout(1,newHorizontal2);
-
-    layout->insertLayout(layout->count()-1,newVertical);
-
-}
-
-void mainWindow::removePort(){
-   QPushButton* button=qobject_cast<QPushButton*>(sender());
-   QVBoxLayout* Vertikal=portItemMap.value(button);
-
-   while(Vertikal->count()!=0)
-   {
-       QLayoutItem* item=Vertikal->takeAt(0);
-       auto horizontal=dynamic_cast<QHBoxLayout*>(item);
-       if(horizontal!=NULL)
-       {
-           while(horizontal->count()!=0)
-           {
-               QLayoutItem* titem=horizontal->takeAt(0);
-               delete titem->widget();
-               delete titem;
-           }
-       }
-       delete horizontal->widget();
-       delete horizontal;
-   }
-   delete Vertikal->widget();
-   delete Vertikal;
-}
-
 
 void mainWindow::refresh()
 {
@@ -188,6 +137,7 @@ void mainWindow::on_goBack_clicked()
 
 void mainWindow::swichToComp(compozit *targetPtr)
 {
+    clearPortLayouts();
     callBackPush();
     viewedBlock=targetPtr;
     editedBlock=targetPtr;
@@ -214,4 +164,11 @@ void mainWindow::on_undo_clicked()
 void mainWindow::on_redo_clicked()
 {
     ui->codeTextEditor->redo();
+}
+
+void mainWindow::clearPortLayouts()
+{
+    while(!layoutList.empty()){
+        delete layoutList.takeAt(0);
+    }
 }

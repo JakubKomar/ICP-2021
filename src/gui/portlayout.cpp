@@ -12,7 +12,8 @@ portLayout::portLayout(QWidget * place,port * corePtr):corePtr(corePtr)
     QPushButton* button=new QPushButton("x",place);
     button->setMaximumSize(BUTTON_SIZE);
 
-    //QObject::connect(button,&QPushButton::clicked,this,&mainWindow::removePort);
+    connect(button,&QPushButton::clicked,this,&portLayout::destructButt);
+    //connect(button,&QPushButton::clicked,this,SLOT(destructButt()));
 
     QLineEdit* lineEdit=new QLineEdit(name,place);
 
@@ -48,5 +49,11 @@ portLayout::~portLayout(){
     }
     delete mainLayout->widget();
     delete mainLayout;
+}
+
+void portLayout::destructButt()
+{
+    corePtr->inBlock->delPort(corePtr);
+    delete this;
 }
 

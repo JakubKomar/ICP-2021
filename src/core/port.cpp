@@ -9,7 +9,7 @@
 #include "port.h"
 
 
-port::port(port::Type type,int num):type(type)
+port::port(port::Type type,int num,block *inBlock):type(type),inBlock(inBlock)
 {
     this->conect=NULL;
     this->valType=Vint;

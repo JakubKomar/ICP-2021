@@ -85,6 +85,7 @@ private:
     compozit * viewedBlock;
     aplicationView * scene;
     Ui::mainWindow *ui;
-    QHash<QPushButton*,QVBoxLayout*>portItemMap;
+    void clearPortLayouts();
+    QList <portLayout*> layoutList;
 };
 #endif // FILESELECTOR_H

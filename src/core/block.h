@@ -51,6 +51,7 @@ public:
      int getWidth();
      int x;     //pozition on graphic scene
      int y;
+     void delPort(port * ptr);
 protected :
     QVector<port*> inputs;
     QVector<port*> outputs;
