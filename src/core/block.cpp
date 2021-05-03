@@ -84,7 +84,7 @@ void block::delPort(port *ptr)
     {
         if(outputs[i]==ptr)
         {
-            outputs.erase(inputs.begin()+i);
+            outputs.erase(outputs.begin()+i);
         }
     }
     delete ptr;

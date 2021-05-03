@@ -179,7 +179,14 @@ void mainWindow::clearPortLayouts()
 void mainWindow::refreshPorts()
 {
      clearPortLayouts();
-    /*
-     auto layout=new portLayout(ui->InputArea,corePtr);
-     layoutList.append(layout);*/
+     foreach(port * item,editedBlock->inputs)
+     {
+         auto layout=new portLayout(ui->InputArea,item);
+         layoutList.append(layout);
+     }
+     foreach(port * item,editedBlock->outputs)
+     {
+         auto layout=new portLayout(ui->OutputArea,item);
+         layoutList.append(layout);
+     }
 }

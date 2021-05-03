@@ -58,7 +58,6 @@ void portLayout::deleteElements()
                     delete titem;
                 }
             }
-            //delete horizontal->widget();
             delete horizontal;
         }
         delete mainLayout->widget();
