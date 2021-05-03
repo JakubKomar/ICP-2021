@@ -21,8 +21,10 @@ mainWindow::mainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::mainWin
 
 mainWindow::~mainWindow(){
     delete ui;
+    delete scene;
     if(curentApk)
         delete curentApk;
+    clearPortLayouts();
 }
 
 void mainWindow::primarySwich(int page){
@@ -62,16 +64,6 @@ void mainWindow::on_newApk_clicked(){
         delete curentApk;
     this->curentApk=new aplication;
     this->viewedBlock=this->curentApk;
-}
-
-void mainWindow::deletePortL()
-{
-    portLayout *ptr;
-    for(int i=0;i<layoutList.count();i++){
-        if(layoutList.takeAt(i)==ptr){
-            delete  layoutList.takeAt(i);
-        }
-    }
 }
 
 void mainWindow::on_loadApk_clicked(){
@@ -147,11 +139,11 @@ void mainWindow::on_goBack_clicked()
 
 void mainWindow::swichToComp(compozit *targetPtr)
 {
-    clearPortLayouts();
     callBackPush();
     viewedBlock=targetPtr;
     editedBlock=targetPtr;
     refresh();
+    refreshPorts();
     primarySwich(1);
     secondarySwich(1);
 }
@@ -162,6 +154,7 @@ void mainWindow::swichToAtomic(atomic *targetPtr)
     editedAtBlock=targetPtr;
     editedBlock=targetPtr;
     updateAtEditor();
+    refreshPorts();
     primarySwich(1);
     secondarySwich(0);
 }
@@ -181,4 +174,12 @@ void mainWindow::clearPortLayouts()
     while(!layoutList.empty()){
         delete layoutList.takeAt(0);
     }
+}
+
+void mainWindow::refreshPorts()
+{
+     clearPortLayouts();
+    /*
+     auto layout=new portLayout(ui->InputArea,corePtr);
+     layoutList.append(layout);*/
 }

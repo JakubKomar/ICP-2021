@@ -50,8 +50,6 @@ public:
      * update editor before swiching to this page
     */
     void updateAtEditor();
-public slots:
-    void deletePortL();
 private slots:
     void on_newApk_clicked();
     void on_loadApk_clicked();
@@ -88,6 +86,7 @@ private:
     aplicationView * scene;
     Ui::mainWindow *ui;
     void clearPortLayouts();
+    void refreshPorts();
     QList <portLayout*> layoutList;
 };
 #endif // FILESELECTOR_H

@@ -19,6 +19,8 @@ public slots:
 private:
     port * corePtr;
     QVBoxLayout * mainLayout;
+    bool deletedGraphic;
+    void deleteElements();
 };
 
 #endif // PORTLAYOUT_H

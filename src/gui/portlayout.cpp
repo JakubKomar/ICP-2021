@@ -2,6 +2,7 @@
 
 portLayout::portLayout(QWidget * place,port * corePtr):corePtr(corePtr)
 {
+    this->deletedGraphic=false;
     QVBoxLayout * layout=qobject_cast<QVBoxLayout*>(place->layout());
     QHBoxLayout * newHorizontal1=new QHBoxLayout(place);
     QHBoxLayout * newHorizontal2=new QHBoxLayout(place);
@@ -31,29 +32,39 @@ portLayout::portLayout(QWidget * place,port * corePtr):corePtr(corePtr)
 
 }
 portLayout::~portLayout(){
-    while(mainLayout->count()!=0)
-    {
-        QLayoutItem* item=mainLayout->takeAt(0);
-        auto horizontal=dynamic_cast<QHBoxLayout*>(item);
-        if(horizontal!=NULL)
-        {
-            while(horizontal->count()!=0)
-            {
-                QLayoutItem* titem=horizontal->takeAt(0);
-                delete titem->widget();
-                delete titem;
-            }
-        }
-        delete horizontal->widget();
-        delete horizontal;
-    }
-    delete mainLayout->widget();
-    delete mainLayout;
+    deleteElements();
 }
 
 void portLayout::destructButt()
 {
     corePtr->inBlock->delPort(corePtr);
-    delete this;
+    deleteElements();
+}
+
+void portLayout::deleteElements()
+{
+    if(!deletedGraphic)
+    {
+        while(mainLayout->count()!=0)
+        {
+            QLayoutItem* item=mainLayout->takeAt(0);
+            auto horizontal=dynamic_cast<QHBoxLayout*>(item);
+            if(horizontal!=NULL)
+            {
+                while(horizontal->count()!=0)
+                {
+                    QLayoutItem* titem=horizontal->takeAt(0);
+                    delete titem->widget();
+                    delete titem;
+                }
+            }
+            //delete horizontal->widget();
+            delete horizontal;
+        }
+        delete mainLayout->widget();
+        delete mainLayout;
+    }
+
+    deletedGraphic=true;
 }
 
