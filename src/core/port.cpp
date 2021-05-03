@@ -16,3 +16,23 @@ port::port(port::Type type,int num,block *inBlock):type(type),inBlock(inBlock)
     this->name=QString("input%1").arg(num);
 
 }
+
+QString port::getName()
+{
+    return name;
+}
+
+void port::setName(QString newName)
+{
+    name=newName;
+}
+
+port::TypeVal port::getType()
+{
+    return valType;
+}
+
+void port::changeType(TypeVal newType)
+{
+    valType=newType;
+}

@@ -21,8 +21,10 @@ mainWindow::mainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::mainWin
 
 mainWindow::~mainWindow(){
     delete ui;
+    delete scene;
     if(curentApk)
         delete curentApk;
+    clearPortLayouts();
 }
 
 void mainWindow::primarySwich(int page){
@@ -50,7 +52,6 @@ void mainWindow::callBackPop()
 }
 
 void mainWindow::updateAtEditor(){
-    ui->AtNameEdit->clear();
     ui->codeTextEditor->clear();
     ui->AtNameEdit->insert(editedAtBlock->getName());
     ui->codeTextEditor->insertPlainText(editedAtBlock->code);
@@ -62,16 +63,6 @@ void mainWindow::on_newApk_clicked(){
         delete curentApk;
     this->curentApk=new aplication;
     this->viewedBlock=this->curentApk;
-}
-
-void mainWindow::deletePortL()
-{
-    portLayout *ptr;
-    for(int i=0;i<layoutList.count();i++){
-        if(layoutList.takeAt(i)==ptr){
-            delete  layoutList.takeAt(i);
-        }
-    }
 }
 
 void mainWindow::on_loadApk_clicked(){
@@ -147,11 +138,12 @@ void mainWindow::on_goBack_clicked()
 
 void mainWindow::swichToComp(compozit *targetPtr)
 {
-    clearPortLayouts();
     callBackPush();
     viewedBlock=targetPtr;
     editedBlock=targetPtr;
+    ui->AtNameEdit->clear();
     refresh();
+    refreshPorts();
     primarySwich(1);
     secondarySwich(1);
 }
@@ -161,7 +153,9 @@ void mainWindow::swichToAtomic(atomic *targetPtr)
     callBackPush();
     editedAtBlock=targetPtr;
     editedBlock=targetPtr;
+    ui->AtNameEdit->clear();
     updateAtEditor();
+    refreshPorts();
     primarySwich(1);
     secondarySwich(0);
 }
@@ -181,4 +175,19 @@ void mainWindow::clearPortLayouts()
     while(!layoutList.empty()){
         delete layoutList.takeAt(0);
     }
+}
+
+void mainWindow::refreshPorts()
+{
+     clearPortLayouts();
+     foreach(port * item,editedBlock->inputs)
+     {
+         auto layout=new portLayout(ui->InputArea,item);
+         layoutList.append(layout);
+     }
+     foreach(port * item,editedBlock->outputs)
+     {
+         auto layout=new portLayout(ui->OutputArea,item);
+         layoutList.append(layout);
+     }
 }

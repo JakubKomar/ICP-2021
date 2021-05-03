@@ -58,7 +58,7 @@ port* block::addPort(bool isInput)
 
 int block::getMaxNumOfPort()
 {
-    return fmax(inputs.count(),outputs.count());
+    return qMax(inputs.count(),outputs.count());
 }
 
 int block::getWidth()
@@ -84,7 +84,7 @@ void block::delPort(port *ptr)
     {
         if(outputs[i]==ptr)
         {
-            outputs.erase(inputs.begin()+i);
+            outputs.erase(outputs.begin()+i);
         }
     }
     delete ptr;

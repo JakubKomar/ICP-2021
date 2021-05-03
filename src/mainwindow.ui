@@ -20,7 +20,7 @@
       <item>
        <widget class="QStackedWidget" name="screenSwitch">
         <property name="currentIndex">
-         <number>1</number>
+         <number>0</number>
         </property>
         <widget class="QWidget" name="apkEditor">
          <layout class="QHBoxLayout" name="horizontalLayout_8">
@@ -32,6 +32,13 @@
                <widget class="QPushButton" name="newApk">
                 <property name="text">
                  <string>New</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="pushButton">
+                <property name="text">
+                 <string>save</string>
                 </property>
                </widget>
               </item>

@@ -52,9 +52,9 @@ public:
      int x;     //pozition on graphic scene
      int y;
      void delPort(port * ptr);
+     QVector<port*> inputs;
+     QVector<port*> outputs;
 protected :
-    QVector<port*> inputs;
-    QVector<port*> outputs;
     QString name;
     int id; 
 private:

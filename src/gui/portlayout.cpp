@@ -2,6 +2,7 @@
 
 portLayout::portLayout(QWidget * place,port * corePtr):corePtr(corePtr)
 {
+    this->deletedGraphic=false;
     QVBoxLayout * layout=qobject_cast<QVBoxLayout*>(place->layout());
     QHBoxLayout * newHorizontal1=new QHBoxLayout(place);
     QHBoxLayout * newHorizontal2=new QHBoxLayout(place);
@@ -13,12 +14,16 @@ portLayout::portLayout(QWidget * place,port * corePtr):corePtr(corePtr)
     button->setMaximumSize(BUTTON_SIZE);
 
     connect(button,&QPushButton::clicked,this,&portLayout::destructButt);
-    //connect(button,&QPushButton::clicked,this,&mainWindow::deletePortL);
 
-    QLineEdit* lineEdit=new QLineEdit(name,place);
 
-    QComboBox* comboBox=new QComboBox(place);
+    lineEdit=new QLineEdit(name,place);
+    connect(lineEdit,&QLineEdit::textEdited,this,&portLayout::cheangeName);
+
+    comboBox=new QComboBox(place);
     comboBox->addItems({"int","string","bool","double"});
+    setComboBox();
+    connect(comboBox,&QComboBox::currentIndexChanged,this,&portLayout::cheangeValType);
+
 
     newHorizontal1->insertWidget(0,button);
     newHorizontal1->insertWidget(0,lineEdit);
@@ -31,29 +36,76 @@ portLayout::portLayout(QWidget * place,port * corePtr):corePtr(corePtr)
 
 }
 portLayout::~portLayout(){
-    while(mainLayout->count()!=0)
-    {
-        QLayoutItem* item=mainLayout->takeAt(0);
-        auto horizontal=dynamic_cast<QHBoxLayout*>(item);
-        if(horizontal!=NULL)
-        {
-            while(horizontal->count()!=0)
-            {
-                QLayoutItem* titem=horizontal->takeAt(0);
-                delete titem->widget();
-                delete titem;
-            }
-        }
-        delete horizontal->widget();
-        delete horizontal;
-    }
-    delete mainLayout->widget();
-    delete mainLayout;
+    deleteElements();
 }
 
 void portLayout::destructButt()
 {
     corePtr->inBlock->delPort(corePtr);
-    delete this;
+    deleteElements();
+}
+
+void portLayout::cheangeName()
+{
+    corePtr->setName(lineEdit->text());
+}
+
+void portLayout::cheangeValType()
+{
+
+    int index =comboBox->currentIndex();
+    if(index==0)
+        corePtr->changeType(port::Vint);
+    else if(index==1)
+        corePtr->changeType(port::Vstring);
+    else if(index==2)
+        corePtr->changeType(port::Vbool);
+    else if(index==3)
+        corePtr->changeType(port::Vdouble);
+    else
+        qDebug()<<"unexpected type";
+}
+
+void portLayout::deleteElements()
+{
+    if(!deletedGraphic)
+    {
+        while(mainLayout->count()!=0)
+        {
+            QLayoutItem* item=mainLayout->takeAt(0);
+            auto horizontal=dynamic_cast<QHBoxLayout*>(item);
+            if(horizontal!=NULL)
+            {
+                while(horizontal->count()!=0)
+                {
+                    QLayoutItem* titem=horizontal->takeAt(0);
+                    delete titem->widget();
+                    delete titem;
+                }
+            }
+            delete horizontal;
+        }
+        delete mainLayout->widget();
+        delete mainLayout;
+    }
+
+    deletedGraphic=true;
+}
+
+void portLayout::setComboBox()
+{
+    port::TypeVal type=corePtr->getType();
+    int newIndex=-1;
+    if(type==port::Vint)
+        newIndex=0;
+    else if(type==port::Vstring)
+        newIndex=1;
+    else if(type==port::Vbool)
+        newIndex=2;
+    else if(type==port::Vdouble)
+       newIndex=3;
+    else
+        qDebug()<<"unexpected type";
+    comboBox->setCurrentIndex(newIndex);
 }
 
