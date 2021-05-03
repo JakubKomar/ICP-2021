@@ -20,7 +20,11 @@ blockModel::blockModel(block * coreRep,int x,int y):height(60),width(100),coreRe
 blockModel::~blockModel()
 {
     coreRepr->x=this->x();
-    coreRepr->y=this->y();
+    coreRepr->y=this->y();/*
+    while(!inputsModels.empty())
+        delete inputsModels.first();
+    while(!outputsModels.empty())
+        delete outputsModels.first();*/
 }
 
 QRectF blockModel::boundingRect() const
@@ -49,6 +53,7 @@ void blockModel::paint(QPainter *painter, const QStyleOptionGraphicsItem *option
         painter->drawText(15,20,QString::number(coreRepr->getId()));
     else
         painter->drawText(15,20,coreRepr->getName());
+    displayPorts();
 }
 
 
@@ -79,6 +84,25 @@ int blockModel::getId()
 
 block *blockModel::getCrPtr()
 {
-
     return coreRepr;
+}
+
+void blockModel::displayPorts()
+{
+    qDebug()<<"uhuh";
+    int space=20;
+    foreach(port * item ,coreRepr->inputs)
+    {
+        portModel * object=new portModel(item);
+        object->setPos(5,space);
+        inputsModels.append(object);
+        space=space+30;
+    }
+    foreach(port * item ,coreRepr->outputs)
+    {
+        portModel * object=new portModel(item);
+        object->setPos(50,space);
+        inputsModels.append(object);
+        space=space+30;
+    }
 }

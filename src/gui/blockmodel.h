@@ -14,7 +14,8 @@
 #include <QDrag>
 
 #include "./core/block.h"
-
+#include "./core/port.h"
+#include "./gui/portmodel.h"
 class blockModel : public QGraphicsItem
 {
 public:
@@ -52,9 +53,12 @@ public:
     block * getCrPtr();
 protected:
 private:
+    void displayPorts();
     int height;
     int width;
     block * coreRepr;
+    QList<portModel*>inputsModels;
+    QList<portModel*>outputsModels;
 };
 
 #endif // BLOCKMODEL_H

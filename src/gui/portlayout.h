@@ -16,11 +16,16 @@ public:
     ~portLayout();
 public slots:
    void destructButt();
+   void cheangeName();
+   void cheangeValType();
 private:
+    QLineEdit * lineEdit;
+    QComboBox * comboBox;
     port * corePtr;
     QVBoxLayout * mainLayout;
     bool deletedGraphic;
     void deleteElements();
+    void setComboBox();
 };
 
 #endif // PORTLAYOUT_H

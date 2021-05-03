@@ -52,7 +52,6 @@ void mainWindow::callBackPop()
 }
 
 void mainWindow::updateAtEditor(){
-    ui->AtNameEdit->clear();
     ui->codeTextEditor->clear();
     ui->AtNameEdit->insert(editedAtBlock->getName());
     ui->codeTextEditor->insertPlainText(editedAtBlock->code);
@@ -142,6 +141,7 @@ void mainWindow::swichToComp(compozit *targetPtr)
     callBackPush();
     viewedBlock=targetPtr;
     editedBlock=targetPtr;
+    ui->AtNameEdit->clear();
     refresh();
     refreshPorts();
     primarySwich(1);
@@ -153,6 +153,7 @@ void mainWindow::swichToAtomic(atomic *targetPtr)
     callBackPush();
     editedAtBlock=targetPtr;
     editedBlock=targetPtr;
+    ui->AtNameEdit->clear();
     updateAtEditor();
     refreshPorts();
     primarySwich(1);

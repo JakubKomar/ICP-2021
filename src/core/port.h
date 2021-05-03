@@ -41,6 +41,10 @@ public:
     TypeVal valType;
     QString name;
     block *inBlock;
+    QString getName();
+    void setName(QString newName);
+    TypeVal getType();
+    void changeType(TypeVal newType);
 protected:
     int ID;
     connection * conect;
