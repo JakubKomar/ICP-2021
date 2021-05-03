@@ -58,7 +58,7 @@ port* block::addPort(bool isInput)
 
 int block::getMaxNumOfPort()
 {
-    return fmax(inputs.count(),outputs.count());
+    return qMax(inputs.count(),outputs.count());
 }
 
 int block::getWidth()
