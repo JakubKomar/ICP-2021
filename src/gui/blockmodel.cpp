@@ -15,6 +15,7 @@ blockModel::blockModel(block * coreRep,int x,int y):height(60),width(100),coreRe
     setFlag(ItemIsMovable);
     setFlag(ItemIsSelectable);
     this->setPos(x,y);
+    alocPorts();
 }
 
 blockModel::~blockModel()
@@ -53,7 +54,10 @@ void blockModel::paint(QPainter *painter, const QStyleOptionGraphicsItem *option
         painter->drawText(15,20,QString::number(coreRepr->getId()));
     else
         painter->drawText(15,20,coreRepr->getName());
-    displayPorts();
+    /*
+    foreach(portModel * item,inputsModels){
+        addItem
+    }*/
 }
 
 
@@ -87,9 +91,8 @@ block *blockModel::getCrPtr()
     return coreRepr;
 }
 
-void blockModel::displayPorts()
+void blockModel::alocPorts()
 {
-    qDebug()<<"uhuh";
     int space=20;
     foreach(port * item ,coreRepr->inputs)
     {

@@ -53,7 +53,7 @@ public:
     block * getCrPtr();
 protected:
 private:
-    void displayPorts();
+    void alocPorts();
     int height;
     int width;
     block * coreRepr;
