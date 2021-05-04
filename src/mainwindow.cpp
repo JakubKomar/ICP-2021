@@ -105,12 +105,12 @@ void mainWindow::on_pushButton_8_clicked()
 }
 
 void mainWindow::on_AtAddInput_clicked(){
-    port * corePtr=this->editedBlock->addPort(TRUE);
+    port * corePtr=this->editedBlock->addPort(true);
     auto layout=new portLayout(ui->InputArea,corePtr);
     layoutList.append(layout);
 }
 void mainWindow::on_AtAddOutput_clicked(){
-    port * corePtr=this->editedBlock->addPort(FALSE);
+    port * corePtr=this->editedBlock->addPort(false);
     auto layout= new portLayout(ui->OutputArea,corePtr);
     layoutList.append(layout);
 }
