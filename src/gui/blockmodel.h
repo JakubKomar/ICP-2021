@@ -53,12 +53,9 @@ public:
     block * getCrPtr();
 protected:
 private:
-    void alocPorts();
     int height;
     int width;
     block * coreRepr;
-    QList<portModel*>inputsModels;
-    QList<portModel*>outputsModels;
 };
 
 #endif // BLOCKMODEL_H
