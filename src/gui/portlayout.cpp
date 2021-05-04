@@ -22,7 +22,7 @@ portLayout::portLayout(QWidget * place,port * corePtr):corePtr(corePtr)
     comboBox=new QComboBox(place);
     comboBox->addItems({"int","string","bool","double"});
     setComboBox();
-     QObject::connect(comboBox,&QComboBox::currentIndexChanged,this,&portLayout::cheangeValType);
+     QObject::connect(comboBox,SIGNAL(activated(int)),this,SLOT(cheangeValType()));
 
 
     newHorizontal1->insertWidget(0,button);
