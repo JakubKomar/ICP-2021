@@ -53,13 +53,11 @@ void aplicationView::mousePressEvent(QGraphicsSceneMouseEvent *event)
     QGraphicsScene::mousePressEvent(event);
 }
 void aplicationView::addGrapicRepr(int x,int y,block * coreRepr){
-    QGraphicsItemGroup *Group = new QGraphicsItemGroup();
-    Group->setFlags( QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
 
     blockModel * newBlock = new blockModel(coreRepr,x,y);
-    Group->addToGroup(newBlock);
     blockModels.append(newBlock);
 
+    /*
     int space=20;
     foreach(port * item ,coreRepr->inputs)
     {
@@ -75,8 +73,8 @@ void aplicationView::addGrapicRepr(int x,int y,block * coreRepr){
         object->setPos(50,space);
         space=space+30;
         Group->addToGroup(object);
-    }
-    addItem(Group);
+    }*/
+    addItem(newBlock);
 }
 
 void aplicationView::cleanScene()
