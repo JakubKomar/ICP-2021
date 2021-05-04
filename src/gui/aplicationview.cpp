@@ -21,7 +21,6 @@ void aplicationView::mousePressEvent(QGraphicsSceneMouseEvent *event)
     {
         for(auto * item:items(event->scenePos()))
         {
-            qDebug()<<item;
              if (auto myrect=dynamic_cast<blockModel*>(item);myrect){
                  qDebug()<<"clicked on custom item id:"<<myrect->getId()<<" name:"<<myrect->getName();
                  if(myrect->getCrPtr()->type==block::Tatomic){
@@ -36,7 +35,6 @@ void aplicationView::mousePressEvent(QGraphicsSceneMouseEvent *event)
                   }
                   else
                       qDebug()<<"nepovedený cast :(";
-
 
             }
         }     
