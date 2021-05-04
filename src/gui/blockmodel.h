@@ -9,6 +9,7 @@
 #ifndef BLOCKMODEL_H
 #define BLOCKMODEL_H
 
+#include <QObject>
 #include <QPainter>
 #include <QGraphicsItem>
 #include <QDrag>
@@ -16,8 +17,9 @@
 #include "./core/block.h"
 #include "./core/port.h"
 #include "./gui/portmodel.h"
-class blockModel : public QGraphicsItem
+class blockModel : public QGraphicsObject
 {
+
 public:
     blockModel(block * coreRep,int x,int y);
     ~blockModel();
@@ -51,8 +53,11 @@ public:
      * @return pointer to core rep
     */
     block * getCrPtr();
+    QList <portModel*> ports;
+    void addPorts();
 protected:
 private:
+    void moveAllSubports();
     int height;
     int width;
     block * coreRepr;

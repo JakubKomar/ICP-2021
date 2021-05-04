@@ -17,12 +17,12 @@ portLayout::portLayout(QWidget * place,port * corePtr):corePtr(corePtr)
 
 
     lineEdit=new QLineEdit(name,place);
-     QObject::connect(lineEdit,SIGNAL (textEdited()),this,SLOT(cheangeName()));
+     QObject::connect(lineEdit,&QLineEdit::textEdited,this,&portLayout::cheangeName);
 
     comboBox=new QComboBox(place);
     comboBox->addItems({"int","string","bool","double"});
     setComboBox();
-     QObject::connect(comboBox,SIGNAL(currentIndexChanged),this,SLOT(cheangeValType()));
+     QObject::connect(comboBox,&QComboBox::currentIndexChanged,this,&portLayout::cheangeValType);
 
 
     newHorizontal1->insertWidget(0,button);

@@ -9,8 +9,10 @@
 #include <QComboBox>
 #include  "ui_mainwindow.h"
 #include  "./core/port.h"
+#include  "./gui/blockmodel.h"
 class portLayout: public QObject
 {
+    Q_OBJECT
 public:
     portLayout(QWidget * place,port * corePtr);
     ~portLayout();

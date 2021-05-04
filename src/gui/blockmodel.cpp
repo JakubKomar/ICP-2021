@@ -21,6 +21,9 @@ blockModel::~blockModel()
 {
     coreRepr->x=this->x();
     coreRepr->y=this->y();
+    foreach(portModel * item,ports){
+        delete item;
+    }
 }
 
 QRectF blockModel::boundingRect() const
@@ -49,6 +52,8 @@ void blockModel::paint(QPainter *painter, const QStyleOptionGraphicsItem *option
         painter->drawText(15,20,QString::number(coreRepr->getId()));
     else
         painter->drawText(15,20,coreRepr->getName());
+    moveAllSubports();
+    update();
 }
 
 
@@ -57,8 +62,7 @@ void blockModel::resize()
     int baseH=60;
     height=baseH+coreRepr->getMaxNumOfPort()*30;
 
-    int baseW=100;
-    width=baseW+coreRepr->getWidth()*40;
+    width=180;
 }
 
 QString blockModel::getName()
@@ -80,5 +84,14 @@ int blockModel::getId()
 block *blockModel::getCrPtr()
 {
     return coreRepr;
+}
+
+void blockModel::moveAllSubports()
+{
+    coreRepr->x=this->x();
+    coreRepr->y=this->y();
+    foreach(portModel * item,ports){
+        item->move();
+    }
 }
 
