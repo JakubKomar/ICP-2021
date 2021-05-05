@@ -53,6 +53,18 @@ void blockModel::paint(QPainter *painter, const QStyleOptionGraphicsItem *option
     else
         painter->drawText(15,20,coreRepr->getName());
     moveAllSubports();
+    int space=40;
+    foreach(port * item ,coreRepr->inputs)
+    {
+        painter->drawText(25,space,item->getName());
+        space=space+30;
+    }
+    space=40;
+    foreach(port * item ,coreRepr->outputs)
+    {
+        painter->drawText(100,space,item->getName());
+        space=space+30;
+    }
     update();
 }
 

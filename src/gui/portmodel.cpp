@@ -4,18 +4,16 @@ portModel::portModel(port * coreRepr,int yOfset):yOfset(yOfset),coreRepr(coreRep
 {
      if(coreRepr->type==port::Pin){
          xOfset=5;
-         xBindingOfs=7;
      }
      else{
-         xOfset=110;
-         xBindingOfs=55;
+         xOfset=160;
      }
 }
 
 
 QRectF portModel::boundingRect() const
 {
-    return QRectF(0,0,60,30);
+    return QRectF(0,0,15,15);
 }
 void portModel::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
@@ -38,13 +36,12 @@ void portModel::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 
     painter->setPen(border);
     if(coreRepr->type==port::Pin){
-        painter->drawEllipse(0,0,15,15);
-        painter->drawText(20,10,coreRepr->getName());
+        painter->drawEllipse(rect);
     }
     else{
-        painter->drawEllipse(50,0,15,15);
-        painter->drawText(0,10,coreRepr->getName());
+        painter->drawEllipse(rect);
     }
+
 }
 
 void portModel::move()

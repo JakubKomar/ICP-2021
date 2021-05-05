@@ -95,10 +95,6 @@ void mainWindow::on_renameBlock_clicked(){
     editedBlock->setName( ui->AtNameEdit->text());
 }
 
-void mainWindow::on_AtNameEdit_cursorPositionChanged(int arg1, int arg2){
-
-}
-
 void mainWindow::on_pushButton_8_clicked()
 {
     editedAtBlock->code=ui->codeTextEditor->toPlainText();
@@ -191,10 +187,4 @@ void mainWindow::refreshPorts()
          auto layout=new portLayout(ui->OutputArea,item);
          layoutList.append(layout);
      }
-}
-
-void mainWindow::on_debugClear_clicked()
-{
-    refresh();
-
 }

@@ -71,13 +71,6 @@
                </widget>
               </item>
               <item>
-               <widget class="QPushButton" name="debugClear">
-                <property name="text">
-                 <string>clear</string>
-                </property>
-               </widget>
-              </item>
-              <item>
                <spacer name="horizontalSpacer_3">
                 <property name="orientation">
                  <enum>Qt::Horizontal</enum>
@@ -306,8 +299,8 @@
                             <rect>
                              <x>0</x>
                              <y>0</y>
-                             <width>98</width>
-                             <height>28</height>
+                             <width>192</width>
+                             <height>18</height>
                             </rect>
                            </property>
                            <layout class="QVBoxLayout" name="verticalLayout_11">
@@ -380,8 +373,8 @@
                             <rect>
                              <x>0</x>
                              <y>0</y>
-                             <width>98</width>
-                             <height>28</height>
+                             <width>192</width>
+                             <height>18</height>
                             </rect>
                            </property>
                            <layout class="QVBoxLayout" name="verticalLayout_10">

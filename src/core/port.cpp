@@ -13,8 +13,10 @@ port::port(port::Type type,int num,block *inBlock):type(type),inBlock(inBlock)
 {
     this->conect=NULL;
     this->valType=Vint;
-    this->name=QString("input%1").arg(num);
-
+    if(type==Pin)
+        this->name=QString("input%1").arg(num);
+    else
+       this->name=QString("output%1").arg(num);
 }
 
 QString port::getName()

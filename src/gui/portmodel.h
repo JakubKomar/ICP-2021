@@ -12,7 +12,7 @@ public:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
     int yOfset{0};
     int xOfset{0};
-    int xBindingOfs{0};
+    int xBindingOfs{7};
     int yBindingOfs{7};
 public slots:
     void move();

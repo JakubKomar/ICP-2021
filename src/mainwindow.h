@@ -56,20 +56,14 @@ private slots:
     void on_apkAddAtom_clicked();
     void on_addCompozite_clicked();
     void on_renameBlock_clicked();
-    void on_AtNameEdit_cursorPositionChanged(int arg1, int arg2);
     void on_pushButton_8_clicked();
     void on_AtAddInput_clicked();
     void on_AtAddOutput_clicked();
     void on_goBack_clicked();
     void on_addAtomic2_clicked();
     void on_AddComp2_clicked();
-
     void on_undo_clicked();
-
     void on_redo_clicked();
-
-    void on_debugClear_clicked();
-
 private:
     /**
      * ading input to frame
