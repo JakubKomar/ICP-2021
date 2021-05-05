@@ -9,23 +9,18 @@
 #include "aplicationview.h"
 
 aplicationView::aplicationView(QObject *parent,mainWindow *mainUI) : QGraphicsScene(parent),mainUi(mainUI){
-
+     this->conectMod=false;
 }
-aplicationView::~aplicationView(){}
+aplicationView::~aplicationView(){
+}
 
 void aplicationView::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    qDebug()<<event->scenePos();
-
     if(event->button()==Qt::RightButton)
     {
         for(auto * item:items(event->scenePos()))
-        {
-             if (auto port=dynamic_cast<portModel*>(item);port){
-                 qDebug()<<"boží trest je tenhle projekt";
-                 break;
-             }
-             else if (auto myrect=dynamic_cast<blockModel*>(item);myrect){
+        {           
+             if (auto myrect=dynamic_cast<blockModel*>(item);myrect){
                  qDebug()<<"clicked on custom item id:"<<myrect->getId()<<" name:"<<myrect->getName();
                  if(myrect->getCrPtr()->type==block::Tatomic){
                       if(auto Cast=static_cast<atomic*>(myrect->getCrPtr());Cast){
@@ -59,12 +54,40 @@ void aplicationView::mousePressEvent(QGraphicsSceneMouseEvent *event)
         for(auto * item:items(event->scenePos()))
         {
             if (auto port=dynamic_cast<portModel*>(item);port){
+                if(actualConnection)
+                    delete actualConnection;
                 qDebug()<<"boží trest je tenhle projekt";
+                conectMod=true;
+                actualConnection=addLine(QLineF(event->scenePos(),event->scenePos()));
                 break;
+
             }
         }
     }
-    QGraphicsScene::mousePressEvent(event);
+    if (!conectMod)
+        QGraphicsScene::mousePressEvent(event);
+}
+
+void aplicationView::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+{
+    if (conectMod){
+        if(actualConnection){
+             actualConnection->setLine(QLineF(actualConnection->line().p1(),event->scenePos()));
+        }
+    }
+
+    QGraphicsScene::mouseMoveEvent(event);
+}
+
+void aplicationView::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+{
+    if (conectMod){
+        if(actualConnection){
+             actualConnection->setLine(QLineF(actualConnection->line().p1(),event->scenePos()));
+        }
+    }
+    conectMod=false;
+    QGraphicsScene::mouseReleaseEvent(event);
 }
 void aplicationView::addGrapicRepr(int x,int y,block * coreRepr){
 
@@ -77,7 +100,6 @@ void aplicationView::addGrapicRepr(int x,int y,block * coreRepr){
 
         object->move();
         space=space+30;
-        //QObject::connect(newBlock,&blockModel::pos,object,&portModel::move );
         newBlock->ports.append(object);
         addItem(object);
     }
@@ -91,7 +113,6 @@ void aplicationView::addGrapicRepr(int x,int y,block * coreRepr){
         addItem(object);
     }
     blockModels.append(newBlock);
-
 
 }
 

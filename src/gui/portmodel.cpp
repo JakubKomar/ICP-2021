@@ -16,7 +16,7 @@ QRectF portModel::boundingRect() const
 void portModel::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     QRectF rect = boundingRect();
-    QPen border(Qt::black, 1);
+    QPen border(Qt::black, 2);
 
     if(coreRepr->valType==port::Vint){
         painter->setBrush(Qt::green);
