@@ -117,7 +117,7 @@ void mainWindow::on_AtAddOutput_clicked(){
 
 void mainWindow::refresh()
 {
-    scene->clear();
+    scene->cleanScene();
     scene->loadScene(this->viewedBlock);
 }
 
@@ -150,6 +150,7 @@ void mainWindow::swichToComp(compozit *targetPtr)
 
 void mainWindow::swichToAtomic(atomic *targetPtr)
 {
+    refresh();
     callBackPush();
     editedAtBlock=targetPtr;
     editedBlock=targetPtr;
@@ -190,4 +191,10 @@ void mainWindow::refreshPorts()
          auto layout=new portLayout(ui->OutputArea,item);
          layoutList.append(layout);
      }
+}
+
+void mainWindow::on_debugClear_clicked()
+{
+    refresh();
+
 }

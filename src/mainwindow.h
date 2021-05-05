@@ -68,6 +68,8 @@ private slots:
 
     void on_redo_clicked();
 
+    void on_debugClear_clicked();
+
 private:
     /**
      * ading input to frame

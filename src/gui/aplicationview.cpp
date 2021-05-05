@@ -54,12 +54,12 @@ void aplicationView::mousePressEvent(QGraphicsSceneMouseEvent *event)
         for(auto * item:items(event->scenePos()))
         {
             if (auto port=dynamic_cast<portModel*>(item);port){
-                if(actualConnection)
-                    delete actualConnection;
+                if(actualConnection!=nullptr)
+                   delete actualConnection;
                 qDebug()<<"boží trest je tenhle projekt";
                 conectMod=true;
-                actualConnection=addLine(QLineF(event->scenePos(),event->scenePos()));
-                break;
+                actualConnection=addLine(QLineF((port->x()+port->xBindingOfs),(port->y()+port->yBindingOfs),event->scenePos().x(),event->scenePos().y()));
+                return;
 
             }
         }
@@ -84,6 +84,7 @@ void aplicationView::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     if (conectMod){
         if(actualConnection){
              actualConnection->setLine(QLineF(actualConnection->line().p1(),event->scenePos()));
+
         }
     }
     conectMod=false;
@@ -120,6 +121,8 @@ void aplicationView::cleanScene()
 {
     qDeleteAll(blockModels.begin(), blockModels.end());
     blockModels.clear();
+    actualConnection=nullptr;
+    clear();
 }
 
 void aplicationView::loadScene(compozit * CompPtr)

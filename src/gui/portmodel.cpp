@@ -2,10 +2,14 @@
 
 portModel::portModel(port * coreRepr,int yOfset):yOfset(yOfset),coreRepr(coreRepr)
 {
-     if(coreRepr->type==port::Pin)
-           xOfset=5;
-     else
+     if(coreRepr->type==port::Pin){
+         xOfset=5;
+         xBindingOfs=7;
+     }
+     else{
          xOfset=110;
+         xBindingOfs=55;
+     }
 }
 
 

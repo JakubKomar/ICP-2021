@@ -10,8 +10,10 @@ class portModel : public QGraphicsItem
 public:
     portModel(port * coreRepm,int yOfset);
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
-    int yOfset=0;
-    int xOfset=0;
+    int yOfset{0};
+    int xOfset{0};
+    int xBindingOfs{0};
+    int yBindingOfs{7};
 public slots:
     void move();
 private:
