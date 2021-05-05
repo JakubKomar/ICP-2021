@@ -19,8 +19,8 @@ class compozit : public block
 public:
     compozit();
     ~compozit();
-    QVector<compozit *> compVect;
-    QVector<atomic *> atomVect;
+    QList<compozit *> compVect;
+    QList<atomic *> atomVect;
     /**
      * Create new atomic block
      * @return current pointer to block

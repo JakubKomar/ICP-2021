@@ -52,8 +52,5 @@ void port::changeType(TypeVal newType)
 
 void port::removePortFromList(port *ptr)
 {
-    for(int i=0;i<PortConnToThis.count();i++){
-        if(PortConnToThis.takeAt(i)==ptr)
-            PortConnToThis.removeAt(i);
-    }
+    while(PortConnToThis.removeOne(ptr)){}
 }

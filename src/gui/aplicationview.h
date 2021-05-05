@@ -40,6 +40,7 @@ public:
     void cleanScene();
     void loadScene(compozit * CompPtr);
     void swichEditedComp(compozit *targetPtr);
+    void drawConnections();
 protected:
     port * bindingPort;
     bool conectMod;

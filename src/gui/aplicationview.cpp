@@ -32,7 +32,6 @@ void aplicationView::mousePressEvent(QGraphicsSceneMouseEvent *event)
                       }
                   }
                  break;
-
             }
         }     
     }
@@ -94,14 +93,12 @@ void aplicationView::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
                          port->coreRepr->connectedTo=bindingPort;
                          bindingPort->PortConnToThis.append(port->coreRepr);
                     }
-                     actualConnection->setLine(QLineF(actualConnection->line().p1(),QPoint((port->x()+port->xBindingOfs),(port->y()+port->yBindingOfs))));
+                    // actualConnection->setLine(QLineF(actualConnection->line().p1(),QPoint((port->x()+port->xBindingOfs),(port->y()+port->yBindingOfs))));
                 }
                 else
-                {
                     qDebug()<<"failed connection";
-                    delete actualConnection;
-                    actualConnection=nullptr;
-                }
+                delete actualConnection;
+                actualConnection=nullptr;
             }
         }
     }
@@ -111,11 +108,7 @@ void aplicationView::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 void aplicationView::deleteGraphicBlock(blockModel * ptr)
 {
-    for(int i=0;i<blockModels.length();i++)
-    {
-        if(blockModels[i]==ptr)
-            blockModels.erase(blockModels.begin()+i);
-    }
+    while(blockModels.removeOne(ptr)){}
     delete ptr;
 }
 
@@ -168,5 +161,15 @@ void aplicationView::loadScene(compozit * CompPtr)
 void aplicationView::swichEditedComp(compozit *targetPtr)
 {
     mainUi->swichToComp(targetPtr);
+}
+
+void aplicationView::drawConnections()
+{
+    foreach(block * bItem,mainUi->viewedBlock->atomVect){
+        foreach(port * pItem,bItem->inputs){
+            if(pItem->connectedTo!=nullptr)
+                addLine(QLineF(pItem->graphicRep->pos()+QPoint(7,7),pItem->connectedTo->graphicRep->pos()+QPoint(7,7)),QPen(Qt::green, 4));
+        }
+    }
 }
 

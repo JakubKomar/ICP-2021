@@ -121,6 +121,7 @@ void mainWindow::on_goBack_clicked()
 {
     callBackPop();
     refresh();
+    scene->drawConnections();
     if(curentApk==viewedBlock)
         primarySwich(0);
     else
