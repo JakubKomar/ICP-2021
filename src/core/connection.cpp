@@ -8,7 +8,15 @@
  */
 #include "connection.h"
 
-connection::connection(port * From,port * To,TypeVal Type):type(Type),from(From),to(To)
+connection::connection(port * From,port * To):from(From),to(To)
 {
+    this->from->conect=this;
+    this->to->conect=this;
+    qDebug()<<"conection added";
+}
 
+connection::~connection()
+{
+    from->conect=nullptr;
+    to->conect=nullptr;
 }

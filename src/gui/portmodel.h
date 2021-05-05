@@ -14,10 +14,10 @@ public:
     int xOfset{0};
     int xBindingOfs{7};
     int yBindingOfs{7};
+     port * coreRepr;
 public slots:
     void move();
 private:
-    port * coreRepr;
     QRectF boundingRect() const;
 
 };

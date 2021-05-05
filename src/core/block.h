@@ -52,8 +52,8 @@ public:
      int x;     //pozition on graphic scene
      int y;
      void delPort(port * ptr);
-     QVector<port*> inputs;
-     QVector<port*> outputs;
+     QList<port*> inputs;
+     QList<port*> outputs;
 protected :
     QString name;
     int id; 

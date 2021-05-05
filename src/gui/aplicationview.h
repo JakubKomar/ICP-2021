@@ -19,6 +19,7 @@
 #include "blockmodel.h"
 #include "./core/atomic.h"
 #include "./core/compozit.h"
+#include "./core/port.h"
 #include "./mainwindow.h"
 
 
@@ -40,6 +41,7 @@ public:
     void loadScene(compozit * CompPtr);
     void swichEditedComp(compozit *targetPtr);
 protected:
+    port * bindingPort;
     bool conectMod;
     virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;  
     virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
@@ -47,6 +49,7 @@ protected:
     QGraphicsLineItem * actualConnection{nullptr};
     QVector<blockModel*>blockModels;
     mainWindow * mainUi;
+
 signals:
 
 };

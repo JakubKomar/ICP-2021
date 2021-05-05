@@ -10,11 +10,11 @@ portModel::portModel(port * coreRepr,int yOfset):yOfset(yOfset),coreRepr(coreRep
      }
 }
 
-
 QRectF portModel::boundingRect() const
 {
     return QRectF(0,0,15,15);
 }
+
 void portModel::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     QRectF rect = boundingRect();
@@ -41,7 +41,6 @@ void portModel::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
     else{
         painter->drawEllipse(rect);
     }
-
 }
 
 void portModel::move()

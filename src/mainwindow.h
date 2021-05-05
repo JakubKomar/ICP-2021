@@ -50,6 +50,7 @@ public:
      * update editor before swiching to this page
     */
     void updateAtEditor();
+    compozit * viewedBlock;
 private slots:
     void on_newApk_clicked();
     void on_loadApk_clicked();
@@ -78,7 +79,6 @@ private:
     aplication * curentApk;
     block * editedBlock;
     atomic * editedAtBlock;
-    compozit * viewedBlock;
     aplicationView * scene;
     Ui::mainWindow *ui;
     void clearPortLayouts();

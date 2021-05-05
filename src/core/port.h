@@ -16,7 +16,6 @@
 #include "./core/block.h"
 #include "./core/connection.h"
 
-
 class block;
 class connection;
 class port:public QObject
@@ -46,9 +45,9 @@ public:
     void setName(QString newName);
     TypeVal getType();
     void changeType(TypeVal newType);
+    connection * conect;
 protected:
     int ID;
-    connection * conect;
 private:
 
 signals:

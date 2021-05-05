@@ -11,20 +11,15 @@
 
 #include <QObject>
 
+#include <QDebug>
 #include "port.h"
 
 class port;
-class connection
+class connection: public QObject
 {
 public:
-    enum TypeVal{
-        Vint,
-        Vdouble,
-        Vstring,
-        Vbool
-    };
-    connection(port * From,port * To,TypeVal Type);
-    TypeVal type;
+    connection(port * From,port * To);
+    ~connection();
 protected:
     port * from;
     port * to;

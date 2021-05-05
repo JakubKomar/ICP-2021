@@ -1,6 +1,6 @@
 /**
  * Editor a interpret hierarchicky strukturovaných funkčních bloků
- * @brief   Graphic board-here is drawed blocks
+ * @brief   Graphic board-here are drawed blocks
  *
  * @authors Jakub Komárek (xkomar33), Violeta Koleva (xkolev00)
  * @date    07-05-2021
@@ -21,7 +21,6 @@ void aplicationView::mousePressEvent(QGraphicsSceneMouseEvent *event)
         for(auto * item:items(event->scenePos()))
         {           
              if (auto myrect=dynamic_cast<blockModel*>(item);myrect){
-                 qDebug()<<"clicked on custom item id:"<<myrect->getId()<<" name:"<<myrect->getName();
                  if(myrect->getCrPtr()->type==block::Tatomic){
                       if(auto Cast=static_cast<atomic*>(myrect->getCrPtr());Cast){
                           mainUi->swichToAtomic(Cast);
@@ -32,8 +31,6 @@ void aplicationView::mousePressEvent(QGraphicsSceneMouseEvent *event)
                           mainUi->swichToComp(Cast);
                       }
                   }
-                  else
-                      qDebug()<<"nepovedený cast :(";
                  break;
 
             }
@@ -54,13 +51,12 @@ void aplicationView::mousePressEvent(QGraphicsSceneMouseEvent *event)
         for(auto * item:items(event->scenePos()))
         {
             if (auto port=dynamic_cast<portModel*>(item);port){
+                bindingPort=port->coreRepr;
                 if(actualConnection!=nullptr)
                    delete actualConnection;
-                qDebug()<<"boží trest je tenhle projekt";
                 conectMod=true;
                 actualConnection=addLine(QLineF((port->x()+port->xBindingOfs),(port->y()+port->yBindingOfs),event->scenePos().x(),event->scenePos().y()));
                 return;
-
             }
         }
     }
@@ -82,14 +78,33 @@ void aplicationView::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 void aplicationView::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     if (conectMod){
-        if(actualConnection){
-             actualConnection->setLine(QLineF(actualConnection->line().p1(),event->scenePos()));
+        for(auto * item:items(event->scenePos()))
+        {
+            if (auto port=dynamic_cast<portModel*>(item);port){
+                if(port->coreRepr->valType==bindingPort->valType && port->coreRepr->type!=bindingPort->type)
+                {
+                    qDebug()<<"success connection";
+                    connection * newConn;
+                    if( port->coreRepr->type==port::Pout)
+                        newConn=new connection(port->coreRepr,bindingPort);
+                    else
+                        newConn=new connection(bindingPort,port->coreRepr);
+                    connect(newConn,SIGNAL(destroyed()),this,SLOT(deleteConnection()));
+                    mainUi->viewedBlock->connections.append(newConn);
+                }
+                else
+                {
+                    qDebug()<<"failed connection";
+                }
 
+            }
         }
+
     }
     conectMod=false;
     QGraphicsScene::mouseReleaseEvent(event);
 }
+
 void aplicationView::addGrapicRepr(int x,int y,block * coreRepr){
 
     blockModel * newBlock = new blockModel(coreRepr,x,y);
@@ -98,7 +113,6 @@ void aplicationView::addGrapicRepr(int x,int y,block * coreRepr){
     foreach(port * item ,coreRepr->inputs)
     {
         portModel * object=new portModel(item,space);
-
         object->move();
         space=space+30;
         newBlock->ports.append(object);
