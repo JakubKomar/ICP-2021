@@ -42,8 +42,10 @@ compozit *compozit::addCompozite()
 
 void compozit::deleteBlock(block *ptr)
 {
-    while(atomVect.removeOne(ptr)){}
-    while(compVect.removeOne(ptr)){}
+    if(ptr->type==block::Tatomic)
+        atomVect.removeAll(static_cast<atomic*>(ptr));
+    else if(ptr->type==block::Tcompozit)
+        compVect.removeAll(static_cast<compozit*>(ptr));
     delete ptr;
 }
 
