@@ -52,6 +52,7 @@ protected:
     mainWindow * mainUi;
 private:
     void deleteGraphicBlock(blockModel * ptr);
+    QList<QGraphicsLineItem *>lines;
 
 };
 

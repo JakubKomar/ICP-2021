@@ -58,11 +58,11 @@ void mainWindow::updateAtEditor(){
 }
 
 void mainWindow::on_newApk_clicked(){
-    scene->clear();
     if(curentApk!=NULL)
         delete curentApk;
     this->curentApk=new aplication();
     this->viewedBlock=this->curentApk;
+    refresh();
 }
 
 void mainWindow::on_loadApk_clicked(){

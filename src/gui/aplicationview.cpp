@@ -42,6 +42,7 @@ void aplicationView::mousePressEvent(QGraphicsSceneMouseEvent *event)
             if (auto myrect=dynamic_cast<blockModel*>(item);myrect){
                  mainUi->deleteExactBlock(myrect->getCrPtr());
                  deleteGraphicBlock(myrect);
+                 drawConnections();
                  break;
             }
         }
@@ -71,6 +72,8 @@ void aplicationView::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
              actualConnection->setLine(QLineF(actualConnection->line().p1(),event->scenePos()));
         }
     }
+    else
+        drawConnections();
 
     QGraphicsScene::mouseMoveEvent(event);
 }
@@ -93,6 +96,7 @@ void aplicationView::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
                          port->coreRepr->connectedTo=bindingPort;
                          bindingPort->PortConnToThis.append(port->coreRepr);
                     }
+                    drawConnections();
                     // actualConnection->setLine(QLineF(actualConnection->line().p1(),QPoint((port->x()+port->xBindingOfs),(port->y()+port->yBindingOfs))));
                 }
                 else
@@ -100,6 +104,7 @@ void aplicationView::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
                 delete actualConnection;
                 actualConnection=nullptr;
             }
+
         }
     }
     conectMod=false;
@@ -142,10 +147,12 @@ void aplicationView::addGrapicRepr(int x,int y,block * coreRepr){
 
 void aplicationView::cleanScene()
 {
+    qDeleteAll(lines);
+    lines.clear();
     qDeleteAll(blockModels.begin(), blockModels.end());
     blockModels.clear();
     actualConnection=nullptr;
-    clear();
+
 }
 
 void aplicationView::loadScene(compozit * CompPtr)
@@ -156,6 +163,7 @@ void aplicationView::loadScene(compozit * CompPtr)
         foreach(compozit * item,CompPtr->compVect)
             addGrapicRepr(item->x,item->y,item);
     }
+    drawConnections();
 }
 
 void aplicationView::swichEditedComp(compozit *targetPtr)
@@ -165,10 +173,16 @@ void aplicationView::swichEditedComp(compozit *targetPtr)
 
 void aplicationView::drawConnections()
 {
+    qDeleteAll(lines);
+    lines.clear();
+
     foreach(block * bItem,mainUi->viewedBlock->atomVect){
         foreach(port * pItem,bItem->inputs){
-            if(pItem->connectedTo!=nullptr)
-                addLine(QLineF(pItem->graphicRep->pos()+QPoint(7,7),pItem->connectedTo->graphicRep->pos()+QPoint(7,7)),QPen(Qt::green, 4));
+            if(pItem->connectedTo!=nullptr){
+                QGraphicsLineItem * newLine= addLine(QLineF(pItem->graphicRep->pos()+QPoint(7,7),pItem->connectedTo->graphicRep->pos()+QPoint(7,7)));
+                newLine->setPen(QPen(Qt::blue, 4));
+                lines.append(newLine);
+            }
         }
     }
 }
