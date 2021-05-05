@@ -45,16 +45,12 @@ void compozit::deleteBlock(block *ptr)
     for(int i=0;i<atomVect.length();i++)
     {
         if(atomVect[i]==ptr)
-        {
             atomVect.erase(atomVect.begin()+i);
-        }
     }
     for(int i=0;i<compVect.length();i++)
     {
         if(compVect[i]==ptr)
-        {
             compVect.erase(compVect.begin()+i);
-        }
     }
     delete ptr;
 }

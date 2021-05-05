@@ -47,10 +47,10 @@ protected:
     virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
     virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
     QGraphicsLineItem * actualConnection{nullptr};
-    QVector<blockModel*>blockModels;
+    QList<blockModel*>blockModels;
     mainWindow * mainUi;
-
-signals:
+private:
+    void deleteGraphicBlock(blockModel * ptr);
 
 };
 

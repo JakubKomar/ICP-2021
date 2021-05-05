@@ -21,12 +21,12 @@ port::port(port::Type type,int num,block *inBlock):type(type),inBlock(inBlock)
 port::~port()
 {
     qDebug()<<"port destruct";
-    /*
+
     foreach(port * item,PortConnToThis ){
         item->connectedTo=nullptr;
     }
     if(connectedTo)
-        connectedTo->removePortFromList(this);*/
+        connectedTo->removePortFromList(this);
 }
 
 QString port::getName()

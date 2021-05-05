@@ -42,7 +42,7 @@ void aplicationView::mousePressEvent(QGraphicsSceneMouseEvent *event)
         {
             if (auto myrect=dynamic_cast<blockModel*>(item);myrect){
                  mainUi->deleteExactBlock(myrect->getCrPtr());
-                 delete myrect;
+                 deleteGraphicBlock(myrect);
                  break;
             }
         }
@@ -109,6 +109,16 @@ void aplicationView::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     QGraphicsScene::mouseReleaseEvent(event);
 }
 
+void aplicationView::deleteGraphicBlock(blockModel * ptr)
+{
+    for(int i=0;i<blockModels.length();i++)
+    {
+        if(blockModels[i]==ptr)
+            blockModels.erase(blockModels.begin()+i);
+    }
+    delete ptr;
+}
+
 void aplicationView::addGrapicRepr(int x,int y,block * coreRepr){
 
     blockModel * newBlock = new blockModel(coreRepr,x,y);
@@ -139,7 +149,6 @@ void aplicationView::addGrapicRepr(int x,int y,block * coreRepr){
 
 void aplicationView::cleanScene()
 {
-
     qDeleteAll(blockModels.begin(), blockModels.end());
     blockModels.clear();
     actualConnection=nullptr;
