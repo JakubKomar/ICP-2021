@@ -185,5 +185,14 @@ void aplicationView::drawConnections()
             }
         }
     }
+    foreach(block * bItem,mainUi->viewedBlock->compVect){
+        foreach(port * pItem,bItem->inputs){
+            if(pItem->connectedTo!=nullptr){
+                QGraphicsLineItem * newLine= addLine(QLineF(pItem->graphicRep->pos()+QPoint(7,7),pItem->connectedTo->graphicRep->pos()+QPoint(7,7)));
+                newLine->setPen(QPen(Qt::blue, 4));
+                lines.append(newLine);
+            }
+        }
+    }
 }
 
