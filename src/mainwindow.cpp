@@ -61,7 +61,7 @@ void mainWindow::on_newApk_clicked(){
     scene->clear();
     if(curentApk!=NULL)
         delete curentApk;
-    this->curentApk=new aplication;
+    this->curentApk=new aplication();
     this->viewedBlock=this->curentApk;
 }
 

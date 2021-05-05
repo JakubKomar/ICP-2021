@@ -56,6 +56,7 @@ void aplicationView::mousePressEvent(QGraphicsSceneMouseEvent *event)
                    delete actualConnection;
                 conectMod=true;
                 actualConnection=addLine(QLineF((port->x()+port->xBindingOfs),(port->y()+port->yBindingOfs),event->scenePos().x(),event->scenePos().y()));
+                actualConnection->setPen(QPen(Qt::red, 4));
                 return;
             }
         }
@@ -84,22 +85,25 @@ void aplicationView::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
                 if(port->coreRepr->valType==bindingPort->valType && port->coreRepr->type!=bindingPort->type)
                 {
                     qDebug()<<"success connection";
-                    connection * newConn;
-                    if( port->coreRepr->type==port::Pout)
-                        newConn=new connection(port->coreRepr,bindingPort);
-                    else
-                        newConn=new connection(bindingPort,port->coreRepr);
-                    connect(newConn,SIGNAL(destroyed()),this,SLOT(deleteConnection()));
-                    mainUi->viewedBlock->connections.append(newConn);
+
+                    if( port->coreRepr->type==port::Pout){
+                        bindingPort->connectedTo=port->coreRepr;
+                        port->coreRepr->PortConnToThis.append(bindingPort);
+                    }
+                    else{
+                         port->coreRepr->connectedTo=bindingPort;
+                         bindingPort->PortConnToThis.append(port->coreRepr);
+                    }
+                     actualConnection->setLine(QLineF(actualConnection->line().p1(),QPoint((port->x()+port->xBindingOfs),(port->y()+port->yBindingOfs))));
                 }
                 else
                 {
                     qDebug()<<"failed connection";
+                    delete actualConnection;
+                    actualConnection=nullptr;
                 }
-
             }
         }
-
     }
     conectMod=false;
     QGraphicsScene::mouseReleaseEvent(event);
@@ -117,6 +121,7 @@ void aplicationView::addGrapicRepr(int x,int y,block * coreRepr){
         space=space+30;
         newBlock->ports.append(object);
         addItem(object);
+        item->graphicRep=object;
     }
     space=30;
     foreach(port * item ,coreRepr->outputs)
@@ -126,6 +131,7 @@ void aplicationView::addGrapicRepr(int x,int y,block * coreRepr){
         space=space+30;
         newBlock->ports.append(object);
         addItem(object);
+        item->graphicRep=object;
     }
     blockModels.append(newBlock);
 
@@ -133,6 +139,7 @@ void aplicationView::addGrapicRepr(int x,int y,block * coreRepr){
 
 void aplicationView::cleanScene()
 {
+
     qDeleteAll(blockModels.begin(), blockModels.end());
     blockModels.clear();
     actualConnection=nullptr;

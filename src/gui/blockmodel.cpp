@@ -19,9 +19,7 @@ blockModel::blockModel(block * coreRep,int x,int y):height(60),width(100),coreRe
 
 blockModel::~blockModel()
 {
-    coreRepr->x=this->x();
-    coreRepr->y=this->y();
-    foreach(portModel * item,ports){
+   foreach(portModel * item,ports){
         delete item;
     }
 }

@@ -5,6 +5,7 @@
 #include <QPainter>
 #include "./core/port.h"
 
+class port;
 class portModel : public QGraphicsItem
 {
 public:

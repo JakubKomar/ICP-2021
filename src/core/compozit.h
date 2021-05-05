@@ -14,7 +14,6 @@
 
 #include "block.h"
 #include "atomic.h"
-#include "connection.h"
 class compozit : public block
 {
 public:
@@ -33,7 +32,6 @@ public:
      */
     compozit* addCompozite();
     void deleteBlock(block * ptr);
-    QList<connection*> connections;
     private:
         int idStack;    //IDs for new blocks
 };
