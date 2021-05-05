@@ -19,8 +19,9 @@
 
 class block;
 class connection;
-class port
+class port:public QObject
 {
+    Q_OBJECT
 public:
     ~port()
     {

@@ -9,18 +9,17 @@
 #include "aplicationview.h"
 
 aplicationView::aplicationView(QObject *parent,mainWindow *mainUI) : QGraphicsScene(parent),mainUi(mainUI){
-
+     this->conectMod=false;
 }
-aplicationView::~aplicationView(){}
+aplicationView::~aplicationView(){
+}
 
 void aplicationView::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    qDebug()<<event->scenePos();
-
     if(event->button()==Qt::RightButton)
     {
         for(auto * item:items(event->scenePos()))
-        {
+        {           
              if (auto myrect=dynamic_cast<blockModel*>(item);myrect){
                  qDebug()<<"clicked on custom item id:"<<myrect->getId()<<" name:"<<myrect->getName();
                  if(myrect->getCrPtr()->type==block::Tatomic){
@@ -51,12 +50,70 @@ void aplicationView::mousePressEvent(QGraphicsSceneMouseEvent *event)
             }
         }
     }
-    QGraphicsScene::mousePressEvent(event);
+    else  if(event->button()==Qt::LeftButton){
+        for(auto * item:items(event->scenePos()))
+        {
+            if (auto port=dynamic_cast<portModel*>(item);port){
+                if(actualConnection)
+                    delete actualConnection;
+                qDebug()<<"boží trest je tenhle projekt";
+                conectMod=true;
+                actualConnection=addLine(QLineF(event->scenePos(),event->scenePos()));
+                break;
+
+            }
+        }
+    }
+    if (!conectMod)
+        QGraphicsScene::mousePressEvent(event);
 }
-void aplicationView::addGrapicRepr(int x,int y,block * CoreRep){
-    blockModel * newBlock = new blockModel(CoreRep,x,y);
-    blockModels.append(newBlock);
+
+void aplicationView::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+{
+    if (conectMod){
+        if(actualConnection){
+             actualConnection->setLine(QLineF(actualConnection->line().p1(),event->scenePos()));
+        }
+    }
+
+    QGraphicsScene::mouseMoveEvent(event);
+}
+
+void aplicationView::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+{
+    if (conectMod){
+        if(actualConnection){
+             actualConnection->setLine(QLineF(actualConnection->line().p1(),event->scenePos()));
+        }
+    }
+    conectMod=false;
+    QGraphicsScene::mouseReleaseEvent(event);
+}
+void aplicationView::addGrapicRepr(int x,int y,block * coreRepr){
+
+    blockModel * newBlock = new blockModel(coreRepr,x,y);
     addItem(newBlock);
+    int space=30;
+    foreach(port * item ,coreRepr->inputs)
+    {
+        portModel * object=new portModel(item,space);
+
+        object->move();
+        space=space+30;
+        newBlock->ports.append(object);
+        addItem(object);
+    }
+    space=30;
+    foreach(port * item ,coreRepr->outputs)
+    {
+        portModel * object=new portModel(item,space);
+        object->move();
+        space=space+30;
+        newBlock->ports.append(object);
+        addItem(object);
+    }
+    blockModels.append(newBlock);
+
 }
 
 void aplicationView::cleanScene()

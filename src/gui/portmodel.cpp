@@ -1,17 +1,22 @@
 #include "portmodel.h"
 
-portModel::portModel(port * coreRepr):coreRepr(coreRepr)
+portModel::portModel(port * coreRepr,int yOfset):yOfset(yOfset),coreRepr(coreRepr)
 {
-
+     if(coreRepr->type==port::Pin)
+           xOfset=5;
+     else
+         xOfset=110;
 }
+
+
 QRectF portModel::boundingRect() const
 {
-    return QRectF(0,0,80,30);
+    return QRectF(0,0,60,30);
 }
 void portModel::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     QRectF rect = boundingRect();
-    QPen border(Qt::black, 1);
+    QPen border(Qt::black, 2);
 
     if(coreRepr->valType==port::Vint){
         painter->setBrush(Qt::green);
@@ -28,6 +33,18 @@ void portModel::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
          painter->setBrush(Qt::blue);
 
     painter->setPen(border);
-    painter->drawEllipse(0,0,30,30);
-    painter->drawText(30,0,coreRepr->getName());
+    if(coreRepr->type==port::Pin){
+        painter->drawEllipse(0,0,15,15);
+        painter->drawText(20,10,coreRepr->getName());
+    }
+    else{
+        painter->drawEllipse(50,0,15,15);
+        painter->drawText(0,10,coreRepr->getName());
+    }
 }
+
+void portModel::move()
+{
+    setPos((coreRepr->inBlock->x)+xOfset,(coreRepr->inBlock->y)+yOfset);
+}
+

@@ -16,7 +16,7 @@
 #include <QComboBox>
 
 #include  "./gui/aplicationview.h"
-#include  "./gui/portLayout.h"
+#include  "./gui/portlayout.h"
 #include  "./core/aplication.h"
 #include  "./core/atomic.h"
 #include  "./core/port.h"

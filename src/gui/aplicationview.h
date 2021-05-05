@@ -40,7 +40,11 @@ public:
     void loadScene(compozit * CompPtr);
     void swichEditedComp(compozit *targetPtr);
 protected:
+    bool conectMod;
     virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;  
+    virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
+    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
+    QGraphicsLineItem * actualConnection{nullptr};
     QVector<blockModel*>blockModels;
     mainWindow * mainUi;
 signals:
