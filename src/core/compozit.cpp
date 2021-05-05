@@ -42,20 +42,10 @@ compozit *compozit::addCompozite()
 
 void compozit::deleteBlock(block *ptr)
 {
-    for(int i=0;i<atomVect.length();i++)
-    {
-        if(atomVect[i]==ptr)
-        {
-            atomVect.erase(atomVect.begin()+i);
-        }
-    }
-    for(int i=0;i<compVect.length();i++)
-    {
-        if(compVect[i]==ptr)
-        {
-            compVect.erase(compVect.begin()+i);
-        }
-    }
+    if(ptr->type==block::Tatomic)
+        atomVect.removeAll(static_cast<atomic*>(ptr));
+    else if(ptr->type==block::Tcompozit)
+        compVect.removeAll(static_cast<compozit*>(ptr));
     delete ptr;
 }
 

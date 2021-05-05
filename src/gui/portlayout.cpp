@@ -52,7 +52,6 @@ void portLayout::cheangeName()
 
 void portLayout::cheangeValType()
 {
-
     int index =comboBox->currentIndex();
     if(index==0)
         corePtr->changeType(port::Vint);
@@ -88,7 +87,6 @@ void portLayout::deleteElements()
         delete mainLayout->widget();
         delete mainLayout;
     }
-
     deletedGraphic=true;
 }
 

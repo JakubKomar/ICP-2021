@@ -50,24 +50,21 @@ public:
      * update editor before swiching to this page
     */
     void updateAtEditor();
+    compozit * viewedBlock;
 private slots:
     void on_newApk_clicked();
     void on_loadApk_clicked();
     void on_apkAddAtom_clicked();
     void on_addCompozite_clicked();
     void on_renameBlock_clicked();
-    void on_AtNameEdit_cursorPositionChanged(int arg1, int arg2);
     void on_pushButton_8_clicked();
     void on_AtAddInput_clicked();
     void on_AtAddOutput_clicked();
     void on_goBack_clicked();
     void on_addAtomic2_clicked();
     void on_AddComp2_clicked();
-
     void on_undo_clicked();
-
     void on_redo_clicked();
-
 private:
     /**
      * ading input to frame
@@ -82,7 +79,6 @@ private:
     aplication * curentApk;
     block * editedBlock;
     atomic * editedAtBlock;
-    compozit * viewedBlock;
     aplicationView * scene;
     Ui::mainWindow *ui;
     void clearPortLayouts();

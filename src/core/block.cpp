@@ -73,20 +73,8 @@ int block::getWidth()
 
 void block::delPort(port *ptr)
 {
-    for(int i=0;i<inputs.length();i++)
-        {
-            if(inputs[i]==ptr)
-            {
-                inputs.erase(inputs.begin()+i);
-            }
-        }
-    for(int i=0;i<outputs.length();i++)
-    {
-        if(outputs[i]==ptr)
-        {
-            outputs.erase(outputs.begin()+i);
-        }
-    }
+    while(inputs.removeOne(ptr)){};
+    while(outputs.removeOne(ptr)){};
     delete ptr;
 }
 

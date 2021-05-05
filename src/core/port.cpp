@@ -11,10 +11,22 @@
 
 port::port(port::Type type,int num,block *inBlock):type(type),inBlock(inBlock)
 {
-    this->conect=NULL;
     this->valType=Vint;
-    this->name=QString("input%1").arg(num);
+    if(type==Pin)
+        this->name=QString("input%1").arg(num);
+    else
+        this->name=QString("output%1").arg(num);
+}
 
+port::~port()
+{
+    qDebug()<<"port destruct";
+
+    foreach(port * item,PortConnToThis ){
+        item->connectedTo=nullptr;
+    }
+    if(connectedTo)
+        connectedTo->removePortFromList(this);
 }
 
 QString port::getName()
@@ -30,9 +42,15 @@ void port::setName(QString newName)
 port::TypeVal port::getType()
 {
     return valType;
+
 }
 
 void port::changeType(TypeVal newType)
 {
     valType=newType;
+}
+
+void port::removePortFromList(port *ptr)
+{
+    while(PortConnToThis.removeOne(ptr)){}
 }

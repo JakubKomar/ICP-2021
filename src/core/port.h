@@ -11,22 +11,17 @@
 
 #include <QObject>
 #include <QDebug>
-
+#include <QList>
 
 #include "./core/block.h"
-#include "./core/connection.h"
-
+#include "./gui/portmodel.h"
 
 class block;
-class connection;
+class portModel;
 class port:public QObject
 {
     Q_OBJECT
 public:
-    ~port()
-    {
-         qDebug()<<"port destructor engage";
-    }
     enum Type{
         Pin,
         Pout,
@@ -38,17 +33,21 @@ public:
         Vbool
     };
     port(Type type,int num,block *inBlock);
+    ~port();
     Type type;
     TypeVal valType;
     QString name;
     block *inBlock;
+    port *connectedTo{nullptr};
+    portModel *graphicRep{nullptr};
     QString getName();
     void setName(QString newName);
     TypeVal getType();
     void changeType(TypeVal newType);
+    QList<port*>PortConnToThis;
+    void removePortFromList(port *ptr);
 protected:
     int ID;
-    connection * conect;
 private:
 
 signals:

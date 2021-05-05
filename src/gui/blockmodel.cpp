@@ -19,9 +19,7 @@ blockModel::blockModel(block * coreRep,int x,int y):height(60),width(100),coreRe
 
 blockModel::~blockModel()
 {
-    coreRepr->x=this->x();
-    coreRepr->y=this->y();
-    foreach(portModel * item,ports){
+   foreach(portModel * item,ports){
         delete item;
     }
 }
@@ -48,19 +46,37 @@ void blockModel::paint(QPainter *painter, const QStyleOptionGraphicsItem *option
 
     painter->setPen(border);
     painter->drawRoundedRect(rect,20,20);
+
     if(coreRepr->getName()=="")
         painter->drawText(15,20,QString::number(coreRepr->getId()));
     else
         painter->drawText(15,20,coreRepr->getName());
+
     moveAllSubports();
+
+    int space=40;
+    foreach(port * item ,coreRepr->inputs)
+    {
+        painter->drawText(25,space,item->getName());
+        space=space+30;
+    }
+    space=40;
+    foreach(port * item ,coreRepr->outputs)
+    {
+        painter->drawText(100,space,item->getName());
+        space=space+30;
+    }
     update();
 }
 
 
 void blockModel::resize()
 {
-    int baseH=60;
-    height=baseH+coreRepr->getMaxNumOfPort()*30;
+    int newHeight=coreRepr->getMaxNumOfPort()*30;
+    if(newHeight==0)
+        height=60;
+    else
+        height=newHeight+30;
 
     width=180;
 }

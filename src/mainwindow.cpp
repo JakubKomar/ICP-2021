@@ -58,11 +58,11 @@ void mainWindow::updateAtEditor(){
 }
 
 void mainWindow::on_newApk_clicked(){
-    scene->clear();
     if(curentApk!=NULL)
         delete curentApk;
-    this->curentApk=new aplication;
+    this->curentApk=new aplication();
     this->viewedBlock=this->curentApk;
+    refresh();
 }
 
 void mainWindow::on_loadApk_clicked(){
@@ -95,10 +95,6 @@ void mainWindow::on_renameBlock_clicked(){
     editedBlock->setName( ui->AtNameEdit->text());
 }
 
-void mainWindow::on_AtNameEdit_cursorPositionChanged(int arg1, int arg2){
-
-}
-
 void mainWindow::on_pushButton_8_clicked()
 {
     editedAtBlock->code=ui->codeTextEditor->toPlainText();
@@ -117,7 +113,7 @@ void mainWindow::on_AtAddOutput_clicked(){
 
 void mainWindow::refresh()
 {
-    scene->clear();
+    scene->cleanScene();
     scene->loadScene(this->viewedBlock);
 }
 
@@ -125,6 +121,7 @@ void mainWindow::on_goBack_clicked()
 {
     callBackPop();
     refresh();
+    scene->drawConnections();
     if(curentApk==viewedBlock)
         primarySwich(0);
     else
@@ -150,6 +147,7 @@ void mainWindow::swichToComp(compozit *targetPtr)
 
 void mainWindow::swichToAtomic(atomic *targetPtr)
 {
+    refresh();
     callBackPush();
     editedAtBlock=targetPtr;
     editedBlock=targetPtr;

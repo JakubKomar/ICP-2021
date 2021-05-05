@@ -19,6 +19,7 @@
 #include "blockmodel.h"
 #include "./core/atomic.h"
 #include "./core/compozit.h"
+#include "./core/port.h"
 #include "./mainwindow.h"
 
 
@@ -39,15 +40,19 @@ public:
     void cleanScene();
     void loadScene(compozit * CompPtr);
     void swichEditedComp(compozit *targetPtr);
+    void drawConnections();
 protected:
+    port * bindingPort;
     bool conectMod;
     virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;  
     virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
     virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
     QGraphicsLineItem * actualConnection{nullptr};
-    QVector<blockModel*>blockModels;
+    QList<blockModel*>blockModels;
     mainWindow * mainUi;
-signals:
+private:
+    void deleteGraphicBlock(blockModel * ptr);
+    QList<QGraphicsLineItem *>lines;
 
 };
 
