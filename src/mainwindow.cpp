@@ -45,16 +45,25 @@ void mainWindow::callBackPush(){
 
 void mainWindow::callBackPop()
 {
-    if(!callBackStack.empty())
+    if(!callBackStack.empty()){
         viewedBlock=this->callBackStack.pop();
-    else
+        editedBlock=viewedBlock;
+    }
+    else{
         viewedBlock=this->curentApk;
+        editedBlock=viewedBlock;
+    }
 }
 
 void mainWindow::updateAtEditor(){
     ui->codeTextEditor->clear();
     ui->AtNameEdit->insert(editedAtBlock->getName());
     ui->codeTextEditor->insertPlainText(editedAtBlock->code);
+}
+
+void mainWindow::refreshSlot()
+{
+    refresh();
 }
 
 void mainWindow::on_newApk_clicked(){
@@ -79,6 +88,7 @@ void mainWindow::on_apkAddAtom_clicked(){
     {
         atomic * pointer=viewedBlock->addAtom();
         scene->addGrapicRepr(0,0,pointer);
+
     }
 }
 
@@ -104,11 +114,30 @@ void mainWindow::on_AtAddInput_clicked(){
     port * corePtr=this->editedBlock->addPort(true);
     auto layout=new portLayout(ui->InputArea,corePtr);
     layoutList.append(layout);
+
+    if(editedBlock->type==block::Tcompozit){
+        compozit * comp= static_cast<compozit*>(editedBlock);
+        portSocket * newSocket=new portSocket(corePtr);
+        connect(newSocket,SIGNAL(destroyed()),this,SLOT(refreshSlot()));
+        comp->insidePorts.append(newSocket);
+        corePtr->socketPtr=newSocket;
+        refresh();
+    }
+
 }
 void mainWindow::on_AtAddOutput_clicked(){
     port * corePtr=this->editedBlock->addPort(false);
     auto layout= new portLayout(ui->OutputArea,corePtr);
     layoutList.append(layout);
+
+    if(editedBlock->type==block::Tcompozit){
+        compozit * comp= static_cast<compozit*>(editedBlock);
+        portSocket * newSocket=new portSocket(corePtr);
+        connect(newSocket,SIGNAL(destroyed()),this,SLOT(refreshSlot()));
+        comp->insidePorts.append(newSocket);
+        corePtr->socketPtr=newSocket;
+        refresh();
+    }
 }
 
 void mainWindow::refresh()
@@ -121,6 +150,7 @@ void mainWindow::on_goBack_clicked()
 {
     callBackPop();
     refresh();
+    refreshPorts();
     scene->drawConnections();
     if(curentApk==viewedBlock)
         primarySwich(0);
@@ -188,4 +218,31 @@ void mainWindow::refreshPorts()
          auto layout=new portLayout(ui->OutputArea,item);
          layoutList.append(layout);
      }
+}
+
+void mainWindow::buildAtomic(atomic * ptr)
+{
+
+}
+
+void mainWindow::buildCompozite(compozit * prt)
+{
+
+}
+
+void mainWindow::on_Build_clicked()
+{
+    QDir dir = QDir::current();
+    dir.mkdir("build");
+
+    QFile file("build/BuildedApk");
+    if (!file.open(QIODevice::WriteOnly  | QIODevice::Text))
+          return;
+    QTextStream out(&file);
+     out << "The magic number is: " << 49 << "\n";
+     return;
+
+    foreach(atomic * item,curentApk->atomVect){
+        buildAtomic(item);
+    }
 }

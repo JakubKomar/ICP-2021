@@ -13,12 +13,16 @@
 #include <QDebug>
 #include <QList>
 
+
 #include "./core/block.h"
 #include "./gui/portmodel.h"
 
+
+
 class block;
 class portModel;
-class port:public QObject
+class portSocket;
+class port: public QObject
 {
     Q_OBJECT
 public:
@@ -33,6 +37,7 @@ public:
         Vbool
     };
     port(Type type,int num,block *inBlock);
+    port(Type type,block *inBlock);
     ~port();
     Type type;
     TypeVal valType;
@@ -46,6 +51,7 @@ public:
     void changeType(TypeVal newType);
     QList<port*>PortConnToThis;
     void removePortFromList(port *ptr);
+    portSocket * socketPtr{nullptr};
 protected:
     int ID;
 private:

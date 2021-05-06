@@ -12,10 +12,10 @@
 #include <QObject>
 
 #include "./core/port.h"
-
 class port;
-class block
+class block: public QObject
 {
+Q_OBJECT;
 public:
      block();
      ~block();
@@ -45,7 +45,7 @@ public:
          Tcompozit,
          TonlyPort,
      };
-     Type type;
+     Type type{TonlyPort};
      port* addPort(bool isInput);
      int getMaxNumOfPort();
      int getWidth();

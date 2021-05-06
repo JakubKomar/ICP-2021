@@ -12,6 +12,5 @@ aplication::aplication()
 {
     this->setName("My Apk");
     this->setId(-1);
-    qDebug()<<"aplication constructor engage";
 }
 

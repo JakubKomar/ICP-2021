@@ -19,9 +19,10 @@ blockModel::blockModel(block * coreRep,int x,int y):height(60),width(100),coreRe
 
 blockModel::~blockModel()
 {
+    qDebug()<<"blockModel dest";
    foreach(portModel * item,ports){
         delete item;
-    }
+   }
 }
 
 QRectF blockModel::boundingRect() const
@@ -42,25 +43,34 @@ void blockModel::paint(QPainter *painter, const QStyleOptionGraphicsItem *option
         painter->setBrush(Qt::blue);
     }
     else
-         painter->setBrush(Qt::red);
+         painter->setBrush(Qt::darkCyan);
 
     painter->setPen(border);
     painter->drawRoundedRect(rect,20,20);
 
-    if(coreRepr->getName()=="")
-        painter->drawText(15,20,QString::number(coreRepr->getId()));
-    else
-        painter->drawText(15,20,coreRepr->getName());
-
+    if(!(coreRepr->type==block::TonlyPort)){
+        if(coreRepr->getName()=="")
+            painter->drawText(15,20,QString::number(coreRepr->getId()));
+        else
+            painter->drawText(15,20,coreRepr->getName());
+    }
     moveAllSubports();
 
-    int space=40;
+
+    int space;
+    if(coreRepr->type==block::TonlyPort)
+        space=23;
+    else
+        space=40;
     foreach(port * item ,coreRepr->inputs)
     {
         painter->drawText(25,space,item->getName());
         space=space+30;
     }
-    space=40;
+    if(coreRepr->type==block::TonlyPort)
+        space=23;
+    else
+        space=40;
     foreach(port * item ,coreRepr->outputs)
     {
         painter->drawText(100,space,item->getName());
@@ -72,13 +82,21 @@ void blockModel::paint(QPainter *painter, const QStyleOptionGraphicsItem *option
 
 void blockModel::resize()
 {
-    int newHeight=coreRepr->getMaxNumOfPort()*30;
-    if(newHeight==0)
-        height=60;
+    if(coreRepr->type==block::TonlyPort)
+    {
+        height=40;
+        width=180;
+    }
     else
-        height=newHeight+30;
+    {
+        int newHeight=coreRepr->getMaxNumOfPort()*30;
+        if(newHeight==0)
+            height=60;
+        else
+            height=newHeight+30;
 
-    width=180;
+        width=180;
+    }
 }
 
 QString blockModel::getName()

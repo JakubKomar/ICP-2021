@@ -1,3 +1,11 @@
+/**
+ * Editor a interpret hierarchicky strukturovaných funkčních bloků
+ * @brief   Grup of widget for ports editing
+ *
+ * @authors Jakub Komárek (xkomar33), Violeta Koleva (xkolev00)
+ * @date    07-05-2021
+ * @version 1.0
+ */
 #include "portlayout.h"
 
 portLayout::portLayout(QWidget * place,port * corePtr):corePtr(corePtr)
@@ -17,13 +25,12 @@ portLayout::portLayout(QWidget * place,port * corePtr):corePtr(corePtr)
 
 
     lineEdit=new QLineEdit(name,place);
-     QObject::connect(lineEdit,&QLineEdit::textEdited,this,&portLayout::cheangeName);
+    QObject::connect(lineEdit,&QLineEdit::textEdited,this,&portLayout::cheangeName);
 
     comboBox=new QComboBox(place);
     comboBox->addItems({"int","string","bool","double"});
     setComboBox();
      QObject::connect(comboBox,SIGNAL(activated(int)),this,SLOT(cheangeValType()));
-
 
     newHorizontal1->insertWidget(0,button);
     newHorizontal1->insertWidget(0,lineEdit);
@@ -41,13 +48,15 @@ portLayout::~portLayout(){
 
 void portLayout::destructButt()
 {
-    corePtr->inBlock->delPort(corePtr);
+    corePtr->inBlock->delPort(corePtr); 
     deleteElements();
 }
 
 void portLayout::cheangeName()
 {
     corePtr->setName(lineEdit->text());
+    if(corePtr->socketPtr!=nullptr)
+        corePtr->socketPtr->update();
 }
 
 void portLayout::cheangeValType()
@@ -63,6 +72,8 @@ void portLayout::cheangeValType()
         corePtr->changeType(port::Vdouble);
     else
         qDebug()<<"unexpected type";
+    if(corePtr->socketPtr!=nullptr)
+        corePtr->socketPtr->update();
 }
 
 void portLayout::deleteElements()

@@ -1,3 +1,11 @@
+/**
+ * Editor a interpret hierarchicky strukturovaných funkčních bloků
+ * @brief   Grup of widget for ports editing
+ *
+ * @authors Jakub Komárek (xkomar33), Violeta Koleva (xkolev00)
+ * @date    07-05-2021
+ * @version 1.0
+ */
 #ifndef PORTLAYOUT_H
 #define PORTLAYOUT_H
 
@@ -10,6 +18,7 @@
 #include  "ui_mainwindow.h"
 #include  "./core/port.h"
 #include  "./gui/blockmodel.h"
+#include  "./core/portsocket.h"
 class portLayout: public QObject
 {
     Q_OBJECT

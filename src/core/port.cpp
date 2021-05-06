@@ -7,8 +7,8 @@
  * @version 1.0
  */
 #include "port.h"
-
-
+#include "portsocket.h"
+#include "compozit.h"
 port::port(port::Type type,int num,block *inBlock):type(type),inBlock(inBlock)
 {
     this->valType=Vint;
@@ -16,17 +16,28 @@ port::port(port::Type type,int num,block *inBlock):type(type),inBlock(inBlock)
         this->name=QString("input%1").arg(num);
     else
         this->name=QString("output%1").arg(num);
+    this->socketPtr=nullptr;
 }
-
+port::port(port::Type type,block *inBlock):type(type),inBlock(inBlock)
+{
+    auto cast=static_cast<portSocket*>(inBlock);
+    this->valType=cast->imitating->valType;
+    this->name=cast->imitating->name;
+}
 port::~port()
 {
-    qDebug()<<"port destruct";
-
+    qDebug()<<"port destructor";
     foreach(port * item,PortConnToThis ){
         item->connectedTo=nullptr;
+         qDebug()<<"uh oh";
     }
     if(connectedTo)
         connectedTo->removePortFromList(this);
+    if((socketPtr!=nullptr)&&(inBlock->type==block::Tcompozit)){
+        auto cast=static_cast<compozit*>(inBlock);
+        cast->insidePorts.removeAll(socketPtr);
+        delete socketPtr;
+    }
 }
 
 QString port::getName()

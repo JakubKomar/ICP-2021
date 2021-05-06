@@ -14,6 +14,9 @@
 #include <QObject>
 #include <qdebug.h>
 #include <QComboBox>
+#include <QFile>
+#include <QDir>
+#include <QTextStream>
 
 #include  "./gui/aplicationview.h"
 #include  "./gui/portlayout.h"
@@ -52,6 +55,7 @@ public:
     void updateAtEditor();
     compozit * viewedBlock;
 private slots:
+    void refreshSlot();
     void on_newApk_clicked();
     void on_loadApk_clicked();
     void on_apkAddAtom_clicked();
@@ -65,6 +69,8 @@ private slots:
     void on_AddComp2_clicked();
     void on_undo_clicked();
     void on_redo_clicked();
+    void on_Build_clicked();
+
 private:
     /**
      * ading input to frame
@@ -83,6 +89,9 @@ private:
     Ui::mainWindow *ui;
     void clearPortLayouts();
     void refreshPorts();
+    void buildAtomic(atomic * prt);
+    void buildCompozite(compozit * prt);
+    void buildHeader(compozit * prt);
     QList <portLayout*> layoutList;
 };
 #endif // FILESELECTOR_H

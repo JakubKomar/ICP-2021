@@ -14,6 +14,7 @@ SOURCES += \
     core/aplication.cpp \
     core/compozit.cpp \
     core/port.cpp \
+    core/portsocket.cpp \
     gui/blockmodel.cpp \
     gui/portlayout.cpp \
     gui/portmodel.cpp \
@@ -27,6 +28,7 @@ HEADERS += \
     core/block.h \
     core/compozit.h \
     core/port.h \
+    core/portsocket.h \
     gui/blockmodel.h \
     gui/portlayout.h \
     gui/portmodel.h \
