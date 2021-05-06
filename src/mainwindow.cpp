@@ -114,7 +114,7 @@ void mainWindow::on_AtAddInput_clicked(){
         compozit * comp= static_cast<compozit*>(editedBlock);
         portSocket * newSocket=new portSocket(corePtr);
         comp->insidePorts.append(newSocket);
-        layout->socketPtr=newSocket;
+        corePtr->socketPtr=newSocket;
         refresh();
     }
 

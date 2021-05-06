@@ -23,7 +23,7 @@ public:
     int xOfset{0};
     int xBindingOfs{7};
     int yBindingOfs{7};
-     port * coreRepr;
+    port * coreRepr;
 public slots:
     void move();
 private:
