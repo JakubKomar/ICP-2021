@@ -19,6 +19,7 @@
 #include "blockmodel.h"
 #include "./core/atomic.h"
 #include "./core/compozit.h"
+#include "./core/portsocket.h"
 #include "./core/port.h"
 #include "./mainwindow.h"
 

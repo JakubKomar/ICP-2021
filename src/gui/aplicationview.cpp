@@ -162,6 +162,9 @@ void aplicationView::loadScene(compozit * CompPtr)
             addGrapicRepr(item->x,item->y,item);
         foreach(compozit * item,CompPtr->compVect)
             addGrapicRepr(item->x,item->y,item);
+
+       foreach(portSocket * item,CompPtr->insidePorts)
+            addGrapicRepr(item->x,item->y,item);
     }
     drawConnections();
 }

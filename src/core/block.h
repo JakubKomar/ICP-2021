@@ -12,7 +12,6 @@
 #include <QObject>
 
 #include "./core/port.h"
-
 class port;
 class block
 {
@@ -45,7 +44,7 @@ public:
          Tcompozit,
          TonlyPort,
      };
-     Type type;
+     Type type{TonlyPort};
      port* addPort(bool isInput);
      int getMaxNumOfPort();
      int getWidth();

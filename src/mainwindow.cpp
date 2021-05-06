@@ -104,11 +104,26 @@ void mainWindow::on_AtAddInput_clicked(){
     port * corePtr=this->editedBlock->addPort(true);
     auto layout=new portLayout(ui->InputArea,corePtr);
     layoutList.append(layout);
+
+    if(editedBlock->type==block::Tcompozit){
+        compozit * comp= static_cast<compozit*>(editedBlock);
+        portSocket * newCompPort=new portSocket(corePtr);
+        newCompPort->addPort(false);
+        comp->insidePorts.append(newCompPort);
+    }
+
 }
 void mainWindow::on_AtAddOutput_clicked(){
     port * corePtr=this->editedBlock->addPort(false);
     auto layout= new portLayout(ui->OutputArea,corePtr);
     layoutList.append(layout);
+
+    if(editedBlock->type==block::Tcompozit){
+        compozit * comp= static_cast<compozit*>(editedBlock);
+        portSocket * newCompPort=new portSocket(corePtr);
+        newCompPort->addPort(true);
+        comp->insidePorts.append(newCompPort);
+    }
 }
 
 void mainWindow::refresh()

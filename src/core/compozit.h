@@ -14,6 +14,7 @@
 
 #include "block.h"
 #include "atomic.h"
+#include "portsocket.h"
 class compozit : public block
 {
 public:
@@ -21,6 +22,7 @@ public:
     ~compozit();
     QList<compozit *> compVect;
     QList<atomic *> atomVect;
+    QList<portSocket*>insidePorts;
     /**
      * Create new atomic block
      * @return current pointer to block
