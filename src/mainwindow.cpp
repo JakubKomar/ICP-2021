@@ -45,10 +45,14 @@ void mainWindow::callBackPush(){
 
 void mainWindow::callBackPop()
 {
-    if(!callBackStack.empty())
+    if(!callBackStack.empty()){
         viewedBlock=this->callBackStack.pop();
-    else
+        editedBlock=viewedBlock;
+    }
+    else{
         viewedBlock=this->curentApk;
+        editedBlock=viewedBlock;
+    }
 }
 
 void mainWindow::updateAtEditor(){
@@ -79,6 +83,7 @@ void mainWindow::on_apkAddAtom_clicked(){
     {
         atomic * pointer=viewedBlock->addAtom();
         scene->addGrapicRepr(0,0,pointer);
+
     }
 }
 
@@ -109,6 +114,8 @@ void mainWindow::on_AtAddInput_clicked(){
         compozit * comp= static_cast<compozit*>(editedBlock);
         portSocket * newSocket=new portSocket(corePtr);
         comp->insidePorts.append(newSocket);
+        layout->socketPtr=newSocket;
+        refresh();
     }
 
 }
@@ -134,6 +141,7 @@ void mainWindow::on_goBack_clicked()
 {
     callBackPop();
     refresh();
+    refreshPorts();
     scene->drawConnections();
     if(curentApk==viewedBlock)
         primarySwich(0);

@@ -47,7 +47,7 @@ portLayout::~portLayout(){
 
 void portLayout::destructButt()
 {
-    corePtr->inBlock->delPort(corePtr);
+    corePtr->inBlock->delPort(corePtr); 
     deleteElements();
 }
 

@@ -40,10 +40,12 @@ void aplicationView::mousePressEvent(QGraphicsSceneMouseEvent *event)
         for(auto * item:items(event->scenePos()))
         {
             if (auto myrect=dynamic_cast<blockModel*>(item);myrect){
-                 mainUi->deleteExactBlock(myrect->getCrPtr());
-                 deleteGraphicBlock(myrect);
-                 drawConnections();
-                 break;
+                if(myrect->getCrPtr()->type!=block::TonlyPort){
+                     mainUi->deleteExactBlock(myrect->getCrPtr());
+                     deleteGraphicBlock(myrect);
+                     drawConnections();
+                }
+                break;
             }
         }
     }
@@ -89,23 +91,35 @@ void aplicationView::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
                     qDebug()<<"success connection";
 
                     if( port->coreRepr->type==port::Pout){
-                        bindingPort->connectedTo=port->coreRepr;
-                        port->coreRepr->PortConnToThis.append(bindingPort);
+                        if( bindingPort->connectedTo==port->coreRepr){
+                             bindingPort->connectedTo=nullptr;
+                             port->coreRepr->PortConnToThis.removeAll(bindingPort);
+                        }
+                        else{
+                            bindingPort->connectedTo=port->coreRepr;
+                            port->coreRepr->PortConnToThis.append(bindingPort);
+                        }
                     }
                     else{
-                         port->coreRepr->connectedTo=bindingPort;
-                         bindingPort->PortConnToThis.append(port->coreRepr);
+                        if( port->coreRepr->connectedTo==bindingPort){
+                             port->coreRepr->connectedTo=nullptr;
+                             bindingPort->PortConnToThis.removeAll(port->coreRepr);
+                        }
+                        else{
+                             port->coreRepr->connectedTo=bindingPort;
+                             bindingPort->PortConnToThis.append(port->coreRepr);
+                        }
                     }
-                    drawConnections();
-                    // actualConnection->setLine(QLineF(actualConnection->line().p1(),QPoint((port->x()+port->xBindingOfs),(port->y()+port->yBindingOfs))));
+                    drawConnections();             
                 }
                 else
                     qDebug()<<"failed connection";
-                delete actualConnection;
-                actualConnection=nullptr;
+
             }
 
         }
+        delete actualConnection;
+        actualConnection=nullptr;
     }
     conectMod=false;
     QGraphicsScene::mouseReleaseEvent(event);
@@ -121,7 +135,11 @@ void aplicationView::addGrapicRepr(int x,int y,block * coreRepr){
 
     blockModel * newBlock = new blockModel(coreRepr,x,y);
     addItem(newBlock);
-    int space=30;
+    int space;
+    if(coreRepr->type==block::TonlyPort)
+        space=12;
+    else
+        space=30;
     foreach(port * item ,coreRepr->inputs)
     {
         portModel * object=new portModel(item,space);
@@ -131,7 +149,10 @@ void aplicationView::addGrapicRepr(int x,int y,block * coreRepr){
         addItem(object);
         item->graphicRep=object;
     }
-    space=30;
+    if(coreRepr->type==block::TonlyPort)
+        space=12;
+    else
+        space=30;
     foreach(port * item ,coreRepr->outputs)
     {
         portModel * object=new portModel(item,space);
