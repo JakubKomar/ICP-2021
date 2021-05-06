@@ -17,6 +17,7 @@
 class portSocket : public block {
 public:
     portSocket(port * imitating);
+    ~portSocket();
     void addPort();
     port * imitating{nullptr};
 };

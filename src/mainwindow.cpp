@@ -113,6 +113,7 @@ void mainWindow::on_AtAddInput_clicked(){
     if(editedBlock->type==block::Tcompozit){
         compozit * comp= static_cast<compozit*>(editedBlock);
         portSocket * newSocket=new portSocket(corePtr);
+
         comp->insidePorts.append(newSocket);
         corePtr->socketPtr=newSocket;
         refresh();
@@ -128,6 +129,8 @@ void mainWindow::on_AtAddOutput_clicked(){
         compozit * comp= static_cast<compozit*>(editedBlock);
         portSocket * newSocket=new portSocket(corePtr);
         comp->insidePorts.append(newSocket);
+        corePtr->socketPtr=newSocket;
+        refresh();
     }
 }
 
@@ -209,4 +212,31 @@ void mainWindow::refreshPorts()
          auto layout=new portLayout(ui->OutputArea,item);
          layoutList.append(layout);
      }
+}
+
+void mainWindow::buildAtomic(atomic * ptr)
+{
+
+}
+
+void mainWindow::buildCompozite(compozit * prt)
+{
+
+}
+
+void mainWindow::on_Build_clicked()
+{
+    QDir dir = QDir::current();
+    dir.mkdir("build");
+
+    QFile file("build/BuildedApk");
+    if (!file.open(QIODevice::WriteOnly  | QIODevice::Text))
+          return;
+    QTextStream out(&file);
+     out << "The magic number is: " << 49 << "\n";
+     return;
+
+    foreach(atomic * item,curentApk->atomVect){
+        buildAtomic(item);
+    }
 }
