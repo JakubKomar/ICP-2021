@@ -32,6 +32,8 @@ port::~port()
     }
     if(connectedTo)
         connectedTo->removePortFromList(this);
+  /*  if(socketPtr)
+        delete socketPtr;*/
 }
 
 QString port::getName()
