@@ -7,7 +7,7 @@
  * @version 1.0
  */
 #include "port.h"
-
+#include "portsocket.h"
 
 port::port(port::Type type,int num,block *inBlock):type(type),inBlock(inBlock)
 {
@@ -17,7 +17,12 @@ port::port(port::Type type,int num,block *inBlock):type(type),inBlock(inBlock)
     else
         this->name=QString("output%1").arg(num);
 }
-
+port::port(port::Type type,block *inBlock):type(type),inBlock(inBlock)
+{
+    auto cast=static_cast<portSocket*>(inBlock);
+    this->valType=cast->imitating->valType;
+    this->name=cast->imitating->name;
+}
 port::~port()
 {
     qDebug()<<"port destruct";

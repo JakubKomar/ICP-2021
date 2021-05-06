@@ -162,8 +162,7 @@ void aplicationView::loadScene(compozit * CompPtr)
             addGrapicRepr(item->x,item->y,item);
         foreach(compozit * item,CompPtr->compVect)
             addGrapicRepr(item->x,item->y,item);
-
-       foreach(portSocket * item,CompPtr->insidePorts)
+        foreach(portSocket * item,CompPtr->insidePorts)
             addGrapicRepr(item->x,item->y,item);
     }
     drawConnections();
@@ -190,6 +189,15 @@ void aplicationView::drawConnections()
     }
     foreach(block * bItem,mainUi->viewedBlock->compVect){
         foreach(port * pItem,bItem->inputs){
+            if(pItem->connectedTo!=nullptr){
+                QGraphicsLineItem * newLine= addLine(QLineF(pItem->graphicRep->pos()+QPoint(7,7),pItem->connectedTo->graphicRep->pos()+QPoint(7,7)));
+                newLine->setPen(QPen(Qt::blue, 4));
+                lines.append(newLine);
+            }
+        }
+    }
+    foreach(block * bItem,mainUi->viewedBlock->insidePorts){
+        foreach(port * pItem,bItem->outputs){
             if(pItem->connectedTo!=nullptr){
                 QGraphicsLineItem * newLine= addLine(QLineF(pItem->graphicRep->pos()+QPoint(7,7),pItem->connectedTo->graphicRep->pos()+QPoint(7,7)));
                 newLine->setPen(QPen(Qt::blue, 4));

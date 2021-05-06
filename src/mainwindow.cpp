@@ -107,9 +107,8 @@ void mainWindow::on_AtAddInput_clicked(){
 
     if(editedBlock->type==block::Tcompozit){
         compozit * comp= static_cast<compozit*>(editedBlock);
-        portSocket * newCompPort=new portSocket(corePtr);
-        newCompPort->addPort(false);
-        comp->insidePorts.append(newCompPort);
+        portSocket * newSocket=new portSocket(corePtr);
+        comp->insidePorts.append(newSocket);
     }
 
 }
@@ -120,9 +119,8 @@ void mainWindow::on_AtAddOutput_clicked(){
 
     if(editedBlock->type==block::Tcompozit){
         compozit * comp= static_cast<compozit*>(editedBlock);
-        portSocket * newCompPort=new portSocket(corePtr);
-        newCompPort->addPort(true);
-        comp->insidePorts.append(newCompPort);
+        portSocket * newSocket=new portSocket(corePtr);
+        comp->insidePorts.append(newSocket);
     }
 }
 

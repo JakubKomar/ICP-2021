@@ -6,10 +6,10 @@
 
 #include "port.h"
 
-class portSocket:public block
-{
+class portSocket : public block {
 public:
     portSocket(port * imitating);
+    void addPort();
     port * imitating{nullptr};
 };
 

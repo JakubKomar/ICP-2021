@@ -42,7 +42,7 @@ void blockModel::paint(QPainter *painter, const QStyleOptionGraphicsItem *option
         painter->setBrush(Qt::blue);
     }
     else
-         painter->setBrush(Qt::red);
+         painter->setBrush(Qt::darkCyan);
 
     painter->setPen(border);
     painter->drawRoundedRect(rect,20,20);
