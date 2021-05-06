@@ -23,6 +23,7 @@ portLayout::portLayout(QWidget * place,port * corePtr):corePtr(corePtr)
 
     QObject::connect(button,&QPushButton::clicked,this,&portLayout::destructButt);
 
+
     lineEdit=new QLineEdit(name,place);
     QObject::connect(lineEdit,&QLineEdit::textEdited,this,&portLayout::cheangeName);
 
@@ -54,6 +55,8 @@ void portLayout::destructButt()
 void portLayout::cheangeName()
 {
     corePtr->setName(lineEdit->text());
+    if(corePtr->socketPtr!=nullptr)
+        corePtr->socketPtr->update();
 }
 
 void portLayout::cheangeValType()
@@ -69,6 +72,8 @@ void portLayout::cheangeValType()
         corePtr->changeType(port::Vdouble);
     else
         qDebug()<<"unexpected type";
+    if(corePtr->socketPtr!=nullptr)
+        corePtr->socketPtr->update();
 }
 
 void portLayout::deleteElements()

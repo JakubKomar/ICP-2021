@@ -55,6 +55,7 @@ public:
     void updateAtEditor();
     compozit * viewedBlock;
 private slots:
+    void refreshSlot();
     void on_newApk_clicked();
     void on_loadApk_clicked();
     void on_apkAddAtom_clicked();

@@ -15,11 +15,15 @@
 #include "port.h"
 
 class portSocket : public block {
+    Q_OBJECT
 public:
     portSocket(port * imitating);
     ~portSocket();
     void addPort();
     port * imitating{nullptr};
+    port * viewedPort{nullptr};
+    void update();
+
 };
 
 #endif // PORTSOCKET_H

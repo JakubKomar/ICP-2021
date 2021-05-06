@@ -31,4 +31,11 @@ void portSocket::addPort()
          newPort=new port(port::Pin,this);
          this->outputs.append(newPort);
     }
+    viewedPort=newPort;
+}
+
+void portSocket::update()
+{
+    viewedPort->name=imitating->name;
+    viewedPort->valType=imitating->valType;
 }

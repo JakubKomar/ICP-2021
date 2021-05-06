@@ -42,7 +42,7 @@ void aplicationView::mousePressEvent(QGraphicsSceneMouseEvent *event)
             if (auto myrect=dynamic_cast<blockModel*>(item);myrect){
                 if(myrect->getCrPtr()->type!=block::TonlyPort){
                      mainUi->deleteExactBlock(myrect->getCrPtr());
-                     deleteGraphicBlock(myrect);
+                     mainUi->refresh();
                      drawConnections();
                 }
                 break;
@@ -128,7 +128,7 @@ void aplicationView::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 void aplicationView::deleteGraphicBlock(blockModel * ptr)
 {
     while(blockModels.removeOne(ptr)){}
-    delete ptr;
+    //delete ptr;
 }
 
 void aplicationView::addGrapicRepr(int x,int y,block * coreRepr){

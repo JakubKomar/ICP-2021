@@ -13,8 +13,9 @@
 
 #include "./core/port.h"
 class port;
-class block
+class block: public QObject
 {
+Q_OBJECT;
 public:
      block();
      ~block();

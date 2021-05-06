@@ -29,11 +29,11 @@ port::~port()
     qDebug()<<"port destructor";
     foreach(port * item,PortConnToThis ){
         item->connectedTo=nullptr;
+         qDebug()<<"uh oh";
     }
     if(connectedTo)
         connectedTo->removePortFromList(this);
     if((socketPtr!=nullptr)&&(inBlock->type==block::Tcompozit)){
-
         auto cast=static_cast<compozit*>(inBlock);
         cast->insidePorts.removeAll(socketPtr);
         delete socketPtr;

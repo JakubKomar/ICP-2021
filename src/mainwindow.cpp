@@ -61,6 +61,11 @@ void mainWindow::updateAtEditor(){
     ui->codeTextEditor->insertPlainText(editedAtBlock->code);
 }
 
+void mainWindow::refreshSlot()
+{
+    refresh();
+}
+
 void mainWindow::on_newApk_clicked(){
     if(curentApk!=NULL)
         delete curentApk;
@@ -113,7 +118,7 @@ void mainWindow::on_AtAddInput_clicked(){
     if(editedBlock->type==block::Tcompozit){
         compozit * comp= static_cast<compozit*>(editedBlock);
         portSocket * newSocket=new portSocket(corePtr);
-
+        connect(newSocket,SIGNAL(destroyed()),this,SLOT(refreshSlot()));
         comp->insidePorts.append(newSocket);
         corePtr->socketPtr=newSocket;
         refresh();
@@ -128,6 +133,7 @@ void mainWindow::on_AtAddOutput_clicked(){
     if(editedBlock->type==block::Tcompozit){
         compozit * comp= static_cast<compozit*>(editedBlock);
         portSocket * newSocket=new portSocket(corePtr);
+        connect(newSocket,SIGNAL(destroyed()),this,SLOT(refreshSlot()));
         comp->insidePorts.append(newSocket);
         corePtr->socketPtr=newSocket;
         refresh();
