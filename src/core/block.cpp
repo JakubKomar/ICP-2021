@@ -15,12 +15,12 @@ block::block():type(Tnone),x(0),y(0)
 
 block::~block()
 {
-    if(this->type!=TonlyPort){
-        qDeleteAll(inputs.begin(), inputs.end());
-        inputs.clear();
-        qDeleteAll(outputs.begin(), outputs.end());
-        outputs.clear();
-    }
+
+    qDeleteAll(inputs.begin(), inputs.end());
+    inputs.clear();
+    qDeleteAll(outputs.begin(), outputs.end());
+    outputs.clear();
+
 }
 
 void block::setId(int newId)
