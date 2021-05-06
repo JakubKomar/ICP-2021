@@ -1,3 +1,11 @@
+/**
+ * Editor a interpret hierarchicky strukturovaných funkčních bloků
+ * @brief   Grup of widget for ports editing
+ *
+ * @authors Jakub Komárek (xkomar33), Violeta Koleva (xkolev00)
+ * @date    07-05-2021
+ * @version 1.0
+ */
 #include "portlayout.h"
 
 portLayout::portLayout(QWidget * place,port * corePtr):corePtr(corePtr)
