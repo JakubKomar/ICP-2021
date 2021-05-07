@@ -169,6 +169,9 @@ void mainWindow::swichToComp(compozit *targetPtr)
     viewedBlock=targetPtr;
     editedBlock=targetPtr;
     ui->AtNameEdit->clear();
+    ui->AtNameEdit->insert(viewedBlock->getName());
+    ui->id->clear();
+    ui->id->insert(QString::number(viewedBlock->getId()));
     refresh();
     refreshPorts();
     primarySwich(1);
@@ -182,6 +185,8 @@ void mainWindow::swichToAtomic(atomic *targetPtr)
     editedAtBlock=targetPtr;
     editedBlock=targetPtr;
     ui->AtNameEdit->clear();
+    ui->id->clear();
+    ui->id->insert(QString::number(editedAtBlock->getId()));
     updateAtEditor();
     refreshPorts();
     primarySwich(1);
