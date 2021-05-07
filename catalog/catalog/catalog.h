@@ -37,7 +37,13 @@ private slots:
 
     void on_listView_clicked(const QModelIndex &index);
 
-    void on_listView_doubleClicked(const QModelIndex &index);
+
+
+
+
+    void on_AddFolderButton_clicked();
+
+    void on_RemoveFolderButton_clicked();
 
 private:
     Ui::catalog *ui;
