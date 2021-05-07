@@ -16,6 +16,7 @@ catalog::catalog(QWidget *parent)
     qDebug()<<path;
 
 
+
     folder = new QFileSystemModel(this);                        // create the new model
     folder -> setFilter(QDir::NoDotAndDotDot | QDir::AllDirs);  // show only directories (hide other)
     folder -> setRootPath(path);                                // populate (folder) model (using set rootpath)
@@ -25,36 +26,16 @@ catalog::catalog(QWidget *parent)
     ui->treeView->setRootIndex(index);
 
 
+
     file = new QFileSystemModel(this);
     file -> setFilter(QDir::NoDotAndDotDot | QDir::Files);
     file -> setRootPath(path);
 
-                                                                   // show only xml files
-
-//___for some reason it doesn't filter any of the files!!!!!!!!!!
-    /*
-     * both of these options should work ...but they don't...
-
-    file -> setNameFilters(QStringList() << "*.xml");   // result = only greys ot non xml file
-
-    */
-
-    //QDir libdir(path);
-
-    QStringList filter;
-    filter << "*.xml";
-    file -> setNameFilters(filter);
-
-    //libdir.entryList(filter, QDir::Files);
-
-
-
-
-
-
-//____
+    file -> setNameFilters(QStringList() << "*.xml");          // show only xml files
+    file -> setNameFilterDisables(false);                      // hides filtered (grey) files
 
     ui -> listView -> setModel(file);
+
 
     index = file->index(path, 0);
     ui->listView->setRootIndex(index);
