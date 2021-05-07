@@ -1,10 +1,6 @@
 
 .PHONY: all build doxygen run pack clean
 
-TARGET=blockeditor
-QT_LIB_PATH=/usr/local/share/Qt-5.5.1/5.5/gcc_64/lib
-
-
 all: build
 
 build:
@@ -15,11 +11,14 @@ build:
 	make && \
 	cp ICP-projekt-2021 ../
 
+pack: clean
+	zip -r xkomar33-xkolev00.zip src/ exemples/ makefile README.txt
+
 run:
 	test -f ICP-projekt-2021 && ./ICP-projekt-2021
 
 doxygen:
-	doxygen src/Doxyfile
+	doxygen src/doxygen/Doxyfile
 
 clean:
 	rm -rf ICP-projekt-2021 build/ 
