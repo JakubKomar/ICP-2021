@@ -2,7 +2,7 @@
 #include "ui_catalog.h"
 
 #include <QtWidgets>
-
+#include <QDebug>
 
 catalog::catalog(QWidget *parent)
     : QMainWindow(parent)
@@ -11,7 +11,7 @@ catalog::catalog(QWidget *parent)
     ui->setupUi(this);
 
     //--------------------------------------------
-  //___{FIX TO SHOW ONLY WHAT IS IN THE LIBRARY FOLDER}_______
+    //___{FIX TO SHOW ONLY WHAT IS IN THE LIBRARY FOLDER}_______
     QProcess getpath;
     QStringList commands;
     commands <<  "cd .." << "cd .." << "cd library" ;
@@ -19,10 +19,13 @@ catalog::catalog(QWidget *parent)
 
     getpath.waitForFinished();
 
-  //QString iferror = getpath.readAllStandardError();
-    QString path = QDir::currentPath();                     // file system needs rootpath = main "library" folder
+    //QString iferror = getpath.readAllStandardError();
+    QString path = QDir::currentPath();
+    path=path+"/../catalog/";
+    qDebug()<<path;
+    // file system needs rootpath = main "library" folder
 
- //___
+     //___
     folder = new QFileSystemModel(this);                        // create the new model
     folder -> setFilter(QDir::NoDotAndDotDot | QDir::AllDirs);  // show only directories (hide other)
     folder -> setRootPath(path);                                // populate (folder) model (using set rootpath)

@@ -84,7 +84,7 @@ public:
     compozit * viewedBlock;
     bool destructorMod{false};
     void saveAtom(atomic *ptr);
-    void savePort(port *ptr)
+    void savePort(port *ptr);
     QXmlStreamWriter * writer;
 private slots:
     void refreshSlot();
