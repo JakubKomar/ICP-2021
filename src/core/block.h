@@ -74,6 +74,7 @@ public:
      void delPort(port * ptr);
      QList<port*> inputs;
      QList<port*> outputs;
+     int oldId{-8};//id for loading from file
 protected :
     QString name;
     int id; 

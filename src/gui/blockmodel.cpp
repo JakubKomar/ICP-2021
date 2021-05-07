@@ -40,7 +40,7 @@ void blockModel::paint(QPainter *painter, const QStyleOptionGraphicsItem *option
     }
     else if(coreRepr->type==block::Tcompozit)
     {
-        painter->setBrush(Qt::blue);
+        painter->setBrush(QColor(255, 174, 0, 255));
     }
     else
          painter->setBrush(Qt::darkCyan);
@@ -51,8 +51,9 @@ void blockModel::paint(QPainter *painter, const QStyleOptionGraphicsItem *option
     if(!(coreRepr->type==block::TonlyPort)){
         if(coreRepr->getName()=="")
             painter->drawText(15,20,QString::number(coreRepr->getId()));
-        else
-            painter->drawText(15,20,coreRepr->getName());
+        else{
+            painter->drawText(15,20,(coreRepr->getName()).mid(0,21)+(coreRepr->getName().length()>21?"..." : ""));
+        }
     }
     moveAllSubports();
 
@@ -64,7 +65,7 @@ void blockModel::paint(QPainter *painter, const QStyleOptionGraphicsItem *option
         space=40;
     foreach(port * item ,coreRepr->inputs)
     {
-        painter->drawText(25,space,item->getName());
+        painter->drawText(25,space,(item->getName().mid(0,9))+(item->getName().length()>9?".." : ""));
         space=space+30;
     }
     if(coreRepr->type==block::TonlyPort)
@@ -73,7 +74,7 @@ void blockModel::paint(QPainter *painter, const QStyleOptionGraphicsItem *option
         space=40;
     foreach(port * item ,coreRepr->outputs)
     {
-        painter->drawText(100,space,item->getName());
+        painter->drawText(95,space,(item->getName().mid(0,9))+(item->getName().length()>9?".." : ""));
         space=space+30;
     }
     update();
