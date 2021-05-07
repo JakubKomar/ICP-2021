@@ -61,6 +61,7 @@ void mainWindow::updateAtEditor(){
     ui->codeTextEditor->insertPlainText(editedAtBlock->code);
 }
 
+
 void mainWindow::refreshSlot()
 {
     if(!destructorMod)
@@ -256,7 +257,38 @@ void mainWindow::on_Build_clicked()
 
 void mainWindow::on_save_clicked()
 {
-    if(editingAtom){
-
+    QFile file("MyXml.xml");
+    if(!file.open(QIODevice::WriteOnly)){
+        qDebug()<<"error while opening file";
+        return;
     }
+
+    QXmlStreamWriter xmlWriter(&file);
+    writer=&xmlWriter;
+    xmlWriter.setAutoFormatting(true);
+    xmlWriter.writeStartDocument();
+    if(editingAtom){
+        saveAtom(editedAtBlock);
+    }
+
+    xmlWriter.writeEndElement();
+    file.close();
+}
+
+void mainWindow::saveAtom(atomic *ptr)
+{
+    writer->writeStartElement("atomicBlock");
+    writer->writeAttribute("id",QString::number(ptr->getId()));
+    writer->writeAttribute("name",ptr->getName());
+    writer->writeAttribute("x",QString::number(ptr->x));
+    writer->writeAttribute("y",QString::number(ptr->y));
+    writer->writeTextElement("code",ptr->code);
+    //foreach()
+    writer->writeEndElement();
+
+}
+void mainWindow::savePort(port *ptr)
+{
+     writer->writeStartElement("port");
+     writer->writeAttribute("name",ptr->name);
 }

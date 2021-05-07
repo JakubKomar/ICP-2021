@@ -17,6 +17,9 @@
 #include <QFile>
 #include <QDir>
 #include <QTextStream>
+#include <QXmlStreamWriter>
+#include <QtXml>
+#include <QMessageBox>
 
 #include  "./gui/aplicationview.h"
 #include  "./gui/portlayout.h"
@@ -80,6 +83,9 @@ public:
     void updateAtEditor();
     compozit * viewedBlock;
     bool destructorMod{false};
+    void saveAtom(atomic *ptr);
+    void savePort(port *ptr)
+    QXmlStreamWriter * writer;
 private slots:
     void refreshSlot();
     void on_newApk_clicked();
