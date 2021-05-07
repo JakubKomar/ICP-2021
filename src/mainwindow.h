@@ -87,8 +87,10 @@ public:
     void saveSocket(portSocket * ptr);
     void saveComp(compozit * ptr,bool saveConnections,bool savePosition);
     void savePort(port *ptr,bool saveConnections);
-    void loadAtom(QDomElement element,bool useIdFromSav,bool usePos);
-    void loadPort(QDomElement element,atomic * ptr,bool loadConections);
+    void loadAtom(QDomElement element,bool useIdFromSav,bool usePos,compozit * placeToLoad);
+    void loadComp(QDomElement element,bool useIdFromSav,bool usePos,compozit * placeToLoad);
+    void loadPort(QDomElement element,block * ptr,bool loadConections);
+    void loadSocket(QDomElement element,compozit * ptr);
     QXmlStreamWriter * writer;
 private slots:
     void refreshSlot();
