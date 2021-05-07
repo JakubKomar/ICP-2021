@@ -54,6 +54,7 @@ public:
     */
     void updateAtEditor();
     compozit * viewedBlock;
+    bool destructorMod{false};
 private slots:
     void refreshSlot();
     void on_newApk_clicked();

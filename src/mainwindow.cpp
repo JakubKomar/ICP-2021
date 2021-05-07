@@ -63,7 +63,8 @@ void mainWindow::updateAtEditor(){
 
 void mainWindow::refreshSlot()
 {
-    refresh();
+    if(!destructorMod)
+        refresh();
 }
 
 void mainWindow::on_newApk_clicked(){
@@ -160,7 +161,6 @@ void mainWindow::on_goBack_clicked()
         secondarySwich(1);
         editedAtBlock=NULL;
     }
-
 }
 
 void mainWindow::swichToComp(compozit *targetPtr)
