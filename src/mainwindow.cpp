@@ -268,27 +268,58 @@ void mainWindow::on_save_clicked()
     xmlWriter.setAutoFormatting(true);
     xmlWriter.writeStartDocument();
     if(editingAtom){
-        saveAtom(editedAtBlock);
+        saveAtom(editedAtBlock,false,false);
     }
 
     xmlWriter.writeEndElement();
     file.close();
 }
 
-void mainWindow::saveAtom(atomic *ptr)
+void mainWindow::saveAtom(atomic *ptr,bool saveConnections,bool savePosition)
 {
     writer->writeStartElement("atomicBlock");
     writer->writeAttribute("id",QString::number(ptr->getId()));
     writer->writeAttribute("name",ptr->getName());
-    writer->writeAttribute("x",QString::number(ptr->x));
-    writer->writeAttribute("y",QString::number(ptr->y));
+    if(savePosition){
+        writer->writeAttribute("x",QString::number(ptr->x));
+        writer->writeAttribute("y",QString::number(ptr->y));
+    }
+    else{
+        writer->writeAttribute("x","0");
+        writer->writeAttribute("y","0");
+    }
     writer->writeTextElement("code",ptr->code);
-    //foreach()
+    foreach(port * item,ptr->inputs){savePort(item,saveConnections);}
+    foreach(port * item,ptr->outputs){savePort(item,saveConnections);}
     writer->writeEndElement();
 
 }
-void mainWindow::savePort(port *ptr)
+void mainWindow::savePort(port *ptr,bool saveConnections)
 {
      writer->writeStartElement("port");
      writer->writeAttribute("name",ptr->name);
+     switch (ptr->valType) {
+        case port::Vint:
+            writer->writeAttribute("valType","int");
+            break;
+        case port::Vdouble:
+            writer->writeAttribute("valType","double");
+            break;
+        case port::Vstring:
+            writer->writeAttribute("valType","string");
+            break;
+        case port::Vbool:
+            writer->writeAttribute("valType","bool");
+            break;
+     }
+     if(ptr->type==port::Pin){
+         writer->writeAttribute("type","input");
+         if((ptr->connectedTo!=nullptr)&&saveConnections){
+             writer->writeAttribute("connectedToBlock",QString::number(ptr->connectedTo->inBlock->getId()));
+             writer->writeAttribute("connectedToPort",QString(ptr->connectedTo->getName()));
+         }
+     }
+     else
+         writer->writeAttribute("type","output");
+     writer->writeEndElement();
 }

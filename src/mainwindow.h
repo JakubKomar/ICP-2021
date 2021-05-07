@@ -83,8 +83,8 @@ public:
     void updateAtEditor();
     compozit * viewedBlock;
     bool destructorMod{false};
-    void saveAtom(atomic *ptr);
-    void savePort(port *ptr);
+    void saveAtom(atomic *ptr,bool saveConnections,bool savePosition);
+    void savePort(port *ptr,bool saveConnections);
     QXmlStreamWriter * writer;
 private slots:
     void refreshSlot();
