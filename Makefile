@@ -18,6 +18,8 @@ run:
 	test -f ICP-projekt-2021 && ./ICP-projekt-2021
 
 doxygen:
+	if [ -d "doc" ]; then rm -r doc; fi && \
+	mkdir doxygen && \
 	doxygen src/doxygen/Doxyfile
 
 clean:
