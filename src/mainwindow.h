@@ -85,6 +85,8 @@ public:
     bool destructorMod{false};
     void saveAtom(atomic *ptr,bool saveConnections,bool savePosition);
     void savePort(port *ptr,bool saveConnections);
+    void loadAtom(QDomElement element,bool useIdFromSav,bool usePos);
+    void loadPort(QDomElement element,atomic * ptr,bool loadConections);
     QXmlStreamWriter * writer;
 private slots:
     void refreshSlot();
@@ -104,6 +106,8 @@ private slots:
     void on_Build_clicked();
 
     void on_save_clicked();
+
+    void on_load_clicked();
 
 private:
     /**
