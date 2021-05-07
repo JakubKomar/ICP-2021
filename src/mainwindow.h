@@ -84,6 +84,8 @@ public:
     compozit * viewedBlock;
     bool destructorMod{false};
     void saveAtom(atomic *ptr,bool saveConnections,bool savePosition);
+    void saveSocket(portSocket * ptr);
+    void saveComp(compozit * ptr,bool saveConnections,bool savePosition);
     void savePort(port *ptr,bool saveConnections);
     void loadAtom(QDomElement element,bool useIdFromSav,bool usePos);
     void loadPort(QDomElement element,atomic * ptr,bool loadConections);

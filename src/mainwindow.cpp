@@ -270,6 +270,10 @@ void mainWindow::on_save_clicked()
     if(editingAtom){
         saveAtom(editedAtBlock,false,false);
     }
+    else
+    {
+        saveComp(viewedBlock,false,false);
+    }
 
     xmlWriter.writeEndElement();
     file.close();
@@ -294,6 +298,38 @@ void mainWindow::saveAtom(atomic *ptr,bool saveConnections,bool savePosition)
     writer->writeEndElement();
 
 }
+
+void mainWindow::saveComp(compozit *ptr, bool saveConnections, bool savePosition)
+{
+    writer->writeStartElement("compositeBlock");
+    writer->writeAttribute("id",QString::number(ptr->getId()));
+    writer->writeAttribute("name",ptr->getName());
+    if(savePosition){
+        writer->writeAttribute("x",QString::number(ptr->x));
+        writer->writeAttribute("y",QString::number(ptr->y));
+    }
+    else{
+        writer->writeAttribute("x","0");
+        writer->writeAttribute("y","0");
+    }
+    foreach(port * item,ptr->inputs){savePort(item,saveConnections);}
+    foreach(port * item,ptr->outputs){savePort(item,saveConnections);}
+    foreach(portSocket * item,ptr->insidePorts){saveSocket(item);}
+    foreach(atomic * item,ptr->atomVect){saveAtom(item,true,true);}
+    foreach(compozit * item,ptr->compVect){saveComp(item,true,true);}
+    writer->writeEndElement();
+}
+
+void mainWindow::saveSocket(portSocket *ptr)
+{
+    writer->writeStartElement("socket");
+    writer->writeAttribute("x",QString::number(ptr->x));
+    writer->writeAttribute("y",QString::number(ptr->y));
+    writer->writeAttribute("imitating",ptr->imitating->getName());
+    savePort(ptr->viewedPort,true);
+    writer->writeEndElement();
+}
+
 void mainWindow::savePort(port *ptr,bool saveConnections)
 {
      writer->writeStartElement("port");
@@ -343,14 +379,15 @@ void mainWindow::on_load_clicked()//loading only atom/comp not whole apk
     }
     else
         qDebug()<<"unsuported save file";
-
-
     file.close();
+    refresh();
 }
 void mainWindow::loadAtom(QDomElement element,bool useIdFromSave,bool usePos){
     atomic * pointer;
-    if(!useIdFromSave)
+    if(!useIdFromSave){
         pointer=this->viewedBlock->addAtom(curentApk->getNewId());
+        pointer->oldId=element.attribute("id","-7").toInt();
+    }
     else
         pointer=this->viewedBlock->addAtom(element.attribute("id","-7").toInt());
     pointer->setName( element.attribute("name",""));
