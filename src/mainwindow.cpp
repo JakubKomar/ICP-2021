@@ -268,27 +268,146 @@ void mainWindow::on_save_clicked()
     xmlWriter.setAutoFormatting(true);
     xmlWriter.writeStartDocument();
     if(editingAtom){
-        saveAtom(editedAtBlock);
+        saveAtom(editedAtBlock,false,false);
     }
 
     xmlWriter.writeEndElement();
     file.close();
 }
 
-void mainWindow::saveAtom(atomic *ptr)
+void mainWindow::saveAtom(atomic *ptr,bool saveConnections,bool savePosition)
 {
     writer->writeStartElement("atomicBlock");
     writer->writeAttribute("id",QString::number(ptr->getId()));
     writer->writeAttribute("name",ptr->getName());
-    writer->writeAttribute("x",QString::number(ptr->x));
-    writer->writeAttribute("y",QString::number(ptr->y));
+    if(savePosition){
+        writer->writeAttribute("x",QString::number(ptr->x));
+        writer->writeAttribute("y",QString::number(ptr->y));
+    }
+    else{
+        writer->writeAttribute("x","0");
+        writer->writeAttribute("y","0");
+    }
     writer->writeTextElement("code",ptr->code);
-    //foreach()
+    foreach(port * item,ptr->inputs){savePort(item,saveConnections);}
+    foreach(port * item,ptr->outputs){savePort(item,saveConnections);}
     writer->writeEndElement();
 
 }
-void mainWindow::savePort(port *ptr)
+void mainWindow::savePort(port *ptr,bool saveConnections)
 {
      writer->writeStartElement("port");
      writer->writeAttribute("name",ptr->name);
+     switch (ptr->valType) {
+        case port::Vint:
+            writer->writeAttribute("valType","int");
+            break;
+        case port::Vdouble:
+            writer->writeAttribute("valType","double");
+            break;
+        case port::Vstring:
+            writer->writeAttribute("valType","string");
+            break;
+        case port::Vbool:
+            writer->writeAttribute("valType","bool");
+            break;
+     }
+     if(ptr->type==port::Pin){
+         writer->writeAttribute("type","input");
+         if((ptr->connectedTo!=nullptr)&&saveConnections){
+             writer->writeAttribute("connectedToBlock",QString::number(ptr->connectedTo->inBlock->getId()));
+             writer->writeAttribute("connectedToPort",QString(ptr->connectedTo->getName()));
+         }
+     }
+     else
+         writer->writeAttribute("type","output");
+     writer->writeEndElement();
+}
+
+void mainWindow::on_load_clicked()//loading only atom/comp not whole apk
+{
+    QFile file("MyXml.xml");
+    if(!file.open(QIODevice::ReadOnly)){
+        qDebug()<<"error while opening file";
+        return;
+    }
+    QDomDocument readData;
+    readData.setContent(&file);
+    QDomElement root=readData.documentElement();
+    if(root.tagName()=="atomicBlock"){
+        qDebug()<<"loaded atom block";
+        loadAtom(root,false,false);
+    }
+    else if(root.tagName()=="compositeBlock"){
+
+    }
+    else
+        qDebug()<<"unsuported save file";
+
+
+    file.close();
+}
+void mainWindow::loadAtom(QDomElement element,bool useIdFromSave,bool usePos){
+    atomic * pointer;
+    if(!useIdFromSave)
+        pointer=this->viewedBlock->addAtom(curentApk->getNewId());
+    else
+        pointer=this->viewedBlock->addAtom(element.attribute("id","-7").toInt());
+    pointer->setName( element.attribute("name",""));
+    if(usePos){
+        pointer->x= element.attribute("x","0").toInt();
+        pointer->x= element.attribute("y","0").toInt();
+    }
+    QDomElement Component=element.firstChild().toElement();
+    while(!Component.isNull()){
+        if(Component.tagName()=="code"){
+            pointer->code=Component.firstChild().toText().data();
+        }
+        else if((Component.tagName())=="port"){
+            loadPort(Component,pointer,false);
+        }
+        else{
+            qDebug()<<"unknown element in atomic block";
+        }
+        Component = Component.nextSibling().toElement();
+    }
+
+}
+void mainWindow::loadPort(QDomElement element,atomic * ptr,bool loadConections){
+    if(element.tagName()=="port"){
+        QString type=element.attribute("type","");
+        port * portPtr;
+        if(type=="input")
+            portPtr=ptr->addPort(true);
+        else if(type=="output")
+            portPtr=ptr->addPort(false);
+        else{
+             qDebug()<<"missing port type";
+             return;
+        }
+        portPtr->name=element.attribute("name","name didnt load");
+
+        QString valType=element.attribute("valType","");
+        if(valType=="int"){
+           portPtr->valType=port::Vint;
+        }
+        else if(valType=="double"){
+
+           portPtr->valType=port::Vdouble;
+        }
+        else if(valType=="string"){
+           portPtr->valType=port::Vstring;
+        }
+        else if(valType=="bool"){
+           portPtr->valType=port::Vbool;
+        }
+        if(loadConections){
+
+        }
+    }
+    else
+    {
+        qDebug()<<"invalid port";
+    }
+
 }
