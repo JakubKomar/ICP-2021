@@ -12,5 +12,12 @@ aplication::aplication()
 {
     this->setName("My Apk");
     this->setId(-1);
+    this->idStack=-1;
+}
+
+int aplication::getNewId()
+{
+    idStack++;
+    return idStack;
 }
 

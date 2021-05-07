@@ -27,15 +27,13 @@ public:
      * Create new atomic block
      * @return current pointer to block
      */
-    atomic* addAtom();
+    atomic* addAtom(int id);
     /**
      * Create new compozite blcok
      * @return current pointer to block
      */
-    compozit* addCompozite();
+    compozit* addCompozite(int id);
     void deleteBlock(block * ptr);
-    private:
-        int idStack;    //IDs for new blocks
 };
 
 #endif // COMPOZIT_H

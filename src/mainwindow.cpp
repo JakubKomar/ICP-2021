@@ -87,7 +87,7 @@ void mainWindow::on_addAtomic2_clicked(){on_apkAddAtom_clicked();}
 void mainWindow::on_apkAddAtom_clicked(){
     if(viewedBlock!=NULL)
     {
-        atomic * pointer=viewedBlock->addAtom();
+        atomic * pointer=viewedBlock->addAtom(curentApk->getNewId());
         scene->addGrapicRepr(0,0,pointer);
 
     }
@@ -97,7 +97,7 @@ void mainWindow::on_AddComp2_clicked(){on_addCompozite_clicked();}
 void mainWindow::on_addCompozite_clicked(){
     if(viewedBlock!=NULL)
     {
-        compozit * pointer=viewedBlock->addCompozite();
+        compozit * pointer=viewedBlock->addCompozite(curentApk->getNewId());
         scene->addGrapicRepr(0,0,pointer);
     }
 }

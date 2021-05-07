@@ -22,7 +22,9 @@ public:
     {
          qDebug()<<"aplication destructor engage";
     }
-
+    int getNewId();
+private:
+    int idStack;    //IDs for new blocks
 
 };
 
