@@ -29,7 +29,6 @@ port::~port()
     qDebug()<<"port destructor";
     foreach(port * item,PortConnToThis ){
         item->connectedTo=nullptr;
-         qDebug()<<"uh oh";
     }
     if(connectedTo)
         connectedTo->removePortFromList(this);
@@ -53,7 +52,6 @@ void port::setName(QString newName)
 port::TypeVal port::getType()
 {
     return valType;
-
 }
 
 void port::changeType(TypeVal newType)

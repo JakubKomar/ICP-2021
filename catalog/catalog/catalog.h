@@ -9,6 +9,7 @@
 #include <QFileSystemModel>
 #include <QDir>
 
+
 /*
 #include <QProgressDialog>
 #include <QFileDialog>
@@ -33,6 +34,10 @@ public:
 
 private slots:
     void on_treeView_clicked(const QModelIndex &index);
+
+    void on_listView_clicked(const QModelIndex &index);
+
+    void on_listView_doubleClicked(const QModelIndex &index);
 
 private:
     Ui::catalog *ui;

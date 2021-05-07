@@ -12,3 +12,8 @@ atomic::atomic()
 {
     this->type=Tatomic;
 }
+
+atomic::~atomic()
+{
+    qDebug()<<"atomic destructor engage";
+}

@@ -18,6 +18,9 @@ class portModel : public QGraphicsItem
 {
 public:
     portModel(port * coreRepm,int yOfset);
+    /**
+     * function for graphic displaying
+     */
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
     int yOfset{0};
     int xOfset{0};
@@ -25,6 +28,9 @@ public:
     int yBindingOfs{7};
     port * coreRepr;
 public slots:
+    /**
+     * function to move th block
+     */
     void move();
 private:
     QRectF boundingRect() const;

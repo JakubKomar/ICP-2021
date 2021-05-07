@@ -226,6 +226,20 @@
                     </layout>
                    </item>
                    <item>
+                    <widget class="QLabel" name="label">
+                     <property name="text">
+                      <string>ID:</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLineEdit" name="id">
+                     <property name="readOnly">
+                      <bool>true</bool>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
                     <layout class="QVBoxLayout" name="verticalLayout_7">
                      <property name="sizeConstraint">
                       <enum>QLayout::SetMaximumSize</enum>
@@ -280,7 +294,7 @@
                              <x>0</x>
                              <y>0</y>
                              <width>256</width>
-                             <height>247</height>
+                             <height>223</height>
                             </rect>
                            </property>
                            <layout class="QVBoxLayout" name="verticalLayout_11">
@@ -354,7 +368,7 @@
                              <x>0</x>
                              <y>0</y>
                              <width>256</width>
-                             <height>246</height>
+                             <height>223</height>
                             </rect>
                            </property>
                            <layout class="QVBoxLayout" name="verticalLayout_10">

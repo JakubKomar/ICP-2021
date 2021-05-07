@@ -12,5 +12,17 @@ aplication::aplication()
 {
     this->setName("My Apk");
     this->setId(-1);
+    this->idStack=-1;
+}
+
+aplication::~aplication()
+{
+    qDebug()<<"aplication destructor engage";
+}
+
+int aplication::getNewId()
+{
+    idStack++;
+    return idStack;
 }
 

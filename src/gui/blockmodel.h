@@ -54,9 +54,11 @@ public:
     */
     block * getCrPtr();
     QList <portModel*> ports;
-    void addPorts();
 protected:
 private:
+    /**
+     * function for moving all sub ports when master block is moved
+     */
     void moveAllSubports();
     int height;
     int width;

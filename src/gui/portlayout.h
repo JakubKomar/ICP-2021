@@ -26,8 +26,17 @@ public:
     portLayout(QWidget * place,port * corePtr);
     ~portLayout();
 public slots:
+    /**
+     * slot for deleting the layout when deleting button is pressed
+     */
    void destructButt();
+   /**
+    * updating name from core repr.
+    */
    void cheangeName();
+   /**
+    * updating value type from core repr.
+    */
    void cheangeValType();
 private:
     QLineEdit * lineEdit;
@@ -35,7 +44,13 @@ private:
     port * corePtr;
     QVBoxLayout * mainLayout;
     bool deletedGraphic;
+    /**
+     * delete all layout assigned to port
+     */
     void deleteElements();
+    /**
+     * updating combobox from core reptr.
+     */
     void setComboBox();
 };
 

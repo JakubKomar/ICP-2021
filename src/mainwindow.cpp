@@ -20,6 +20,7 @@ mainWindow::mainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::mainWin
 }
 
 mainWindow::~mainWindow(){
+    destructorMod=true;
     delete ui;
     delete scene;
     if(curentApk)
@@ -61,9 +62,11 @@ void mainWindow::updateAtEditor(){
     ui->codeTextEditor->insertPlainText(editedAtBlock->code);
 }
 
+
 void mainWindow::refreshSlot()
 {
-    refresh();
+    if(!destructorMod)
+        refresh();
 }
 
 void mainWindow::on_newApk_clicked(){
@@ -86,7 +89,7 @@ void mainWindow::on_addAtomic2_clicked(){on_apkAddAtom_clicked();}
 void mainWindow::on_apkAddAtom_clicked(){
     if(viewedBlock!=NULL)
     {
-        atomic * pointer=viewedBlock->addAtom();
+        atomic * pointer=viewedBlock->addAtom(curentApk->getNewId());
         scene->addGrapicRepr(0,0,pointer);
 
     }
@@ -96,7 +99,7 @@ void mainWindow::on_AddComp2_clicked(){on_addCompozite_clicked();}
 void mainWindow::on_addCompozite_clicked(){
     if(viewedBlock!=NULL)
     {
-        compozit * pointer=viewedBlock->addCompozite();
+        compozit * pointer=viewedBlock->addCompozite(curentApk->getNewId());
         scene->addGrapicRepr(0,0,pointer);
     }
 }
@@ -148,6 +151,7 @@ void mainWindow::refresh()
 
 void mainWindow::on_goBack_clicked()
 {
+    editingAtom=false;
     callBackPop();
     refresh();
     refreshPorts();
@@ -160,7 +164,6 @@ void mainWindow::on_goBack_clicked()
         secondarySwich(1);
         editedAtBlock=NULL;
     }
-
 }
 
 void mainWindow::swichToComp(compozit *targetPtr)
@@ -169,6 +172,9 @@ void mainWindow::swichToComp(compozit *targetPtr)
     viewedBlock=targetPtr;
     editedBlock=targetPtr;
     ui->AtNameEdit->clear();
+    ui->AtNameEdit->insert(viewedBlock->getName());
+    ui->id->clear();
+    ui->id->insert(QString::number(viewedBlock->getId()));
     refresh();
     refreshPorts();
     primarySwich(1);
@@ -177,11 +183,14 @@ void mainWindow::swichToComp(compozit *targetPtr)
 
 void mainWindow::swichToAtomic(atomic *targetPtr)
 {
+    editingAtom=true;
     refresh();
     callBackPush();
     editedAtBlock=targetPtr;
     editedBlock=targetPtr;
     ui->AtNameEdit->clear();
+    ui->id->clear();
+    ui->id->insert(QString::number(editedAtBlock->getId()));
     updateAtEditor();
     refreshPorts();
     primarySwich(1);
@@ -246,3 +255,264 @@ void mainWindow::on_Build_clicked()
         buildAtomic(item);
     }
 }
+
+void mainWindow::on_save_clicked()
+{
+    QFile file("MyXml.xml");
+    if(!file.open(QIODevice::WriteOnly)){
+        qDebug()<<"error while opening file";
+        return;
+    }
+
+    QXmlStreamWriter xmlWriter(&file);
+    writer=&xmlWriter;
+    xmlWriter.setAutoFormatting(true);
+    xmlWriter.writeStartDocument();
+    if(editingAtom){
+        saveAtom(editedAtBlock,false,false);
+    }
+    else
+    {
+        saveComp(viewedBlock,false,false);
+    }
+
+    xmlWriter.writeEndElement();
+    file.close();
+}
+
+void mainWindow::saveAtom(atomic *ptr,bool saveConnections,bool savePosition)
+{
+    writer->writeStartElement("atomicBlock");
+    writer->writeAttribute("id",QString::number(ptr->getId()));
+    writer->writeAttribute("name",ptr->getName());
+    if(savePosition){
+        writer->writeAttribute("x",QString::number(ptr->x));
+        writer->writeAttribute("y",QString::number(ptr->y));
+    }
+    else{
+        writer->writeAttribute("x","0");
+        writer->writeAttribute("y","0");
+    }
+    writer->writeTextElement("code",ptr->code);
+    foreach(port * item,ptr->inputs){savePort(item,saveConnections);}
+    foreach(port * item,ptr->outputs){savePort(item,saveConnections);}
+    writer->writeEndElement();
+
+}
+
+void mainWindow::saveComp(compozit *ptr, bool saveConnections, bool savePosition)
+{
+    writer->writeStartElement("compositeBlock");
+    writer->writeAttribute("id",QString::number(ptr->getId()));
+    writer->writeAttribute("name",ptr->getName());
+    if(savePosition){
+        writer->writeAttribute("x",QString::number(ptr->x));
+        writer->writeAttribute("y",QString::number(ptr->y));
+    }
+    else{
+        writer->writeAttribute("x","0");
+        writer->writeAttribute("y","0");
+    }
+    foreach(port * item,ptr->inputs){savePort(item,saveConnections);}
+    foreach(port * item,ptr->outputs){savePort(item,saveConnections);}
+    foreach(portSocket * item,ptr->insidePorts){saveSocket(item);}
+    foreach(atomic * item,ptr->atomVect){saveAtom(item,true,true);}
+    foreach(compozit * item,ptr->compVect){saveComp(item,true,true);}
+    writer->writeEndElement();
+}
+
+void mainWindow::saveSocket(portSocket *ptr)
+{
+    writer->writeStartElement("socket");
+    writer->writeAttribute("x",QString::number(ptr->x));
+    writer->writeAttribute("y",QString::number(ptr->y));
+    writer->writeAttribute("imitating",ptr->imitating->getName());
+    writer->writeEndElement();
+}
+
+void mainWindow::savePort(port *ptr,bool saveConnections)
+{
+     writer->writeStartElement("port");
+     writer->writeAttribute("name",ptr->name);
+     switch (ptr->valType) {
+        case port::Vint:
+            writer->writeAttribute("valType","int");
+            break;
+        case port::Vdouble:
+            writer->writeAttribute("valType","double");
+            break;
+        case port::Vstring:
+            writer->writeAttribute("valType","string");
+            break;
+        case port::Vbool:
+            writer->writeAttribute("valType","bool");
+            break;
+     }
+     if(ptr->type==port::Pin){
+         writer->writeAttribute("type","input");
+         if((ptr->connectedTo!=nullptr)&&saveConnections){
+             writer->writeAttribute("connectedToBlock",QString::number(ptr->connectedTo->inBlock->getId()));
+             writer->writeAttribute("connectedToPort",QString(ptr->connectedTo->getName()));
+         }
+     }
+     else
+         writer->writeAttribute("type","output");
+     writer->writeEndElement();
+}
+
+void mainWindow::on_load_clicked()//loading only atom/comp not whole apk
+{
+    QFile file("MyXml.xml");
+    if(!file.open(QIODevice::ReadOnly)){
+        qDebug()<<"error while opening file";
+        return;
+    }
+    QDomDocument readData;
+    readData.setContent(&file);
+    QDomElement root=readData.documentElement();
+    if(root.tagName()=="atomicBlock"){
+        qDebug()<<"loaded atom block";
+        loadAtom(root,false,false,viewedBlock);
+    }
+    else if(root.tagName()=="compositeBlock"){
+        qDebug()<<"loaded atom block";
+        loadComp(root,false,false,viewedBlock);
+    }
+    else
+        qDebug()<<"unsuported save file";
+    file.close();
+    refresh();
+}
+void mainWindow::loadAtom(QDomElement element,bool useIdFromSave,bool usePos,compozit * placeToLoad){
+    atomic * pointer;
+    if(!useIdFromSave){
+        pointer=placeToLoad->addAtom(curentApk->getNewId());
+        pointer->oldId=element.attribute("id","-7").toInt();
+    }
+    else
+        pointer=placeToLoad->addAtom(element.attribute("id","-7").toInt());
+    pointer->setName( element.attribute("name",""));
+    if(usePos){
+        pointer->x= element.attribute("x","0").toInt();
+        pointer->y= element.attribute("y","0").toInt();
+    }
+    QDomElement Component=element.firstChild().toElement();
+    while(!Component.isNull()){
+        if(Component.tagName()=="code"){
+            pointer->code=Component.firstChild().toText().data();
+        }
+        else if((Component.tagName())=="port"){
+            loadPort(Component,pointer,false);
+        }
+        else{
+            qDebug()<<"unknown element in atomic block";
+        }
+        Component = Component.nextSibling().toElement();
+    }
+
+}
+
+void mainWindow::loadComp(QDomElement element, bool useIdFromSave,bool usePos,compozit * placeToLoad)
+{
+    compozit * pointer;
+    if(!useIdFromSave){
+        pointer=placeToLoad->addCompozite(curentApk->getNewId());
+        pointer->oldId=element.attribute("id","-7").toInt();
+    }
+    else
+        pointer=placeToLoad->addCompozite(element.attribute("id","-7").toInt());
+    pointer->setName( element.attribute("name",""));
+    if(usePos){
+        pointer->x= element.attribute("x","0").toInt();
+        pointer->x= element.attribute("y","0").toInt();
+    }
+    QDomElement Component=element.firstChild().toElement();
+    while(!Component.isNull()){
+        if((Component.tagName())=="port"){
+            loadPort(Component,pointer,false);
+        }
+        else if((Component.tagName())=="atomicBlock"){
+            loadAtom(Component,false,true,pointer);
+        }
+        else if((Component.tagName())=="compositeBlock"){
+            loadComp(Component, false,true,pointer);
+        }
+        else if((Component.tagName())=="socket"){
+            loadSocket(Component, pointer);
+        }
+        else{
+            qDebug()<<"unknown element in atomic block";
+        }
+        Component = Component.nextSibling().toElement();
+    }
+}
+void mainWindow::loadPort(QDomElement element,block * ptr,bool loadConections){
+    if(element.tagName()=="port"){
+        QString type=element.attribute("type","");
+        port * portPtr;
+        if(type=="input")
+            portPtr=ptr->addPort(true);
+        else if(type=="output")
+            portPtr=ptr->addPort(false);
+        else{
+             qDebug()<<"missing port type";
+             return;
+        }
+        portPtr->name=element.attribute("name","name didnt load");
+
+        QString valType=element.attribute("valType","");
+        if(valType=="int"){
+           portPtr->valType=port::Vint;
+        }
+        else if(valType=="double"){
+
+           portPtr->valType=port::Vdouble;
+        }
+        else if(valType=="string"){
+           portPtr->valType=port::Vstring;
+        }
+        else if(valType=="bool"){
+           portPtr->valType=port::Vbool;
+        }
+        if(loadConections){
+
+        }
+    }
+    else
+    {
+        qDebug()<<"invalid port";
+    }
+
+}
+
+void mainWindow::loadSocket(QDomElement element, compozit *ptr)
+{
+    QString nameForSearch=element.attribute("imitating","");
+
+    port * finded=nullptr;
+    foreach(port * item,ptr->inputs){
+        if(item->name==nameForSearch){
+            finded=item;
+            break;
+        }
+    }
+    if(!finded){
+        foreach(port * item,ptr->outputs){
+            if(item->name==nameForSearch){
+                finded=item;
+                break;
+            }
+        }
+    }
+    if(!finded){
+        qDebug()<<"for socket is not findet internal reprezentation";
+        return;
+    }
+    portSocket * newSocket=new portSocket(finded);
+    connect(newSocket,SIGNAL(destroyed()),this,SLOT(refreshSlot()));
+    newSocket->x=element.attribute("x","0").toInt();
+    newSocket->y=element.attribute("y","0").toInt();
+    ptr->insidePorts.append(newSocket);
+    finded->socketPtr=newSocket;
+}
+

@@ -45,21 +45,39 @@ public:
          Tcompozit,
          TonlyPort,
      };
+     /**
+      * type is used, when the block is drawed to screen and for some cast in code
+     */
      Type type{TonlyPort};
+     /**
+      * adding new port to block
+      * @param isInput - false-OUTPUT , true-INPUT
+      * @return pointer to new port
+     */
      port* addPort(bool isInput);
+     /**
+      * geting max value from input and output counts
+      * @return max value from input and output counts, value used for drawing blocks
+     */
      int getMaxNumOfPort();
+     /**
+      * function for calculating width of block, used when painting blocks
+      * @return max value from input and output counts, value used for drawing blocks
+     */
      int getWidth();
      int x;     //pozition on graphic scene
      int y;
+     /**
+      * deleting exact port
+      * @param  ptr -pointer to deleted param
+     */
      void delPort(port * ptr);
      QList<port*> inputs;
      QList<port*> outputs;
+     int oldId{-8};//id for loading from file
 protected :
     QString name;
     int id; 
-private:
-
-signals:
 
 };
 

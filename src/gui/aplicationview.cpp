@@ -39,6 +39,7 @@ void aplicationView::mousePressEvent(QGraphicsSceneMouseEvent *event)
     {
         for(auto * item:items(event->scenePos()))
         {
+            mainUi->destructorMod=true;
             if (auto myrect=dynamic_cast<blockModel*>(item);myrect){
                 if(myrect->getCrPtr()->type!=block::TonlyPort){
                      mainUi->deleteExactBlock(myrect->getCrPtr());
@@ -48,6 +49,7 @@ void aplicationView::mousePressEvent(QGraphicsSceneMouseEvent *event)
                 break;
             }
         }
+         mainUi->destructorMod=false;
     }
     else  if(event->button()==Qt::LeftButton){
         for(auto * item:items(event->scenePos()))

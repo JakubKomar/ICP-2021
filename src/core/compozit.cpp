@@ -8,7 +8,7 @@
  */
 #include "compozit.h"
 
-compozit::compozit():idStack(0)
+compozit::compozit()
 {
     qDebug()<<"compozit constructor engage";
     this->type=Tcompozit;
@@ -22,20 +22,18 @@ compozit::~compozit()
     qDeleteAll(atomVect.begin(), atomVect.end());
     atomVect.clear();
 }
-atomic* compozit::addAtom()
+atomic* compozit::addAtom(int id)
 {
     atomic * New=new atomic;
-    New->setId(idStack);
-    idStack++;
+    New->setId(id);
     atomVect.append(New);
     return New;
 }
 
-compozit *compozit::addCompozite()
+compozit *compozit::addCompozite(int id)
 {
     compozit * New=new compozit;
-    New->setId(idStack);
-    idStack++;
+    New->setId(id);
     compVect.append(New);
     return New;
 }
