@@ -12,11 +12,10 @@ catalog::catalog(QWidget *parent)
 
     //--------------------------------------------
     QString path = QDir::currentPath();
-    path=path+"/../../library/";
+    path=path+"/../../library/";                                // rootfolder to display = library folder
     qDebug()<<path;
 
 
-     //___
     folder = new QFileSystemModel(this);                        // create the new model
     folder -> setFilter(QDir::NoDotAndDotDot | QDir::AllDirs);  // show only directories (hide other)
     folder -> setRootPath(path);                                // populate (folder) model (using set rootpath)
@@ -27,19 +26,33 @@ catalog::catalog(QWidget *parent)
 
 
     file = new QFileSystemModel(this);
-    file -> setFilter(QDir::NoDotAndDotDot | QDir::Files);    // show only files
+    file -> setFilter(QDir::NoDotAndDotDot | QDir::Files);
     file -> setRootPath(path);
 
-    QDir libdir(path);
-    QString filter = "*.xml";
-    libdir.setNameFilters(filter.split(' '));
+                                                                   // show only xml files
 
-/*
-    QStringList nameFilter("*.xml");
-    QDir libdir(path);
-    QStringList FilesAndDirectories = libdir.entryList(nameFilter);
-*/
+//___for some reason it doesn't filter any of the files!!!!!!!!!!
+    /*
+     * both of these options should work ...but they don't...
 
+    file -> setNameFilters(QStringList() << "*.xml");   // result = only greys ot non xml file
+
+    */
+
+    //QDir libdir(path);
+
+    QStringList filter;
+    filter << "*.xml";
+    file -> setNameFilters(filter);
+
+    //libdir.entryList(filter, QDir::Files);
+
+
+
+
+
+
+//____
 
     ui -> listView -> setModel(file);
 
@@ -55,13 +68,26 @@ catalog::~catalog()
 
 
 
-
-
-
 //--------------------------------------------
 void catalog::on_treeView_clicked(const QModelIndex &index)     // when user clicks on a node in treeView (extract and set path in listView
 {
     QString path = folder -> fileInfo(index).absoluteFilePath();
+    qDebug()<<path;
     ui -> listView -> setRootIndex(file -> setRootPath(path));
 }
+//--------------------------------------------
+
+//--------------------------------------------
+void catalog::on_listView_clicked(const QModelIndex &index)
+{
+    QString path = file -> fileInfo(index).absoluteFilePath();
+    qDebug()<<path;
+}
+
+// mouse press event for each button:
+// TODO
+
+
+// doubleclick->file open (load into ???)
+// TODO
 //--------------------------------------------
