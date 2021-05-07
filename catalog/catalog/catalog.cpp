@@ -11,19 +11,10 @@ catalog::catalog(QWidget *parent)
     ui->setupUi(this);
 
     //--------------------------------------------
-    //___{FIX TO SHOW ONLY WHAT IS IN THE LIBRARY FOLDER}_______
-    QProcess getpath;
-    QStringList commands;
-    commands <<  "cd .." << "cd .." << "cd library" ;
-    getpath.start(QDir::currentPath(), commands);           // (...ICP-2021\catalog\build-catalog-Desktop_Qt_5_15_2_MinGW_64_bit-Debug) -> (...ICP-2021\library)
-
-    getpath.waitForFinished();
-
-    //QString iferror = getpath.readAllStandardError();
     QString path = QDir::currentPath();
-    path=path+"/../catalog/";
+    path=path+"/../../library/";
     qDebug()<<path;
-    // file system needs rootpath = main "library" folder
+
 
      //___
     folder = new QFileSystemModel(this);                        // create the new model
@@ -38,6 +29,18 @@ catalog::catalog(QWidget *parent)
     file = new QFileSystemModel(this);
     file -> setFilter(QDir::NoDotAndDotDot | QDir::Files);    // show only files
     file -> setRootPath(path);
+
+    QDir libdir(path);
+    QString filter = "*.xml";
+    libdir.setNameFilters(filter.split(' '));
+
+/*
+    QStringList nameFilter("*.xml");
+    QDir libdir(path);
+    QStringList FilesAndDirectories = libdir.entryList(nameFilter);
+*/
+
+
     ui -> listView -> setModel(file);
 
     index = file->index(path, 0);
