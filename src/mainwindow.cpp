@@ -149,6 +149,7 @@ void mainWindow::refresh()
 
 void mainWindow::on_goBack_clicked()
 {
+    editingAtom=false;
     callBackPop();
     refresh();
     refreshPorts();
@@ -180,6 +181,7 @@ void mainWindow::swichToComp(compozit *targetPtr)
 
 void mainWindow::swichToAtomic(atomic *targetPtr)
 {
+    editingAtom=true;
     refresh();
     callBackPush();
     editedAtBlock=targetPtr;
@@ -249,5 +251,12 @@ void mainWindow::on_Build_clicked()
 
     foreach(atomic * item,curentApk->atomVect){
         buildAtomic(item);
+    }
+}
+
+void mainWindow::on_save_clicked()
+{
+    if(editingAtom){
+
     }
 }

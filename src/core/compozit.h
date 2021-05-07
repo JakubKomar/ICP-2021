@@ -33,6 +33,10 @@ public:
      * @return current pointer to block
      */
     compozit* addCompozite(int id);
+    /**
+     * Deleting exact block from compozite
+     * @param pointer to deleted block
+     */
     void deleteBlock(block * ptr);
 };
 

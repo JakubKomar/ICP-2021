@@ -19,9 +19,15 @@ class portSocket : public block {
 public:
     portSocket(port * imitating);
     ~portSocket();
+    /**
+     * adding imitating port to block
+     */
     void addPort();
     port * imitating{nullptr};
     port * viewedPort{nullptr};
+    /**
+     * when imitating port changed, update function is caled
+     */
     void update();
 
 };

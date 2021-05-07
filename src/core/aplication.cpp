@@ -15,6 +15,11 @@ aplication::aplication()
     this->idStack=-1;
 }
 
+aplication::~aplication()
+{
+    qDebug()<<"aplication destructor engage";
+}
+
 int aplication::getNewId()
 {
     idStack++;

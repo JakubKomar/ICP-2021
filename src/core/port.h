@@ -36,28 +36,50 @@ public:
         Vstring,
         Vbool
     };
+    /**
+     * Constructor for atomic and compozit blocks
+     */
     port(Type type,int num,block *inBlock);
+    /**
+     * Constructor for sockets
+     */
     port(Type type,block *inBlock);
     ~port();
-    Type type;
-    TypeVal valType;
+    Type type;  //input/output
+    TypeVal valType;//string,int,...
     QString name;
     block *inBlock;
     port *connectedTo{nullptr};
     portModel *graphicRep{nullptr};
+    /**
+     * returning name of port
+     * @return string name of port
+     */
     QString getName();
+    /**
+     * seting name of port
+     * @param new string name of port
+     */
     void setName(QString newName);
+    /**
+     * returning type of port - input/output
+     * @return type of port
+     */
     TypeVal getType();
+    /**
+     * change type of port
+     * @param new type
+     */
     void changeType(TypeVal newType);
     QList<port*>PortConnToThis;
+    /**
+     * deleting port from connected list
+     * @param deleted port
+     */
     void removePortFromList(port *ptr);
     portSocket * socketPtr{nullptr};
 protected:
     int ID;
-private:
-
-signals:
-
 };
 
 #endif // PORT_H

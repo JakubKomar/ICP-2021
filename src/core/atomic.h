@@ -17,10 +17,7 @@ class atomic : public block
 {
 public:
     atomic();
-    ~atomic()
-    {
-         qDebug()<<"atomic destructor engage";
-    }
+    ~atomic();
     QString code;
 private:
 

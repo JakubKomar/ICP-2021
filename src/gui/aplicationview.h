@@ -38,9 +38,23 @@ public:
      * @param block - pointer to core reprezentation
     */
     void addGrapicRepr(int x,int y,block * coreRep);
+    /**
+     * cleaning actual sceene- delete all aloc. modeles and lines
+     */
     void cleanScene();
+    /**
+     * loading models from core repr.
+     * @param which block is now shown
+     */
     void loadScene(compozit * CompPtr);
+    /**
+     * swiching viewed block
+     * @param which block is now shown
+     */
     void swichEditedComp(compozit *targetPtr);
+    /**
+     * drawing connections between ports
+     */
     void drawConnections();
 protected:
     port * bindingPort;
@@ -52,6 +66,10 @@ protected:
     QList<blockModel*>blockModels;
     mainWindow * mainUi;
 private:
+    /**
+     * deleting exact model from scene
+     * @param pointer to deleted model
+     */
     void deleteGraphicBlock(blockModel * ptr);
     QList<QGraphicsLineItem *>lines;
 

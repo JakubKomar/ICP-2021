@@ -42,12 +42,37 @@ public:
      * @arg page - number of page to swich
     */
     void primarySwich(int page);
+    /**
+     * swich ui to page from arg - editing atomic /editing compozite
+     * @arg page - number of page to swich
+    */
     void secondarySwich(int page); 
+    /**
+     * deleting block from core
+     * @arg pointer to deleted block
+    */
     void deleteExactBlock(block *ptr);
+    /**
+     * pushing actual edited block to call stack
+    */
     void callBackPush();
+    /**
+     * poping actual edited block to call stack
+    */
     void callBackPop();
+    /**
+     * swich edited block
+     * @arg pointer to new edited block
+    */
     void swichToComp(compozit * targetPtr);
+    /**
+     * swich edited block
+     * @arg pointer to new edited block
+    */
     void swichToAtomic(atomic * targetPtr);
+    /**
+     * delete all graphic object of block and connections and reloding them
+    */
     void refresh();
     /**
      * update editor before swiching to this page
@@ -72,6 +97,8 @@ private slots:
     void on_redo_clicked();
     void on_Build_clicked();
 
+    void on_save_clicked();
+
 private:
     /**
      * ading input to frame
@@ -88,10 +115,26 @@ private:
     atomic * editedAtBlock;
     aplicationView * scene;
     Ui::mainWindow *ui;
+    bool editingAtom{false};
+    /**
+     * clearing all layouts for port editing
+    */
     void clearPortLayouts();
+    /**
+     * deleting all layouts for port editing and relode new
+    */
     void refreshPorts();
+    /**
+     * interpreting function
+    */
     void buildAtomic(atomic * prt);
+    /**
+     * interpreting function
+    */
     void buildCompozite(compozit * prt);
+    /**
+     * interpreting function
+    */
     void buildHeader(compozit * prt);
     QList <portLayout*> layoutList;
 };

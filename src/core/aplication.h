@@ -18,10 +18,11 @@ class aplication : public compozit
 {
 public:
     aplication();
-    ~aplication()
-    {
-         qDebug()<<"aplication destructor engage";
-    }
+    ~aplication();
+    /**
+     * Geting new id from the apk
+     * @return returning id
+     */
     int getNewId();
 private:
     int idStack;    //IDs for new blocks
