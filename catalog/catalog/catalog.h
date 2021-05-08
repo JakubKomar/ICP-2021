@@ -8,15 +8,10 @@
 #include <QtGui>
 #include <QFileSystemModel>
 #include <QDir>
+#include <QListWidget>
+#include <QTreeWidget>
+#include <QTreeWidgetItem>
 
-
-/*
-#include <QProgressDialog>
-#include <QFileDialog>
-#include <QTableWidget>
-#include <QTextStream>
-#include <QDesktopServices>
-*/
 
 
 QT_BEGIN_NAMESPACE
