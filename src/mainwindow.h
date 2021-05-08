@@ -35,8 +35,7 @@ QT_END_NAMESPACE
 class aplicationView;
 class mainWindow : public QMainWindow
 {
-    Q_OBJECT
-
+Q_OBJECT
 public:
     mainWindow(QWidget *parent = nullptr);
     ~mainWindow();
@@ -81,16 +80,62 @@ public:
      * update editor before swiching to this page
     */
     void updateAtEditor();
+    /**
+     * saving atomic block to xml file
+     * @param ptr-poiter to block which will be saved
+     * @param saveConnections-save relation between blocks
+     * @param saveposition- saving position in graphic scene
+    */
+    void saveAtom(atomic *ptr,bool saveConnections,bool savePosition);
+    /**
+     * saving socket block to xml file
+     * @param ptr-poiter to socket which will be saved
+    */
+    void saveSocket(portSocket * ptr);
+    /**
+     * saving compozite block to xml file
+     * @param ptr-poiter to block which will be saved
+     * @param saveConnections-save relation between blocks
+     * @param saveposition- saving position in graphic scene
+    */
+    void saveComp(compozit * ptr,bool saveConnections,bool savePosition);
+    /**
+     * saving port to xml file
+     * @param ptr-poiter to port which will be saved
+     * @param saveConnections-save relation between blocks
+    */
+    void savePort(port *ptr,bool saveConnections);
+    /**
+     * loading atomic block from xml file
+     * @param element-xml var where is  block saved
+     * @param useIdFromSav-use id from the file
+     * @param usePos- chose if position in scene is loaded to block
+     * @param usePos- where is blocked saved after load
+    */
+    void loadAtom(QDomElement element,bool useIdFromSav,bool usePos,compozit * placeToLoad);
+    /**
+     * loading compozite block from xml file
+     * @param element-xml var where is  block saved
+     * @param useIdFromSav-use id from the file
+     * @param usePos- chose if position in scene is loaded to block
+     * @param usePos- where is blocked saved after load
+    */
+    void loadComp(QDomElement element,bool useIdFromSav,bool usePos,compozit * placeToLoad);
+    /**
+     * loading port from xml file
+     * @param element-xml var where is  block saved
+     * @param useIdFromSav-use id from the file
+     * @param usePos- chose if position in scene is loaded to block
+    */
+    void loadPort(QDomElement element,block * ptr,bool loadConections);
+    /**
+     * loading socket from xml file
+     * @param element-xml var where is  block saved
+     * @param ptr- pointer to compozit block where is saved
+    */
+    void loadSocket(QDomElement element,compozit * ptr);
     compozit * viewedBlock;
     bool destructorMod{false};
-    void saveAtom(atomic *ptr,bool saveConnections,bool savePosition);
-    void saveSocket(portSocket * ptr);
-    void saveComp(compozit * ptr,bool saveConnections,bool savePosition);
-    void savePort(port *ptr,bool saveConnections);
-    void loadAtom(QDomElement element,bool useIdFromSav,bool usePos,compozit * placeToLoad);
-    void loadComp(QDomElement element,bool useIdFromSav,bool usePos,compozit * placeToLoad);
-    void loadPort(QDomElement element,block * ptr,bool loadConections);
-    void loadSocket(QDomElement element,compozit * ptr);
     QXmlStreamWriter * writer;
 private slots:
     void refreshSlot();
@@ -108,9 +153,7 @@ private slots:
     void on_undo_clicked();
     void on_redo_clicked();
     void on_Build_clicked();
-
     void on_save_clicked();
-
     void on_load_clicked();
 
 private:
@@ -123,13 +166,6 @@ private:
      * removing all elements from port grapohic rep.
     */
     void removePort();
-    QStack<compozit*> callBackStack;
-    aplication * curentApk;
-    block * editedBlock;
-    atomic * editedAtBlock;
-    aplicationView * scene;
-    Ui::mainWindow *ui;
-    bool editingAtom{false};
     /**
      * clearing all layouts for port editing
     */
@@ -150,6 +186,13 @@ private:
      * interpreting function
     */
     void buildHeader(compozit * prt);
+    QStack<compozit*> callBackStack;
+    aplication * curentApk;
+    block * editedBlock;
+    atomic * editedAtBlock;
+    aplicationView * scene;
+    Ui::mainWindow *ui;
+    bool editingAtom{false};
     QList <portLayout*> layoutList;
 };
 #endif // FILESELECTOR_H
