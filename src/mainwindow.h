@@ -87,10 +87,16 @@ public:
      * @param saveposition- saving position in graphic scene
     */
     void saveAtom(atomic *ptr,bool saveConnections,bool savePosition);
+    /**
+     * saving atomic block to xml file
+     * @param ptr-poiter to block which will be saved
+     * @param saveConnections-save relation between blocks
+     * @param saveposition- saving position in graphic scene
+    */
     void saveBlock(QString path);
     /**
-     * saving socket block to xml file
-     * @param ptr-poiter to socket which will be saved
+     * master swich for saving methods
+     * @param path to where is block to be saved
     */
     void saveSocket(portSocket * ptr);
     /**
@@ -106,19 +112,25 @@ public:
      * @param saveConnections-save relation between blocks
     */
     void savePort(port *ptr,bool saveConnections);
-    /**
-     * loading atomic block from xml file
-     * @param element-xml var where is  block saved
-     * @param useIdFromSav-use id from the file
-     * @param usePos- chose if position in scene is loaded to block
-     * @param usePos- where is blocked saved after load
-    */
     struct connLog{
         port * portPtr;
         int id;
         QString portName;
     };
+    /**
+     * loading atomic block from xml file
+     * @param element-xml var where is  block saved
+     * @param useIdFromSav-use id from the file
+     * @param usePos- chose if position in scene is loaded to block
+     * @param loadConnections- chozing if the connections are loaded
+     * @param connections- pointer to list of connections
+     * @param placeToLoad- where is blocked saved after load
+    */
     void loadAtom(QDomElement element,bool useIdFromSav,bool usePos,bool loadConnections, QList<connLog> * connections,compozit * placeToLoad);
+    /**
+     * master loading switch - chozing how is block to be loaded
+     * @param path-where is file saved
+    */
     void loadBegin(QString path);
     /**
      * loading compozite block from xml file
@@ -131,16 +143,23 @@ public:
     /**
      * loading port from xml file
      * @param element-xml var where is  block saved
-     * @param useIdFromSav-use id from the file
-     * @param usePos- chose if position in scene is loaded to block
+     * @param ptr to block where port is to be loaded
+     * @param loadConnections- chozing if the connections are loaded
+     * @param connections- pointer to list of connections
     */
     void loadPort(QDomElement element,block * ptr,bool loadConections, QList<connLog> * connections);
     /**
      * loading socket from xml file
      * @param element-xml var where is  block saved
+     * @param connections- pointer to list of connections
      * @param ptr- pointer to compozit block where is saved
     */
     void loadSocket(QDomElement element, QList<connLog> * connections,compozit * ptr);
+    /**
+     * loading socket from xml file
+     * @param log-list of connections to be proccesed
+     * @param compPtr- in which block the connection will be proccesed
+    */
     void loadConnection(connLog log,compozit * compPtr);
     compozit * viewedBlock;
     bool destructorMod{false};
