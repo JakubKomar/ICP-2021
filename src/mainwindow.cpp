@@ -633,6 +633,5 @@ void mainWindow::loadSocket(QDomElement element, QList<connLog> * connections, c
             connections->append(item);
         }
     }
-
 }
 
