@@ -40,8 +40,13 @@ public slots:
     * updating value type from core repr.
     */
    void cheangeValType();
+   /**
+    * updating constant
+    */
+   void cheangeConstant();
 private:
     QLineEdit * lineEdit;
+    QLineEdit * constantEdit;
     QComboBox * comboBox;
     port * corePtr;
     QVBoxLayout * mainLayout;

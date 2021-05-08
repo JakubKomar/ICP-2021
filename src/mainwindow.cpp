@@ -257,7 +257,7 @@ void mainWindow::saveBlock(QString path)
 {
     QFile file(path);
     if(!file.open(QIODevice::WriteOnly)){
-        qDebug()<<"error while opening file";
+        QMessageBox::information(this, "error", "File cant be opened.");
         return;
     }
 
@@ -352,6 +352,7 @@ void mainWindow::savePort(port *ptr,bool saveConnections)
 {
      writer->writeStartElement("port");
      writer->writeAttribute("name",ptr->name);
+     writer->writeAttribute("constant",ptr->constant);
      switch (ptr->valType) {
         case port::Vint:
             writer->writeAttribute("valType","int");
@@ -392,7 +393,7 @@ void mainWindow::loadBegin(QString path)
 {
     QFile file(path);
     if(!file.open(QIODevice::ReadOnly)){
-        qDebug()<<"error while opening file";
+        QMessageBox::information(this, "error", "File cant be opened.");
         return;
     }
     QDomDocument readData;
@@ -558,7 +559,7 @@ void mainWindow::loadPort(QDomElement element,block * ptr,bool loadConections, Q
              return;
         }
         portPtr->name=element.attribute("name","name didnt load");
-
+        portPtr->constant=element.attribute("constant","");
         QString valType=element.attribute("valType","");
         if(valType=="int"){
            portPtr->valType=port::Vint;
