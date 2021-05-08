@@ -14,7 +14,7 @@ catalog::catalog(QWidget *parent)
     //--------------------------------------------
     QString path = QDir::currentPath();
     path=path+"/../../library/";                                // rootfolder to display = library folder
-    workingPath=path;
+    workingPath = path;
 
 
     folder = new QFileSystemModel(this);                        // create the new model
@@ -53,7 +53,7 @@ catalog::~catalog()
 void catalog::on_treeView_clicked(const QModelIndex &index)     // when user clicks on a node in treeView (extract and set path in listView
 {
     QString path = folder -> fileInfo(index).absoluteFilePath();
-    workingPath=path;
+    workingPath = path;
     ui -> listView -> setRootIndex(file -> setRootPath(path));
 }
 //--------------------------------------------
@@ -104,6 +104,17 @@ void catalog::on_RemoveFolderButton_clicked()                    // "Remove Cate
 
     QString subpath = workingPath;                               // path for the new SUBfolder in 'library'
 
+    if(workingPath == path)
+    {
+        QDir dir(path);
+        dir.removeRecursively();
+    }
+
+    else
+    {
+        QDir dir(subpath);
+        dir.removeRecursively();
+    }
 
 }
 
@@ -119,6 +130,24 @@ void catalog::on_RenameCategoryButton_clicked()                  // "ReName Cate
 
     QString subpath = workingPath;                               // path for the new SUBfolder in 'library'
 
+
+    if(workingPath == path)
+    {
+
+    }
+
+    else
+    {
+
+    }
+
+    // save user input in: QString rename =
+
+    //Use QDir::fromNativeSeparators() and toNativeSeparators()
+/*
+    QDir currentDirectory("C:\SomeDirectory\A");
+    currentDirectory.rename(currentDirectory.path(), "../B");
+*/
 
 }
 

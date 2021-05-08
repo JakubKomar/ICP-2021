@@ -20,7 +20,7 @@
       <item>
        <widget class="QStackedWidget" name="screenSwitch">
         <property name="currentIndex">
-         <number>0</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="apkEditor">
          <layout class="QHBoxLayout" name="horizontalLayout_8">
@@ -293,8 +293,8 @@
                             <rect>
                              <x>0</x>
                              <y>0</y>
-                             <width>192</width>
-                             <height>18</height>
+                             <width>256</width>
+                             <height>223</height>
                             </rect>
                            </property>
                            <layout class="QVBoxLayout" name="verticalLayout_11">
@@ -367,8 +367,8 @@
                             <rect>
                              <x>0</x>
                              <y>0</y>
-                             <width>192</width>
-                             <height>18</height>
+                             <width>256</width>
+                             <height>223</height>
                             </rect>
                            </property>
                            <layout class="QVBoxLayout" name="verticalLayout_10">
