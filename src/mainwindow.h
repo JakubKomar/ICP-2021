@@ -206,15 +206,16 @@ private:
     /**
      * interpreting function
     */
-    void buildAtomic(atomic * prt);
+    void buildAtomic(QFile * file,atomic * prt);
     /**
      * interpreting function
     */
-    void buildCompozite(compozit * prt);
+    void buildCompozite(QFile * file,compozit * prt);
     /**
      * interpreting function
     */
-    void buildHeader(compozit * prt);
+    void buildHead(QFile* file);
+    void buildInput(QFile * file,port * ptr);
     QStack<compozit*> callBackStack;
     aplication * curentApk;
     block * editedBlock;
