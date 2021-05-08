@@ -87,6 +87,7 @@ public:
      * @param saveposition- saving position in graphic scene
     */
     void saveAtom(atomic *ptr,bool saveConnections,bool savePosition);
+    void saveBlock(QString path);
     /**
      * saving socket block to xml file
      * @param ptr-poiter to socket which will be saved
@@ -112,7 +113,13 @@ public:
      * @param usePos- chose if position in scene is loaded to block
      * @param usePos- where is blocked saved after load
     */
-    void loadAtom(QDomElement element,bool useIdFromSav,bool usePos,compozit * placeToLoad);
+    struct connLog{
+        port * portPtr;
+        int id;
+        QString portName;
+    };
+    void loadAtom(QDomElement element,bool useIdFromSav,bool usePos,bool loadConnections, QList<connLog> * connections,compozit * placeToLoad);
+    void loadBegin(QString path);
     /**
      * loading compozite block from xml file
      * @param element-xml var where is  block saved
@@ -120,23 +127,25 @@ public:
      * @param usePos- chose if position in scene is loaded to block
      * @param usePos- where is blocked saved after load
     */
-    void loadComp(QDomElement element,bool useIdFromSav,bool usePos,compozit * placeToLoad);
+    void loadComp(QDomElement element,bool useIdFromSave,bool usePos,bool loadConnections, QList<connLog> * masterTable,compozit * placeToLoad);
     /**
      * loading port from xml file
      * @param element-xml var where is  block saved
      * @param useIdFromSav-use id from the file
      * @param usePos- chose if position in scene is loaded to block
     */
-    void loadPort(QDomElement element,block * ptr,bool loadConections);
+    void loadPort(QDomElement element,block * ptr,bool loadConections, QList<connLog> * connections);
     /**
      * loading socket from xml file
      * @param element-xml var where is  block saved
      * @param ptr- pointer to compozit block where is saved
     */
-    void loadSocket(QDomElement element,compozit * ptr);
+    void loadSocket(QDomElement element, QList<connLog> * connections,compozit * ptr);
+    void loadConnection(connLog log,compozit * compPtr);
     compozit * viewedBlock;
     bool destructorMod{false};
-    QXmlStreamWriter * writer;
+    bool loadingMod{false};
+    QXmlStreamWriter * writer; 
 private slots:
     void refreshSlot();
     void on_newApk_clicked();
