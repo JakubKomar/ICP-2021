@@ -14,7 +14,7 @@ catalog::catalog(QWidget *parent)
     //--------------------------------------------
     QString path = QDir::currentPath();
     path=path+"/../../library/";                                // rootfolder to display = library folder
-
+    workingPath=path;
 
 
     folder = new QFileSystemModel(this);                        // create the new model
@@ -24,11 +24,6 @@ catalog::catalog(QWidget *parent)
 
     QModelIndex index = folder->index(path, 0);
     ui->treeView->setRootIndex(index);
-
-    //
-    //connect(ui->AddFolderButton, SIGNAL(clicked), this, SLOT(on_treeView_clicked));
-    //
-
 
 
 
@@ -68,84 +63,72 @@ void catalog::on_listView_clicked(const QModelIndex &index)     // get file path
     QString path = file -> fileInfo(index).absoluteFilePath();
     qDebug()<<path;
 }
-
 //--------------------------------------------
 
-
-void catalog::on_AddFolderButton_clicked()                      // "Add Category Folder" button:
+void catalog::on_AddFolderButton_clicked()                      // "Add Category Folder" button
 {
-      QMessageBox::information(this, "Title Here", "ADD");   //TESTING
-
-      QString path = QDir::currentPath();                                   // path for new folder in 'library'
+      QString path = QDir::currentPath();                       // path for new folder in 'library'
       path=path+"/../../library/";
 
-
-      // must know where to create the new folder:
-      //   (click on folder to make subfolder or just click add to add in library):
-
-      QModelIndex index = folder->index(path, 0);
-      path=workingPath;
-
-      QString subpath = folder -> fileInfo(index).absoluteFilePath();       // path for the new SUBfolder in 'library'
-      qDebug()<<subpath;
+      QString subpath = workingPath;                            // path for the new SUBfolder in 'library'
 
 
-// attempts....
-      // on_listView_clicked(index);
+      if(workingPath == path)
+      {
+          QString name = QString ("Category %1").arg(QDateTime::currentMSecsSinceEpoch());
+              while(QDir(name).exists())
+              {
+                   name = QString ("Category %1").arg(QDateTime::currentMSecsSinceEpoch());
+              }
+              QDir(path).mkdir(name);
+      }
 
-      //QString subpath = folder -> fileInfo(this->ui->treeView->indexAt(folder).data()).absoluteFilePath();
-
-      //QString subpath = on_treeView_clicked(/*const QModelIndex &index*/);  // call to get folder 'click path' for the new subfolder
-
-      //void itemClicked(QTreeWidgetItem* item);
-
-
-
-
-// if click = path-> add to library, else take subpath:
-//if clicked == path    QDir dir(path);...
-// else                 QDir dir(subpath);...
-
-/*
-      QDir dir(path);       // new folder in 'library'
-
-      if (!dir.exists("Category"))
-          dir.mkpath(".");  //note: default name (if exists add counter +1 to the name) -> user must rename it
-*/
-
-      QString name = QString ("Category %1").arg(QDateTime::currentMSecsSinceEpoch());
-          while(QDir(name).exists())
-          {
-               name = QString ("Category %1").arg(QDateTime::currentMSecsSinceEpoch());
-          }
-          QDir(path).mkdir(name);
-
+      else
+      {
+          QString name = QString ("Category %1").arg(QDateTime::currentMSecsSinceEpoch());
+              while(QDir(name).exists())
+              {
+                   name = QString ("Category %1").arg(QDateTime::currentMSecsSinceEpoch());
+              }
+              QDir(subpath).mkdir(name);
+      }
 }
 
 
 
 
-
-
-
-
-
-void catalog::on_RemoveFolderButton_clicked()                               // "Remove Category Folder" button:
+void catalog::on_RemoveFolderButton_clicked()                    // "Remove Category Folder" button
 {
-      QMessageBox::information(this, "Title Here", "REMOVE :)");   //TESTING
+    QString path = QDir::currentPath();                          // path for new folder in 'library'
+    path=path+"/../../library/";
 
-      //TODO
-      // clicked folder = subpath
+    QString subpath = workingPath;                               // path for the new SUBfolder in 'library'
+
+
 }
 
 
 
+
+void catalog::on_RenameCategoryButton_clicked()                  // "ReName Category Folder" button:
+{
+    QMessageBox::information(this, "Title Here", "reNAME");   //TESTING
+
+    QString path = QDir::currentPath();                          // path for new folder in 'library'
+    path=path+"/../../library/";
+
+    QString subpath = workingPath;                               // path for the new SUBfolder in 'library'
+
+
+}
 
 
 
 // doubleclick->file open (load into ???)
 // TODO
 //--------------------------------------------
+
+
 
 
 
