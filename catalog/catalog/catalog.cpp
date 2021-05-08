@@ -1,9 +1,12 @@
 #include "catalog.h"
 #include "ui_catalog.h"
 
+#include <stdio.h>
+#include <cstdio>
+
 #include <QtWidgets>
 #include <QDebug>
-#include  <QMessageBox>  // for testing
+
 
 catalog::catalog(QWidget *parent)
     : QMainWindow(parent)
@@ -75,20 +78,20 @@ void catalog::on_AddFolderButton_clicked()                      // "Add Category
 
       if(workingPath == path)
       {
-          QString name = QString ("Category %1").arg(QDateTime::currentMSecsSinceEpoch());
+          QString name = QString ("Category_%1").arg(QDateTime::currentMSecsSinceEpoch());
               while(QDir(name).exists())
               {
-                   name = QString ("Category %1").arg(QDateTime::currentMSecsSinceEpoch());
+                   name = QString ("Category_%1").arg(QDateTime::currentMSecsSinceEpoch());
               }
               QDir(path).mkdir(name);
       }
 
       else
       {
-          QString name = QString ("Category %1").arg(QDateTime::currentMSecsSinceEpoch());
+          QString name = QString ("Category_%1").arg(QDateTime::currentMSecsSinceEpoch());
               while(QDir(name).exists())
               {
-                   name = QString ("Category %1").arg(QDateTime::currentMSecsSinceEpoch());
+                   name = QString ("Category_%1").arg(QDateTime::currentMSecsSinceEpoch());
               }
               QDir(subpath).mkdir(name);
       }
@@ -121,9 +124,48 @@ void catalog::on_RemoveFolderButton_clicked()                    // "Remove Cate
 
 
 
+
+//
+bool copyDirRecursively(QString sourceFolder, QString destFolder)
+   {
+       bool success = false;
+       QDir sourceDir(sourceFolder);
+
+       if(!sourceDir.exists())
+           return false;
+
+       QDir destDir(destFolder);
+       if(!destDir.exists())
+           destDir.mkdir(destFolder);
+
+       QStringList files = sourceDir.entryList(QDir::Files);
+       for(int i = 0; i< files.count(); i++) {
+           QString srcName = sourceFolder + QDir::separator() + files[i];
+           QString destName = destFolder + QDir::separator() + files[i];
+           success = QFile::copy(srcName, destName);
+           if(!success)
+               return false;
+       }
+
+       files.clear();
+       files = sourceDir.entryList(QDir::AllDirs | QDir::NoDotAndDotDot);
+       for(int i = 0; i< files.count(); i++)
+       {
+           QString srcName = sourceFolder + QDir::separator() + files[i];
+           QString destName = destFolder + QDir::separator() + files[i];
+           success = copyDirRecursively(srcName, destName);
+           if(!success)
+               return false;
+       }
+
+       return true;
+   }
+//
+
+
 void catalog::on_RenameCategoryButton_clicked()                  // "ReName Category Folder" button:
 {
-    QMessageBox::information(this, "Title Here", "reNAME");   //TESTING
+    //QMessageBox::information(this, "ReName", "Please enter a new name: ");   //TESTING
 
     QString path = QDir::currentPath();                          // path for new folder in 'library'
     path=path+"/../../library/";
@@ -131,23 +173,64 @@ void catalog::on_RenameCategoryButton_clicked()                  // "ReName Cate
     QString subpath = workingPath;                               // path for the new SUBfolder in 'library'
 
 
+
+
+
+    QString new_name = QInputDialog::getText(this, "Rename Catalog Folder", "Please enter a the new name: ");
+    //QString new_name_slash = new_name+"/";
+
+//path = ....\ICP-2021\library
+
+
+
+
     if(workingPath == path)
     {
+        QString path_update1 = path+"/../";
+        QString path_update_final = path + new_name;
 
+
+        QDir(path).mkdir(new_name);
+
+        copyDirRecursively(path, path_update_final);
+
+        QDir dir(path);
+        dir.removeRecursively();
     }
 
     else
     {
+        QString path_update1 = path+"/../";
+        QString path_update_final = path_update1 + new_name;
 
+
+        QDir(subpath).mkdir(new_name);
+
+        copyDirRecursively(subpath, path_update_final);
+
+        QDir dir(subpath);
+        dir.removeRecursively();
     }
 
-    // save user input in: QString rename =
+
+
+
 
     //Use QDir::fromNativeSeparators() and toNativeSeparators()
 /*
     QDir currentDirectory("C:\SomeDirectory\A");
     currentDirectory.rename(currentDirectory.path(), "../B");
 */
+
+
+//Plan B:
+    //get old dir name
+    // make new dir (+transfer contents)
+    //delete old dir
+
+
+
+
 
 }
 
@@ -156,6 +239,7 @@ void catalog::on_RenameCategoryButton_clicked()                  // "ReName Cate
 // doubleclick->file open (load into ???)
 // TODO
 //--------------------------------------------
+
 
 
 

@@ -8,9 +8,10 @@
 #include <QtGui>
 #include <QFileSystemModel>
 #include <QDir>
-#include <QListWidget>
-#include <QTreeWidget>
-#include <QPoint>
+#include <QDialog>
+#include <QLineEdit>
+#include <QInputDialog>
+#include  <QMessageBox>
 
 
 
@@ -42,6 +43,8 @@ private slots:
     void on_RemoveFolderButton_clicked();
 
     void on_RenameCategoryButton_clicked();
+
+
 
 private:
     Ui::catalog *ui;
