@@ -225,34 +225,87 @@ void mainWindow::refreshPorts()
          layoutList.append(layout);
      }
 }
-
-void mainWindow::buildAtomic(atomic * ptr)
-{
-
-}
-
-void mainWindow::buildCompozite(compozit * prt)
-{
-
-}
-
 void mainWindow::on_Build_clicked()
 {
     QDir dir = QDir::current();
-    dir.mkdir("build");
+    dir.mkdir("apkBuild");
 
-    QFile file("build/BuildedApk");
-    if (!file.open(QIODevice::WriteOnly  | QIODevice::Text))
-          return;
-    QTextStream out(&file);
-     out << "The magic number is: " << 49 << "\n";
-     return;
-
-    foreach(atomic * item,curentApk->atomVect){
-        buildAtomic(item);
+    QFile file("apkBuild/apk.cpp");
+    if (!file.open(QIODevice::WriteOnly)){
+         QMessageBox::information(this, "error", "File cant be opened.");
+         return;
     }
+    buildHead(&file);
+    foreach(atomic * item,curentApk->atomVect){
+        buildAtomic(&file,item);
+    }
+
+    file.close();
+}
+void mainWindow::buildAtomic(QFile * file,atomic * ptr)
+{
+    QTextStream stream(file);
+    stream<<"\n\tvoid function"<<ptr->getId()<<("(int id){\n");
+    foreach(port * item,ptr->inputs){buildInput(file,item);}
+
+    stream<<ptr->code;
+    stream<<"}\n";
+}
+void mainWindow::buildInput(QFile * file,port * ptr){
+     QTextStream stream(file);
+     switch (ptr->valType) {
+         case port::Vint:
+            stream<<"\t\t int "<<ptr->name<<"=memory["<<ptr->inBlock->getId()<<"]["<<ptr->name<<"].Int;";
+            break;
+         case port::Vdouble:
+            stream<<"\t\t double "<<ptr->name<<"=memory["<<ptr->inBlock->getId()<<"]["<<ptr->name<<"].Double;";
+            break;
+         case port::Vstring:
+            stream<<"\t\t string "<<ptr->name<<"=memory["<<ptr->inBlock->getId()<<"]["<<ptr->name<<"].String;";
+            break;
+         case port::Vbool:
+            stream<<"\t\t bool "<<ptr->name<<"=memory["<<ptr->inBlock->getId()<<"]["<<ptr->name<<"].bool;";
+            break;
+     }
 }
 
+
+void mainWindow::buildCompozite(QFile * file,compozit * prt)
+{
+
+}
+
+void mainWindow::buildHead(QFile * file){
+file->write(R""""(#include <algorithm>
+#include <iostream>
+#include <list>
+#include <stdio.h>
+#include <string>
+#include <string.h>
+#include <signal.h>
+#include <functional>
+#include <QHash>
+#include <QDebug>
+using namespace std;
+
+
+enum TypeVal{
+    Vint,
+    Vdouble,
+    Vstring,
+    Vbool
+};
+struct multiVar{
+    TypeVal type{Vint};
+    int  Int{0};
+    double Double{0};
+    bool Bool{false};
+    string String{""};
+};
+void callBlock(int id);
+QHash<int,QHash<QString,multiVar>> memory;)""""
+);
+}
 void mainWindow::saveBlock(QString path)
 {
     QFile file(path);
