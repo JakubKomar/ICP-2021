@@ -26,6 +26,7 @@ class catalog : public QMainWindow
 public:
     catalog(QWidget *parent = nullptr);
     ~catalog();
+    QString workingPath{""};
 
 private slots:
     void on_treeView_clicked(const QModelIndex &index);

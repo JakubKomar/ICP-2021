@@ -58,7 +58,7 @@ catalog::~catalog()
 void catalog::on_treeView_clicked(const QModelIndex &index)     // when user clicks on a node in treeView (extract and set path in listView
 {
     QString path = folder -> fileInfo(index).absoluteFilePath();
-    //qDebug()<<path;
+    workingPath=path;
     ui -> listView -> setRootIndex(file -> setRootPath(path));
 }
 //--------------------------------------------
@@ -84,6 +84,7 @@ void catalog::on_AddFolderButton_clicked()                      // "Add Category
       //   (click on folder to make subfolder or just click add to add in library):
 
       QModelIndex index = folder->index(path, 0);
+      path=workingPath;
 
       QString subpath = folder -> fileInfo(index).absoluteFilePath();       // path for the new SUBfolder in 'library'
       qDebug()<<subpath;
