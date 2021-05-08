@@ -17,6 +17,7 @@
 #include "./core/block.h"
 #include "./core/port.h"
 #include "./gui/portmodel.h"
+
 class blockModel : public QGraphicsObject
 {
 

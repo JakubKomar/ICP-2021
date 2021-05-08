@@ -36,7 +36,7 @@
                </widget>
               </item>
               <item>
-               <widget class="QPushButton" name="pushButton">
+               <widget class="QPushButton" name="apkSave">
                 <property name="text">
                  <string>save</string>
                 </property>
@@ -293,8 +293,8 @@
                             <rect>
                              <x>0</x>
                              <y>0</y>
-                             <width>256</width>
-                             <height>223</height>
+                             <width>192</width>
+                             <height>18</height>
                             </rect>
                            </property>
                            <layout class="QVBoxLayout" name="verticalLayout_11">
@@ -367,8 +367,8 @@
                             <rect>
                              <x>0</x>
                              <y>0</y>
-                             <width>256</width>
-                             <height>223</height>
+                             <width>192</width>
+                             <height>18</height>
                             </rect>
                            </property>
                            <layout class="QVBoxLayout" name="verticalLayout_10">

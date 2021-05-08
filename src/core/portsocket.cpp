@@ -12,6 +12,7 @@ portSocket::portSocket(port * imitating):imitating(imitating)
 {
     this->type=block::TonlyPort;
     this->id=-3;
+    this->oldId=-3;
     addPort();
 }
 

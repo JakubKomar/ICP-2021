@@ -15,10 +15,12 @@
 #include <QPushButton>
 #include <qdebug.h>
 #include <QComboBox>
+
 #include  "ui_mainwindow.h"
 #include  "./core/port.h"
 #include  "./gui/blockmodel.h"
 #include  "./core/portsocket.h"
+
 class portLayout: public QObject
 {
     Q_OBJECT

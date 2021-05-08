@@ -13,11 +13,8 @@
 #include <QDebug>
 #include <QList>
 
-
 #include "./core/block.h"
 #include "./gui/portmodel.h"
-
-
 
 class block;
 class portModel;

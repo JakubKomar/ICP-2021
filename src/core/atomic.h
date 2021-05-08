@@ -11,6 +11,7 @@
 
 #include <QObject>
 #include <QDebug>
+
 #include "block.h"
 
 class atomic : public block

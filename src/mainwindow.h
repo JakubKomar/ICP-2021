@@ -88,8 +88,15 @@ public:
     */
     void saveAtom(atomic *ptr,bool saveConnections,bool savePosition);
     /**
-     * saving socket block to xml file
-     * @param ptr-poiter to socket which will be saved
+     * saving atomic block to xml file
+     * @param ptr-poiter to block which will be saved
+     * @param saveConnections-save relation between blocks
+     * @param saveposition- saving position in graphic scene
+    */
+    void saveBlock(QString path);
+    /**
+     * master swich for saving methods
+     * @param path to where is block to be saved
     */
     void saveSocket(portSocket * ptr);
     /**
@@ -98,21 +105,33 @@ public:
      * @param saveConnections-save relation between blocks
      * @param saveposition- saving position in graphic scene
     */
-    void saveComp(compozit * ptr,bool saveConnections,bool savePosition);
+    void saveComp(compozit * ptr,bool saveConnections,bool savePosition,bool apk);
     /**
      * saving port to xml file
      * @param ptr-poiter to port which will be saved
      * @param saveConnections-save relation between blocks
     */
     void savePort(port *ptr,bool saveConnections);
+    struct connLog{
+        port * portPtr;
+        int id;
+        QString portName;
+    };
     /**
      * loading atomic block from xml file
      * @param element-xml var where is  block saved
      * @param useIdFromSav-use id from the file
      * @param usePos- chose if position in scene is loaded to block
-     * @param usePos- where is blocked saved after load
+     * @param loadConnections- chozing if the connections are loaded
+     * @param connections- pointer to list of connections
+     * @param placeToLoad- where is blocked saved after load
     */
-    void loadAtom(QDomElement element,bool useIdFromSav,bool usePos,compozit * placeToLoad);
+    void loadAtom(QDomElement element,bool useIdFromSav,bool usePos,bool loadConnections, QList<connLog> * connections,compozit * placeToLoad);
+    /**
+     * master loading switch - chozing how is block to be loaded
+     * @param path-where is file saved
+    */
+    void loadBegin(QString path);
     /**
      * loading compozite block from xml file
      * @param element-xml var where is  block saved
@@ -120,23 +139,32 @@ public:
      * @param usePos- chose if position in scene is loaded to block
      * @param usePos- where is blocked saved after load
     */
-    void loadComp(QDomElement element,bool useIdFromSav,bool usePos,compozit * placeToLoad);
+    void loadComp(QDomElement element,bool useIdFromSave,bool usePos,bool loadConnections,bool loadingApk, QList<connLog> * masterTable,compozit * placeToLoad);
     /**
      * loading port from xml file
      * @param element-xml var where is  block saved
-     * @param useIdFromSav-use id from the file
-     * @param usePos- chose if position in scene is loaded to block
+     * @param ptr to block where port is to be loaded
+     * @param loadConnections- chozing if the connections are loaded
+     * @param connections- pointer to list of connections
     */
-    void loadPort(QDomElement element,block * ptr,bool loadConections);
+    void loadPort(QDomElement element,block * ptr,bool loadConections, QList<connLog> * connections);
     /**
      * loading socket from xml file
      * @param element-xml var where is  block saved
+     * @param connections- pointer to list of connections
      * @param ptr- pointer to compozit block where is saved
     */
-    void loadSocket(QDomElement element,compozit * ptr);
+    void loadSocket(QDomElement element, QList<connLog> * connections,compozit * ptr);
+    /**
+     * loading socket from xml file
+     * @param log-list of connections to be proccesed
+     * @param compPtr- in which block the connection will be proccesed
+    */
+    void loadConnection(connLog log,compozit * compPtr);
     compozit * viewedBlock;
     bool destructorMod{false};
-    QXmlStreamWriter * writer;
+    bool loadingMod{false};
+    QXmlStreamWriter * writer; 
 private slots:
     void refreshSlot();
     void on_newApk_clicked();
@@ -155,6 +183,7 @@ private slots:
     void on_Build_clicked();
     void on_save_clicked();
     void on_load_clicked();
+    void on_apkSave_clicked();
 
 private:
     /**
