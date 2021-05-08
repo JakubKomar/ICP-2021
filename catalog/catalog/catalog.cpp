@@ -90,28 +90,10 @@ void catalog::on_AddFolderButton_clicked()                      // "Add Category
       qDebug()<<subpath;
 
 
-// attempts....
-      // on_listView_clicked(index);
-
-      //QString subpath = folder -> fileInfo(this->ui->treeView->indexAt(folder).data()).absoluteFilePath();
-
-      //QString subpath = on_treeView_clicked(/*const QModelIndex &index*/);  // call to get folder 'click path' for the new subfolder
-
-      //void itemClicked(QTreeWidgetItem* item);
-
-
-
-
 // if click = path-> add to library, else take subpath:
 //if clicked == path    QDir dir(path);...
 // else                 QDir dir(subpath);...
 
-/*
-      QDir dir(path);       // new folder in 'library'
-
-      if (!dir.exists("Category"))
-          dir.mkpath(".");  //note: default name (if exists add counter +1 to the name) -> user must rename it
-*/
 
       QString name = QString ("Category %1").arg(QDateTime::currentMSecsSinceEpoch());
           while(QDir(name).exists())
@@ -141,11 +123,19 @@ void catalog::on_RemoveFolderButton_clicked()                               // "
 
 
 
+void catalog::on_RenameCategoryButton_clicked()
+{
+    QMessageBox::information(this, "Title Here", "reNAME");   //TESTING
+
+}
+
 
 
 // doubleclick->file open (load into ???)
 // TODO
 //--------------------------------------------
+
+
 
 
 

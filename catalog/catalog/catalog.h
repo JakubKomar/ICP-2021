@@ -41,6 +41,8 @@ private slots:
 
     void on_RemoveFolderButton_clicked();
 
+    void on_RenameCategoryButton_clicked();
+
 private:
     Ui::catalog *ui;
 
