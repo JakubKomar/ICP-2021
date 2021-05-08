@@ -69,10 +69,13 @@ void catalog::on_listView_clicked(const QModelIndex &index)     // get file path
 
 
 // "Add Category Folder" button:
+void catalog::on_AddFolderButton_clicked()
+{
+      QMessageBox::information(this, "Title Here", "ADD");
 
-    // TODO
-    //QString path = QDir::currentPath();
-    //path=path+"/../../library/";
+      //QString path = QDir::currentPath();
+      //path=path+"/../../library/";
+}
 
 
     //QString subpath = on_treeView_clicked(/*const QModelIndex &index*/);  // call to get folder 'click path' for the new subfolder
@@ -101,8 +104,10 @@ void catalog::on_listView_clicked(const QModelIndex &index)     // get file path
 
 
 // "Remove Category Folder" button:
-
-
+void catalog::on_RemoveFolderButton_clicked()
+{
+      QMessageBox::information(this, "Title Here", "REMOVE :)");
+}
 
 
 
@@ -115,12 +120,6 @@ void catalog::on_listView_clicked(const QModelIndex &index)     // get file path
 
 
 
-void catalog::on_AddFolderButton_clicked()
-{
-      QMessageBox::information(this, "Title Here", "ADD");
-}
 
-void catalog::on_RemoveFolderButton_clicked()
-{
-      QMessageBox::information(this, "Title Here", "REMOVE :)");
-}
+
+
