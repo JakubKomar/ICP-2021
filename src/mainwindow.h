@@ -99,7 +99,7 @@ public:
      * @param saveConnections-save relation between blocks
      * @param saveposition- saving position in graphic scene
     */
-    void saveComp(compozit * ptr,bool saveConnections,bool savePosition);
+    void saveComp(compozit * ptr,bool saveConnections,bool savePosition,bool apk);
     /**
      * saving port to xml file
      * @param ptr-poiter to port which will be saved
@@ -127,7 +127,7 @@ public:
      * @param usePos- chose if position in scene is loaded to block
      * @param usePos- where is blocked saved after load
     */
-    void loadComp(QDomElement element,bool useIdFromSave,bool usePos,bool loadConnections, QList<connLog> * masterTable,compozit * placeToLoad);
+    void loadComp(QDomElement element,bool useIdFromSave,bool usePos,bool loadConnections,bool loadingApk, QList<connLog> * masterTable,compozit * placeToLoad);
     /**
      * loading port from xml file
      * @param element-xml var where is  block saved
@@ -164,6 +164,7 @@ private slots:
     void on_Build_clicked();
     void on_save_clicked();
     void on_load_clicked();
+    void on_apkSave_clicked();
 
 private:
     /**

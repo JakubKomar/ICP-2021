@@ -118,7 +118,6 @@ void mainWindow::on_AtAddInput_clicked(){
         corePtr->socketPtr=newSocket;
         refresh();
     }
-
 }
 void mainWindow::on_AtAddOutput_clicked(){
     port * corePtr=this->editedBlock->addPort(false);
@@ -154,6 +153,10 @@ void mainWindow::on_goBack_clicked()
         primarySwich(0);
     else
     {
+        ui->AtNameEdit->clear();
+        ui->AtNameEdit->insert(viewedBlock->getName());
+        ui->id->clear();
+        ui->id->insert(QString::number(viewedBlock->getId()));
         primarySwich(1);
         secondarySwich(1);
         editedAtBlock=NULL;
@@ -265,22 +268,23 @@ void mainWindow::saveBlock(QString path)
     if(editingAtom){
         saveAtom(editedAtBlock,false,false);
     }
-    else
+    else if(viewedBlock==curentApk)
     {
-        saveComp(viewedBlock,false,false);
+        saveComp(viewedBlock,false,false,true);
+    }
+    else{
+        saveComp(viewedBlock,false,false,false);
     }
 
     xmlWriter.writeEndElement();
     file.close();
 }
-
+void mainWindow::on_apkSave_clicked(){ on_save_clicked();}
 void mainWindow::on_save_clicked()
 {
     QString path="MyXml.xml";
     saveBlock(path);
 }
-
-
 
 void mainWindow::saveAtom(atomic *ptr,bool saveConnections,bool savePosition)
 {
@@ -302,9 +306,12 @@ void mainWindow::saveAtom(atomic *ptr,bool saveConnections,bool savePosition)
 
 }
 
-void mainWindow::saveComp(compozit *ptr, bool saveConnections, bool savePosition)
+void mainWindow::saveComp(compozit *ptr, bool saveConnections, bool savePosition,bool apk)
 {
-    writer->writeStartElement("compositeBlock");
+    if(apk)
+        writer->writeStartElement("aplikation");
+    else
+        writer->writeStartElement("compositeBlock");
     writer->writeAttribute("id",QString::number(ptr->getId()));
     writer->writeAttribute("name",ptr->getName());
     if(savePosition){
@@ -319,7 +326,7 @@ void mainWindow::saveComp(compozit *ptr, bool saveConnections, bool savePosition
     foreach(port * item,ptr->outputs){savePort(item,saveConnections);}
     foreach(portSocket * item,ptr->insidePorts){saveSocket(item);}
     foreach(atomic * item,ptr->atomVect){saveAtom(item,true,true);}
-    foreach(compozit * item,ptr->compVect){saveComp(item,true,true);}
+    foreach(compozit * item,ptr->compVect){saveComp(item,true,true,false);}
     writer->writeEndElement();
 }
 
@@ -392,12 +399,18 @@ void mainWindow::loadBegin(QString path)
     readData.setContent(&file);
     QDomElement root=readData.documentElement();
     if((root.tagName()=="atomicBlock")&&(viewedBlock!=nullptr)){
-        qDebug()<<"loaded atom block";
         loadAtom(root,false,false,false,nullptr,viewedBlock);
     }
     else if((root.tagName()=="compositeBlock")&&(viewedBlock!=nullptr)){
-        qDebug()<<"loaded atom block";
-        loadComp(root,false,false,false,nullptr,viewedBlock);
+        loadComp(root,false,false,false,false,nullptr,viewedBlock);
+    }
+    else if((root.tagName()=="aplikation")){
+        if(curentApk!=NULL)
+            delete curentApk;
+        this->curentApk=new aplication();
+        this->viewedBlock=this->curentApk;
+        refresh();
+        loadComp(root,false,false,false,true,nullptr,this->curentApk);
     }
     else
         qDebug()<<"unsuported save file";
@@ -431,19 +444,24 @@ void mainWindow::loadAtom(QDomElement element,bool useIdFromSave,bool usePos,boo
     }
 }
 
-void mainWindow::loadComp(QDomElement element,bool useIdFromSave,bool usePos,bool loadConnections,QList<connLog> * list,compozit * placeToLoad)
+void mainWindow::loadComp(QDomElement element,bool useIdFromSave,bool usePos,bool loadConnections,bool loadingApk,QList<connLog> * list,compozit * placeToLoad)
 {
     compozit * pointer;
-    if(!useIdFromSave){
-        pointer=placeToLoad->addCompozite(curentApk->getNewId());
-        pointer->oldId=element.attribute("id","-7").toInt();
+    if(loadingApk){
+        pointer=curentApk;
     }
-    else
-        pointer=placeToLoad->addCompozite(element.attribute("id","-7").toInt());
-    pointer->setName( element.attribute("name",""));
-    if(usePos){
-        pointer->x= element.attribute("x","0").toInt();
-        pointer->y= element.attribute("y","0").toInt();
+    else{
+        if(!useIdFromSave){
+            pointer=placeToLoad->addCompozite(curentApk->getNewId());
+            pointer->oldId=element.attribute("id","-7").toInt();
+        }
+        else
+            pointer=placeToLoad->addCompozite(element.attribute("id","-7").toInt());
+        pointer->setName( element.attribute("name",""));
+        if(usePos){
+            pointer->x= element.attribute("x","0").toInt();
+            pointer->y= element.attribute("y","0").toInt();
+        }
     }
     QList<connLog> connections;
     QDomElement Component=element.firstChild().toElement();
@@ -455,7 +473,7 @@ void mainWindow::loadComp(QDomElement element,bool useIdFromSave,bool usePos,boo
             loadAtom(Component,false,true,true,&connections,pointer);
         }
         else if((Component.tagName())=="compositeBlock"){
-            loadComp(Component, false,true,true,&connections,pointer);
+            loadComp(Component, false,true,true,false,&connections,pointer);
         }
         else if((Component.tagName())=="socket"){
             loadSocket(Component,&connections, pointer);
