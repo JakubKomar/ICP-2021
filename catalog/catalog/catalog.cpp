@@ -120,13 +120,9 @@ void catalog::on_RemoveFolderButton_clicked()                    // "Remove Cate
     }
 
 }
+//--------------------------------------------
 
-
-
-
-
-//
-bool copyDirRecursively(QString sourceFolder, QString destFolder)
+bool copyDirRecursively(QString sourceFolder, QString destFolder)       // function to copy a folder's contents into another folder (if it doesn't exist, it is created)
    {
        bool success = false;
        QDir sourceDir(sourceFolder);
@@ -160,13 +156,11 @@ bool copyDirRecursively(QString sourceFolder, QString destFolder)
 
        return true;
    }
-//
 
 
-void catalog::on_RenameCategoryButton_clicked()                  // "ReName Category Folder" button:
+
+void catalog::on_RenameCategoryButton_clicked()                  // "ReName Category Folder" button (WARNING: do not click without selecting a folder or library is deleted)
 {
-    //QMessageBox::information(this, "ReName", "Please enter a new name: ");   //TESTING
-
     QString path = QDir::currentPath();                          // path for new folder in 'library'
     path=path+"/../../library/";
 
@@ -177,19 +171,12 @@ void catalog::on_RenameCategoryButton_clicked()                  // "ReName Cate
 
 
     QString new_name = QInputDialog::getText(this, "Rename Catalog Folder", "Please enter a the new name: ");
-    //QString new_name_slash = new_name+"/";
-
-//path = ....\ICP-2021\library
-
-
 
 
     if(workingPath == path)
     {
         QString path_update_final = path + new_name;
 
-
-        QDir(path).mkdir(new_name);
 
         copyDirRecursively(path, path_update_final);
 
@@ -203,33 +190,11 @@ void catalog::on_RenameCategoryButton_clicked()                  // "ReName Cate
         QString path_update_final = path_update1 + new_name;
 
 
-        QDir(subpath).mkdir(new_name);
-
         copyDirRecursively(subpath, path_update_final);
 
         QDir dir(subpath);
         dir.removeRecursively();
     }
-
-
-
-
-
-    //Use QDir::fromNativeSeparators() and toNativeSeparators()
-/*
-    QDir currentDirectory("C:\SomeDirectory\A");
-    currentDirectory.rename(currentDirectory.path(), "../B");
-*/
-
-
-//Plan B:
-    //get old dir name
-    // make new dir (+transfer contents)
-    //delete old dir
-
-
-
-
 
 }
 
