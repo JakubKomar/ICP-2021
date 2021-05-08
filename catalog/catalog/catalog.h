@@ -10,7 +10,7 @@
 #include <QDir>
 #include <QListWidget>
 #include <QTreeWidget>
-#include <QTreeWidgetItem>
+#include <QPoint>
 
 
 
