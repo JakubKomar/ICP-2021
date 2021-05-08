@@ -42,6 +42,7 @@ public:
      */
     port(Type type,block *inBlock);
     ~port();
+    QString constant{""};
     Type type;  //input/output
     TypeVal valType;//string,int,...
     QString name;

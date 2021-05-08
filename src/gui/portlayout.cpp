@@ -30,14 +30,28 @@ portLayout::portLayout(QWidget * place,port * corePtr):corePtr(corePtr)
     comboBox=new QComboBox(place);
     comboBox->addItems({"int","string","bool","double"});
     setComboBox();
-     QObject::connect(comboBox,SIGNAL(activated(int)),this,SLOT(cheangeValType()));
+    QObject::connect(comboBox,SIGNAL(activated(int)),this,SLOT(cheangeValType()));
 
     newHorizontal1->insertWidget(0,button);
     newHorizontal1->insertWidget(0,lineEdit);
     mainLayout->insertLayout(0,newHorizontal1);
 
-    newHorizontal2->insertWidget(0,comboBox);
-    mainLayout->insertLayout(1,newHorizontal2);
+
+    if(corePtr->type==port::Pin){
+        constantEdit=new QLineEdit(corePtr->constant,place);
+        QObject::connect(constantEdit,&QLineEdit::textEdited,this,&portLayout::cheangeConstant);
+        QHBoxLayout * newHorizontal3=new QHBoxLayout(place);
+        newHorizontal3->insertWidget(0,constantEdit);
+        QLabel* label=new QLabel("Cons.:",place);
+        newHorizontal3->insertWidget(0,label);
+        mainLayout->insertLayout(1,newHorizontal3);
+        newHorizontal2->insertWidget(0,comboBox);
+        mainLayout->insertLayout(2,newHorizontal2);
+    }
+    else{
+        newHorizontal2->insertWidget(0,comboBox);
+        mainLayout->insertLayout(1,newHorizontal2);
+    }
 
     layout->insertLayout(layout->count()-1,mainLayout);
 
@@ -72,6 +86,13 @@ void portLayout::cheangeValType()
         corePtr->changeType(port::Vdouble);
     else
         qDebug()<<"unexpected type";
+    if(corePtr->socketPtr!=nullptr)
+        corePtr->socketPtr->update();
+}
+
+void portLayout::cheangeConstant()
+{
+    corePtr->constant=constantEdit->text();
     if(corePtr->socketPtr!=nullptr)
         corePtr->socketPtr->update();
 }

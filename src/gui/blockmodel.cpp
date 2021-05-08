@@ -66,6 +66,8 @@ void blockModel::paint(QPainter *painter, const QStyleOptionGraphicsItem *option
     foreach(port * item ,coreRepr->inputs)
     {
         painter->drawText(25,space,(item->getName().mid(0,9))+(item->getName().length()>9?".." : ""));
+        if(item->constant!="")
+            painter->drawText(25,space+12,"("+(item->constant.mid(0,7))+(item->constant.length()>7?".." : "")+")");
         space=space+30;
     }
     if(coreRepr->type==block::TonlyPort)

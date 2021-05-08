@@ -39,4 +39,5 @@ void portSocket::update()
 {
     viewedPort->name=imitating->name;
     viewedPort->valType=imitating->valType;
+    viewedPort->constant=imitating->constant;
 }
