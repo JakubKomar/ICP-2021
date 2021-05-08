@@ -186,7 +186,6 @@ void catalog::on_RenameCategoryButton_clicked()                  // "ReName Cate
 
     if(workingPath == path)
     {
-        QString path_update1 = path+"/../";
         QString path_update_final = path + new_name;
 
 
@@ -200,7 +199,7 @@ void catalog::on_RenameCategoryButton_clicked()                  // "ReName Cate
 
     else
     {
-        QString path_update1 = path+"/../";
+        QString path_update1 = subpath+"/../";
         QString path_update_final = path_update1 + new_name;
 
 
