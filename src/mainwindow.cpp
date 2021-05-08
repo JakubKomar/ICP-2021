@@ -329,6 +329,15 @@ void mainWindow::saveSocket(portSocket *ptr)
     writer->writeAttribute("x",QString::number(ptr->x));
     writer->writeAttribute("y",QString::number(ptr->y));
     writer->writeAttribute("imitating",ptr->imitating->getName());
+    if(ptr->imitating->type==port::Pout ){
+        writer->writeAttribute("type","input");
+        if((ptr->viewedPort->connectedTo!=nullptr)){
+            writer->writeAttribute("connectedToBlock",QString::number(ptr->viewedPort->connectedTo->inBlock->getId()));
+            writer->writeAttribute("connectedToPort",QString(ptr->viewedPort->connectedTo->getName()));
+        }
+    }
+    else
+        writer->writeAttribute("type","output");
     writer->writeEndElement();
 }
 
@@ -457,6 +466,7 @@ void mainWindow::loadComp(QDomElement element,bool useIdFromSave,bool usePos,boo
         Component = Component.nextSibling().toElement();
     }
     foreach(connLog item,connections){
+        qDebug()<<item.id<<"  "<<item.portName<<"  "<<item.portPtr->name;
         loadConnection(item,pointer);
     }
 }
@@ -497,7 +507,7 @@ void mainWindow::loadConnection(connLog log,compozit * compPtr){
             if(target)
                  break;
             else if(item->oldId==log.id){
-                foreach(port * titem,item->outputs){
+                foreach(port * titem,item->inputs){
                     if(titem->name==log.portName){
                         target=titem;
                         break;
@@ -593,5 +603,18 @@ void mainWindow::loadSocket(QDomElement element, QList<connLog> * connections, c
     newSocket->y=element.attribute("y","0").toInt();
     ptr->insidePorts.append(newSocket);
     finded->socketPtr=newSocket;
+
+    if(connections!=nullptr){
+        connLog item;
+        QString id=element.attribute("connectedToBlock","NAN");
+        QString connectedTo=element.attribute("connectedToPort","");
+        if((id!="NAN")&&(connectedTo!="")){
+            item.id=id.toInt();
+            item.portName=connectedTo;
+            item.portPtr=newSocket->viewedPort;
+            connections->append(item);
+        }
+    }
+
 }
 
