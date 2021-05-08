@@ -15,6 +15,7 @@
 #include "block.h"
 #include "atomic.h"
 #include "portsocket.h"
+
 class compozit : public block
 {
 public:

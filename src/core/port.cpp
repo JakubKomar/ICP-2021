@@ -9,6 +9,7 @@
 #include "port.h"
 #include "portsocket.h"
 #include "compozit.h"
+
 port::port(port::Type type,int num,block *inBlock):type(type),inBlock(inBlock)
 {
     this->valType=Vint;
