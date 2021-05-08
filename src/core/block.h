@@ -12,6 +12,7 @@
 #include <QObject>
 
 #include "./core/port.h"
+
 class port;
 class block: public QObject
 {

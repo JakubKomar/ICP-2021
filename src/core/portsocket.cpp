@@ -12,6 +12,7 @@ portSocket::portSocket(port * imitating):imitating(imitating)
 {
     this->type=block::TonlyPort;
     this->id=-3;
+    this->oldId=-3;
     addPort();
 }
 
@@ -38,4 +39,5 @@ void portSocket::update()
 {
     viewedPort->name=imitating->name;
     viewedPort->valType=imitating->valType;
+    viewedPort->constant=imitating->constant;
 }

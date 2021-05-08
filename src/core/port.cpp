@@ -9,6 +9,7 @@
 #include "port.h"
 #include "portsocket.h"
 #include "compozit.h"
+
 port::port(port::Type type,int num,block *inBlock):type(type),inBlock(inBlock)
 {
     this->valType=Vint;
@@ -33,10 +34,13 @@ port::~port()
     if(connectedTo)
         connectedTo->removePortFromList(this);
     if((socketPtr!=nullptr)&&(inBlock->type==block::Tcompozit)){
-        auto cast=static_cast<compozit*>(inBlock);
-        cast->insidePorts.removeAll(socketPtr);
-        delete socketPtr;
+        auto cast=dynamic_cast<compozit*>(inBlock);
+        if(cast){
+            cast->insidePorts.removeAll(socketPtr);
+            delete socketPtr;
+        }
     }
+     qDebug()<<"port destructor end";
 }
 
 QString port::getName()

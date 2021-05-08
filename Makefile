@@ -12,7 +12,7 @@ build:
 	cp ICP-projekt-2021 ../
 
 pack: clean
-	zip -r xkomar33-xkolev00.zip src/ exemples/ makefile README.txt
+	zip -r xkomar33-xkolev00.zip src/ examples/ makefile README.txt 
 
 run:
 	test -f ICP-projekt-2021 && ./ICP-projekt-2021

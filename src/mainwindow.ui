@@ -36,7 +36,7 @@
                </widget>
               </item>
               <item>
-               <widget class="QPushButton" name="pushButton">
+               <widget class="QPushButton" name="apkSave">
                 <property name="text">
                  <string>save</string>
                 </property>

@@ -11,6 +11,7 @@
 
 #include <QObject>
 #include <QDebug>
+
 #include "atomic.h"
 #include "compozit.h"
 

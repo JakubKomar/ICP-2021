@@ -35,8 +35,7 @@ QT_END_NAMESPACE
 class aplicationView;
 class mainWindow : public QMainWindow
 {
-    Q_OBJECT
-
+Q_OBJECT
 public:
     mainWindow(QWidget *parent = nullptr);
     ~mainWindow();
@@ -81,17 +80,91 @@ public:
      * update editor before swiching to this page
     */
     void updateAtEditor();
+    /**
+     * saving atomic block to xml file
+     * @param ptr-poiter to block which will be saved
+     * @param saveConnections-save relation between blocks
+     * @param saveposition- saving position in graphic scene
+    */
+    void saveAtom(atomic *ptr,bool saveConnections,bool savePosition);
+    /**
+     * saving atomic block to xml file
+     * @param ptr-poiter to block which will be saved
+     * @param saveConnections-save relation between blocks
+     * @param saveposition- saving position in graphic scene
+    */
+    void saveBlock(QString path);
+    /**
+     * master swich for saving methods
+     * @param path to where is block to be saved
+    */
+    void saveSocket(portSocket * ptr);
+    /**
+     * saving compozite block to xml file
+     * @param ptr-poiter to block which will be saved
+     * @param saveConnections-save relation between blocks
+     * @param saveposition- saving position in graphic scene
+    */
+    void saveComp(compozit * ptr,bool saveConnections,bool savePosition,bool apk);
+    /**
+     * saving port to xml file
+     * @param ptr-poiter to port which will be saved
+     * @param saveConnections-save relation between blocks
+    */
+    void savePort(port *ptr,bool saveConnections);
+    struct connLog{
+        port * portPtr;
+        int id;
+        QString portName;
+    };
+    /**
+     * loading atomic block from xml file
+     * @param element-xml var where is  block saved
+     * @param useIdFromSav-use id from the file
+     * @param usePos- chose if position in scene is loaded to block
+     * @param loadConnections- chozing if the connections are loaded
+     * @param connections- pointer to list of connections
+     * @param placeToLoad- where is blocked saved after load
+    */
+    void loadAtom(QDomElement element,bool useIdFromSav,bool usePos,bool loadConnections, QList<connLog> * connections,compozit * placeToLoad);
+    /**
+     * master loading switch - chozing how is block to be loaded
+     * @param path-where is file saved
+    */
+    void loadBegin(QString path);
+    /**
+     * loading compozite block from xml file
+     * @param element-xml var where is  block saved
+     * @param useIdFromSav-use id from the file
+     * @param usePos- chose if position in scene is loaded to block
+     * @param usePos- where is blocked saved after load
+    */
+    void loadComp(QDomElement element,bool useIdFromSave,bool usePos,bool loadConnections,bool loadingApk, QList<connLog> * masterTable,compozit * placeToLoad);
+    /**
+     * loading port from xml file
+     * @param element-xml var where is  block saved
+     * @param ptr to block where port is to be loaded
+     * @param loadConnections- chozing if the connections are loaded
+     * @param connections- pointer to list of connections
+    */
+    void loadPort(QDomElement element,block * ptr,bool loadConections, QList<connLog> * connections);
+    /**
+     * loading socket from xml file
+     * @param element-xml var where is  block saved
+     * @param connections- pointer to list of connections
+     * @param ptr- pointer to compozit block where is saved
+    */
+    void loadSocket(QDomElement element, QList<connLog> * connections,compozit * ptr);
+    /**
+     * loading socket from xml file
+     * @param log-list of connections to be proccesed
+     * @param compPtr- in which block the connection will be proccesed
+    */
+    void loadConnection(connLog log,compozit * compPtr);
     compozit * viewedBlock;
     bool destructorMod{false};
-    void saveAtom(atomic *ptr,bool saveConnections,bool savePosition);
-    void saveSocket(portSocket * ptr);
-    void saveComp(compozit * ptr,bool saveConnections,bool savePosition);
-    void savePort(port *ptr,bool saveConnections);
-    void loadAtom(QDomElement element,bool useIdFromSav,bool usePos,compozit * placeToLoad);
-    void loadComp(QDomElement element,bool useIdFromSav,bool usePos,compozit * placeToLoad);
-    void loadPort(QDomElement element,block * ptr,bool loadConections);
-    void loadSocket(QDomElement element,compozit * ptr);
-    QXmlStreamWriter * writer;
+    bool loadingMod{false};
+    QXmlStreamWriter * writer; 
 private slots:
     void refreshSlot();
     void on_newApk_clicked();
@@ -108,10 +181,9 @@ private slots:
     void on_undo_clicked();
     void on_redo_clicked();
     void on_Build_clicked();
-
     void on_save_clicked();
-
     void on_load_clicked();
+    void on_apkSave_clicked();
 
 private:
     /**
@@ -123,13 +195,6 @@ private:
      * removing all elements from port grapohic rep.
     */
     void removePort();
-    QStack<compozit*> callBackStack;
-    aplication * curentApk;
-    block * editedBlock;
-    atomic * editedAtBlock;
-    aplicationView * scene;
-    Ui::mainWindow *ui;
-    bool editingAtom{false};
     /**
      * clearing all layouts for port editing
     */
@@ -141,15 +206,23 @@ private:
     /**
      * interpreting function
     */
-    void buildAtomic(atomic * prt);
+    void buildAtomic(QFile * file,atomic * prt);
     /**
      * interpreting function
     */
-    void buildCompozite(compozit * prt);
+    void buildCompozite(QFile * file,compozit * prt);
     /**
      * interpreting function
     */
-    void buildHeader(compozit * prt);
+    void buildHead(QFile* file);
+    void buildInput(QFile * file,port * ptr);
+    QStack<compozit*> callBackStack;
+    aplication * curentApk;
+    block * editedBlock;
+    atomic * editedAtBlock;
+    aplicationView * scene;
+    Ui::mainWindow *ui;
+    bool editingAtom{false};
     QList <portLayout*> layoutList;
 };
 #endif // FILESELECTOR_H

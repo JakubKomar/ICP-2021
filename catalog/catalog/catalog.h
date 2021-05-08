@@ -8,15 +8,11 @@
 #include <QtGui>
 #include <QFileSystemModel>
 #include <QDir>
+#include <QDialog>
+#include <QLineEdit>
+#include <QInputDialog>
+#include  <QMessageBox>
 
-
-/*
-#include <QProgressDialog>
-#include <QFileDialog>
-#include <QTableWidget>
-#include <QTextStream>
-#include <QDesktopServices>
-*/
 
 
 QT_BEGIN_NAMESPACE
@@ -31,13 +27,24 @@ class catalog : public QMainWindow
 public:
     catalog(QWidget *parent = nullptr);
     ~catalog();
+    QString workingPath{""};
 
 private slots:
     void on_treeView_clicked(const QModelIndex &index);
 
     void on_listView_clicked(const QModelIndex &index);
 
-    void on_listView_doubleClicked(const QModelIndex &index);
+
+
+
+
+    void on_AddFolderButton_clicked();
+
+    void on_RemoveFolderButton_clicked();
+
+    void on_RenameCategoryButton_clicked();
+
+
 
 private:
     Ui::catalog *ui;

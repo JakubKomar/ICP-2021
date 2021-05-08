@@ -15,10 +15,12 @@
 #include <QPushButton>
 #include <qdebug.h>
 #include <QComboBox>
+
 #include  "ui_mainwindow.h"
 #include  "./core/port.h"
 #include  "./gui/blockmodel.h"
 #include  "./core/portsocket.h"
+
 class portLayout: public QObject
 {
     Q_OBJECT
@@ -38,8 +40,13 @@ public slots:
     * updating value type from core repr.
     */
    void cheangeValType();
+   /**
+    * updating constant
+    */
+   void cheangeConstant();
 private:
     QLineEdit * lineEdit;
+    QLineEdit * constantEdit;
     QComboBox * comboBox;
     port * corePtr;
     QVBoxLayout * mainLayout;

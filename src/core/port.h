@@ -13,11 +13,8 @@
 #include <QDebug>
 #include <QList>
 
-
 #include "./core/block.h"
 #include "./gui/portmodel.h"
-
-
 
 class block;
 class portModel;
@@ -45,6 +42,7 @@ public:
      */
     port(Type type,block *inBlock);
     ~port();
+    QString constant{""};
     Type type;  //input/output
     TypeVal valType;//string,int,...
     QString name;

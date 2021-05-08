@@ -1,8 +1,12 @@
 #include "catalog.h"
 #include "ui_catalog.h"
 
+#include <stdio.h>
+#include <cstdio>
+
 #include <QtWidgets>
 #include <QDebug>
+
 
 catalog::catalog(QWidget *parent)
     : QMainWindow(parent)
@@ -13,8 +17,7 @@ catalog::catalog(QWidget *parent)
     //--------------------------------------------
     QString path = QDir::currentPath();
     path=path+"/../../library/";                                // rootfolder to display = library folder
-    qDebug()<<path;
-
+    workingPath = path;
 
 
     folder = new QFileSystemModel(this);                        // create the new model
@@ -27,15 +30,15 @@ catalog::catalog(QWidget *parent)
 
 
 
+
     file = new QFileSystemModel(this);
     file -> setFilter(QDir::NoDotAndDotDot | QDir::Files);
     file -> setRootPath(path);
 
-    file -> setNameFilters(QStringList() << "*.xml");          // show only xml files
-    file -> setNameFilterDisables(false);                      // hides filtered (grey) files
+    file -> setNameFilters(QStringList() << "*.xml");           // show only xml files
+    file -> setNameFilterDisables(false);                       // hides filtered (grey) files
 
     ui -> listView -> setModel(file);
-
 
     index = file->index(path, 0);
     ui->listView->setRootIndex(index);
@@ -53,22 +56,194 @@ catalog::~catalog()
 void catalog::on_treeView_clicked(const QModelIndex &index)     // when user clicks on a node in treeView (extract and set path in listView
 {
     QString path = folder -> fileInfo(index).absoluteFilePath();
-    qDebug()<<path;
+    workingPath = path;
     ui -> listView -> setRootIndex(file -> setRootPath(path));
 }
 //--------------------------------------------
 
-//--------------------------------------------
-void catalog::on_listView_clicked(const QModelIndex &index)
+void catalog::on_listView_clicked(const QModelIndex &index)     // get file path when clicked
 {
     QString path = file -> fileInfo(index).absoluteFilePath();
     qDebug()<<path;
 }
+//--------------------------------------------
 
-// mouse press event for each button:
-// TODO
+void catalog::on_AddFolderButton_clicked()                      // "Add Category Folder" button
+{
+      QString path = QDir::currentPath();                       // path for new folder in 'library'
+      path=path+"/../../library/";
+
+      QString subpath = workingPath;                            // path for the new SUBfolder in 'library'
+
+
+      if(workingPath == path)
+      {
+          QString name = QString ("Category_%1").arg(QDateTime::currentMSecsSinceEpoch());
+              while(QDir(name).exists())
+              {
+                   name = QString ("Category_%1").arg(QDateTime::currentMSecsSinceEpoch());
+              }
+              QDir(path).mkdir(name);
+      }
+
+      else
+      {
+          QString name = QString ("Category_%1").arg(QDateTime::currentMSecsSinceEpoch());
+              while(QDir(name).exists())
+              {
+                   name = QString ("Category_%1").arg(QDateTime::currentMSecsSinceEpoch());
+              }
+              QDir(subpath).mkdir(name);
+      }
+}
+
+
+
+
+void catalog::on_RemoveFolderButton_clicked()                    // "Remove Category Folder" button
+{
+    QString path = QDir::currentPath();                          // path for new folder in 'library'
+    path=path+"/../../library/";
+
+    QString subpath = workingPath;                               // path for the new SUBfolder in 'library'
+
+    if(workingPath == path)
+    {
+        QDir dir(path);
+        dir.removeRecursively();
+    }
+
+    else
+    {
+        QDir dir(subpath);
+        dir.removeRecursively();
+    }
+
+}
+
+
+
+
+
+//
+bool copyDirRecursively(QString sourceFolder, QString destFolder)
+   {
+       bool success = false;
+       QDir sourceDir(sourceFolder);
+
+       if(!sourceDir.exists())
+           return false;
+
+       QDir destDir(destFolder);
+       if(!destDir.exists())
+           destDir.mkdir(destFolder);
+
+       QStringList files = sourceDir.entryList(QDir::Files);
+       for(int i = 0; i< files.count(); i++) {
+           QString srcName = sourceFolder + QDir::separator() + files[i];
+           QString destName = destFolder + QDir::separator() + files[i];
+           success = QFile::copy(srcName, destName);
+           if(!success)
+               return false;
+       }
+
+       files.clear();
+       files = sourceDir.entryList(QDir::AllDirs | QDir::NoDotAndDotDot);
+       for(int i = 0; i< files.count(); i++)
+       {
+           QString srcName = sourceFolder + QDir::separator() + files[i];
+           QString destName = destFolder + QDir::separator() + files[i];
+           success = copyDirRecursively(srcName, destName);
+           if(!success)
+               return false;
+       }
+
+       return true;
+   }
+//
+
+
+void catalog::on_RenameCategoryButton_clicked()                  // "ReName Category Folder" button:
+{
+    //QMessageBox::information(this, "ReName", "Please enter a new name: ");   //TESTING
+
+    QString path = QDir::currentPath();                          // path for new folder in 'library'
+    path=path+"/../../library/";
+
+    QString subpath = workingPath;                               // path for the new SUBfolder in 'library'
+
+
+
+
+
+    QString new_name = QInputDialog::getText(this, "Rename Catalog Folder", "Please enter a the new name: ");
+    //QString new_name_slash = new_name+"/";
+
+//path = ....\ICP-2021\library
+
+
+
+
+    if(workingPath == path)
+    {
+        QString path_update_final = path + new_name;
+
+
+        QDir(path).mkdir(new_name);
+
+        copyDirRecursively(path, path_update_final);
+
+        QDir dir(path);
+        dir.removeRecursively();
+    }
+
+    else
+    {
+        QString path_update1 = subpath+"/../";
+        QString path_update_final = path_update1 + new_name;
+
+
+        QDir(subpath).mkdir(new_name);
+
+        copyDirRecursively(subpath, path_update_final);
+
+        QDir dir(subpath);
+        dir.removeRecursively();
+    }
+
+
+
+
+
+    //Use QDir::fromNativeSeparators() and toNativeSeparators()
+/*
+    QDir currentDirectory("C:\SomeDirectory\A");
+    currentDirectory.rename(currentDirectory.path(), "../B");
+*/
+
+
+//Plan B:
+    //get old dir name
+    // make new dir (+transfer contents)
+    //delete old dir
+
+
+
+
+
+}
+
 
 
 // doubleclick->file open (load into ???)
 // TODO
 //--------------------------------------------
+
+
+
+
+
+
+
+
+
