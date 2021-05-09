@@ -334,6 +334,16 @@ QHash<int,QHash<QString,multiVar>> memory;)""""
 }
 void mainWindow::saveBlock(QString path)
 {
+    if(editingAtom){
+        path=path+"/"+editedAtBlock->getName()+".xml";
+    }
+    else if(viewedBlock==curentApk)
+    {
+        path=path+"/"+viewedBlock->getName()+".xml";
+    }
+    else{
+        path=path+"/"+viewedBlock->getName()+".xml";
+    }
     QFile file(path);
     if(!file.open(QIODevice::WriteOnly)){
         QMessageBox::information(this, "error", "File cant be opened.");
@@ -361,8 +371,10 @@ void mainWindow::saveBlock(QString path)
 void mainWindow::on_apkSave_clicked(){ on_save_clicked();}
 void mainWindow::on_save_clicked()
 {
-    QString path="MyXml.xml";
-    saveBlock(path);
+    storMode=true;
+    pageHistory= ui->screenSwitch->currentIndex();
+    ui->screenSwitch->setCurrentIndex(2);
+    ui->catologDisp->setText("store");
 }
 
 void mainWindow::saveAtom(atomic *ptr,bool saveConnections,bool savePosition)
@@ -461,11 +473,10 @@ void mainWindow::savePort(port *ptr,bool saveConnections)
 void mainWindow::on_loadApk_clicked(){on_load_clicked();}
 void mainWindow::on_load_clicked()
 {    
-    QString path="MyXml.xml";
-    loadingMod=true;
-    loadBegin(path);
-    loadingMod=false;
-    refresh();
+    loadMode=true;
+    pageHistory= ui->screenSwitch->currentIndex();
+    ui->screenSwitch->setCurrentIndex(2);
+    ui->catologDisp->setText("load");
 }
 
 void mainWindow::loadBegin(QString path)
@@ -483,6 +494,7 @@ void mainWindow::loadBegin(QString path)
     }
     else if((root.tagName()=="compositeBlock")&&(viewedBlock!=nullptr)){
         loadComp(root,false,false,false,false,nullptr,viewedBlock);
+
     }
     else if((root.tagName()=="aplikation")){
         if(curentApk!=NULL)
@@ -491,10 +503,12 @@ void mainWindow::loadBegin(QString path)
         this->viewedBlock=this->curentApk;
         refresh();
         loadComp(root,false,false,false,true,nullptr,this->curentApk);
+        ui->screenSwitch->setCurrentIndex(0);
     }
     else
         QMessageBox::information(this, "error", "Cant load block to empty aplikation .");
     file.close();
+    on_goBackFromEditor_clicked();
 }
 void mainWindow::loadAtom(QDomElement element,bool useIdFromSave,bool usePos,bool loadConnections, QList<connLog> * connections,compozit * placeToLoad){
     atomic * pointer;
@@ -669,7 +683,6 @@ void mainWindow::loadPort(QDomElement element,block * ptr,bool loadConections, Q
     {
         qDebug()<<"invalid port";
     }
-
 }
 
 void mainWindow::loadSocket(QDomElement element, QList<connLog> * connections, compozit *ptr)
@@ -734,7 +747,6 @@ void mainWindow::on_treeView_clicked(const QModelIndex &index)     // when user 
 void mainWindow::on_listView_clicked(const QModelIndex &index)     // get file path when clicked
 {
     QString path = file -> fileInfo(index).absoluteFilePath();
-    qDebug()<<path;
 }
 
 void mainWindow::on_AddFolderButton_clicked()                      // "Add Category Folder" button
@@ -767,9 +779,6 @@ void mainWindow::on_AddFolderButton_clicked()                      // "Add Categ
       }
 }
 
-
-
-
 void mainWindow::on_RemoveFolderButton_clicked()                    // "Remove Category Folder" button
 {
     QString path = QDir::currentPath();                          // path for new folder in 'library'
@@ -782,7 +791,6 @@ void mainWindow::on_RemoveFolderButton_clicked()                    // "Remove C
         QDir dir(path);
         dir.removeRecursively();
     }
-
     else
     {
         QDir dir(subpath);
@@ -841,7 +849,6 @@ void mainWindow::on_RenameCategoryButton_clicked()                  // "ReName C
     {
         QString path_update_final = path + new_name;
 
-
         QDir(path).mkdir(new_name);
 
         copyDirRecursively(path, path_update_final);
@@ -864,3 +871,36 @@ void mainWindow::on_RenameCategoryButton_clicked()                  // "ReName C
         dir.removeRecursively();
     }
 }
+
+void mainWindow::on_treeView_doubleClicked(const QModelIndex &index)
+{
+    if(storMode){
+        QString path = folder -> fileInfo(index).absoluteFilePath();
+        saveBlock(path);
+        QMessageBox::information(this, "success", "Block was saved.");
+        storMode=false;
+    }
+}
+
+
+void mainWindow::on_listView_doubleClicked(const QModelIndex &index)
+{
+    if(loadMode){
+        loadingMod=true;
+        QString path = file -> fileInfo(index).absoluteFilePath();
+        loadBegin(path);
+        loadingMod=false;
+        loadMode=false;
+        refresh();
+        on_goBackFromEditor_clicked();
+    }
+}
+
+
+void mainWindow::on_goBackFromEditor_clicked()
+{
+    ui->screenSwitch->setCurrentIndex(pageHistory);
+    loadMode=false;
+    storMode=false;
+}
+

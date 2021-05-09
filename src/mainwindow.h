@@ -200,6 +200,12 @@ private slots:
     void on_treeView_clicked(const QModelIndex &index);
     void on_listView_clicked(const QModelIndex &index);
 
+    void on_treeView_doubleClicked(const QModelIndex &index);
+
+    void on_listView_doubleClicked(const QModelIndex &index);
+
+    void on_goBackFromEditor_clicked();
+
 private:
     /**
      * ading input to frame
@@ -242,5 +248,8 @@ private:
 
     QFileSystemModel *folder;   // folder model = display folders
     QFileSystemModel *file;     // file model = display files
+    bool loadMode{false};
+    bool storMode{false};
+    int pageHistory{0};
 };
 #endif // FILESELECTOR_H
