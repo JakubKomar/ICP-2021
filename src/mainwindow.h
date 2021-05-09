@@ -201,9 +201,7 @@ private slots:
     void on_listView_clicked(const QModelIndex &index);
 
     void on_treeView_doubleClicked(const QModelIndex &index);
-
     void on_listView_doubleClicked(const QModelIndex &index);
-
     void on_goBackFromEditor_clicked();
 
 private:
@@ -225,17 +223,27 @@ private:
     */
     void refreshPorts();
     /**
-     * interpreting function
+     * interpreting atomic block
+     * @param file-file to writing
+     * @param ptr-pointer to atomic block which will be interpreted
     */
     void buildAtomic(QFile * file,atomic * prt);
     /**
      * interpreting function
+     * @param file-file to writing
+     * @param ptr-pointer to composite block which will be interpreted
     */
     void buildCompozite(QFile * file,compozit * prt);
     /**
-     * interpreting function
+     * creating header of interpreting code
+     * @param file-file to writing
     */
     void buildHead(QFile* file);
+    /**
+     * interpreting function
+     * @param file-file to writing
+     * @param ptr-pointer to port which will be interpreted
+    */
     void buildInput(QFile * file,port * ptr);
     QStack<compozit*> callBackStack;
     aplication * curentApk;

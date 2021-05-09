@@ -296,7 +296,6 @@ void mainWindow::buildInput(QFile * file,port * ptr){
      }
 }
 
-
 void mainWindow::buildCompozite(QFile * file,compozit * prt)
 {
 
