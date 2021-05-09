@@ -250,7 +250,7 @@ void mainWindow::buildAtomic(QFile * file,atomic * ptr)
 {
 
     QTextStream stream(file);
-    stream<<"\nvoid function"<<ptr->getId()<<("(int id){\n");
+    stream<<"\nvoid function"<<ptr->getId()<<("(){\n");
     stream.flush();
     foreach(port * item,ptr->inputs){buildInput(file,item);}
     stream<<ptr->code;
@@ -261,8 +261,31 @@ void mainWindow::buildAtomic(QFile * file,atomic * ptr)
 }
 void mainWindow::buildCompozite(QFile * file,compozit * ptr)
 {
+    QTextStream stream(file);
+    if(ptr->getId()!=-1)
+        stream<<"\nvoid function"<<ptr->getId()<<("(){\n");
+    else
+        stream<<"\nvoid functionMaster(){\n";
+    stream.flush();
+    foreach(port * item,ptr->inputs){buildInput(file,item);}
+    stream.flush();
+    foreach(atomic * item,ptr->atomVect){
+         stream<<"\t  functionSwitch("<<item->getId()<<(");\n");
+         stream.flush();
+    }
+    foreach(compozit * item,ptr->compVect){
+         stream<<"\t  functionSwitch("<<item->getId()<<(");\n");
+         stream.flush();
+    }
+
+    foreach(port * item,ptr->outputs){buildOutput(file,item);}
+    stream<<"}\n";
+    stream.flush();
     foreach(atomic * item,ptr->atomVect){
         buildAtomic(file,item);
+    }
+    foreach(compozit * item,ptr->compVect){
+        buildCompozite(file,item);
     }
 }
 void mainWindow::buildInput(QFile * file,port * ptr){
@@ -270,35 +293,35 @@ void mainWindow::buildInput(QFile * file,port * ptr){
      if(ptr->connectedTo!=nullptr){
          switch (ptr->valType) {
              case port::Vint:
-                stream<<"\t\t int "<<ptr->name<<"=memory["<<ptr->inBlock->getId()<<"]["<<ptr->name<<"].Int;\n";
+                stream<<"\t int "<<ptr->name<<"=memory["<<ptr->inBlock->getId()<<"]["<<ptr->name<<"].Int;\n";
                 break;
              case port::Vdouble:
-                stream<<"\t\t double "<<ptr->name<<"=memory["<<ptr->inBlock->getId()<<"]["<<ptr->name<<"].Double;\n";
+                stream<<"\t double "<<ptr->name<<"=memory["<<ptr->inBlock->getId()<<"]["<<ptr->name<<"].Double;\n";
                 break;
              case port::Vstring:
-                stream<<"\t\t QString "<<ptr->name<<"=memory["<<ptr->inBlock->getId()<<"]["<<ptr->name<<"].String;\n";
+                stream<<"\t QString "<<ptr->name<<"=memory["<<ptr->inBlock->getId()<<"]["<<ptr->name<<"].String;\n";
                 break;
              case port::Vbool:
-                stream<<"\t\t bool "<<ptr->name<<"=memory["<<ptr->inBlock->getId()<<"]["<<ptr->name<<"].bool;\n";
+                stream<<"\t bool "<<ptr->name<<"=memory["<<ptr->inBlock->getId()<<"]["<<ptr->name<<"].bool;\n";
                 break;
          }
      }
      else{
          switch (ptr->valType) {
              case port::Vint:
-                stream<<"\t\t int "<<ptr->name<<"=QString(\""<<ptr->constant<<"\").toInt();\n";
+                stream<<"\t int "<<ptr->name<<"=QString(\""<<ptr->constant<<"\").toInt();\n";
                 break;
              case port::Vdouble:
-                stream<<"\t\t double "<<ptr->name<<"=QString(\""<<ptr->constant<<"\").toDouble();\n";
+                stream<<"\t double "<<ptr->name<<"=QString(\""<<ptr->constant<<"\").toDouble();\n";
                 break;
              case port::Vstring:
-                stream<<"\t\t QString "<<ptr->name<<"=\""<<ptr->constant<<"\";\n";
+                stream<<"\t QString "<<ptr->name<<"=\""<<ptr->constant<<"\";\n";
                 break;
              case port::Vbool:
                 if(ptr->constant=="true")
-                    stream<<"\t\t bool "<<ptr->name<<"=true;\n";
+                    stream<<"\t bool "<<ptr->name<<"=true;\n";
                 else
-                    stream<<"\t\t bool "<<ptr->name<<"=false;\n";
+                    stream<<"\t bool "<<ptr->name<<"=false;\n";
                 break;
          }
      }
