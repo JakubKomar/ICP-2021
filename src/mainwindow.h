@@ -19,8 +19,13 @@
 #include <QTextStream>
 #include <QXmlStreamWriter>
 #include <QtXml>
+#include <QDir>
+#include <QDialog>
 #include <QMessageBox>
 #include <QInputDialog>
+#include <QFileSystemModel>
+#include <stdio.h>
+#include <cstdio>
 
 #include  "./gui/aplicationview.h"
 #include  "./gui/portlayout.h"
@@ -189,11 +194,11 @@ private slots:
     void on_apkSave_clicked();
     void on_renameApkButt_clicked();
 
-    void on_treeView_clicked(const QModelIndex &index);
-    void on_listView_clicked(const QModelIndex &index);
     void on_AddFolderButton_clicked();
     void on_RemoveFolderButton_clicked();
     void on_RenameCategoryButton_clicked();
+    void on_treeView_clicked(const QModelIndex &index);
+    void on_listView_clicked(const QModelIndex &index);
 
 private:
     /**

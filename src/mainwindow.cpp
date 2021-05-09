@@ -18,11 +18,9 @@ mainWindow::mainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::mainWin
     this->curentApk=NULL;
     this->viewedBlock=NULL;
 
-    ui->setupUi(this);
-
-    //--------------------------------------------
+    //catalog setup
     QString path = QDir::currentPath();
-    path=path+"/../../library/";                                // rootfolder to display = library folder
+    path=path+"/examples/";  // rootfolder to display = library folder
     workingPath = path;
 
 
@@ -33,9 +31,6 @@ mainWindow::mainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::mainWin
 
     QModelIndex index = folder->index(path, 0);
     ui->treeView->setRootIndex(index);
-
-
-
 
     file = new QFileSystemModel(this);
     file -> setFilter(QDir::NoDotAndDotDot | QDir::Files);
@@ -720,7 +715,6 @@ void mainWindow::loadSocket(QDomElement element, QList<connLog> * connections, c
     }
 }
 
-
 void mainWindow::on_renameApkButt_clicked()
 {
    if(curentApk!=nullptr){
@@ -745,8 +739,9 @@ void mainWindow::on_listView_clicked(const QModelIndex &index)     // get file p
 
 void mainWindow::on_AddFolderButton_clicked()                      // "Add Category Folder" button
 {
+      qDebug()<<"tady";
       QString path = QDir::currentPath();                       // path for new folder in 'library'
-      path=path+"/../../library/";
+      path=path+"/examples/";
 
       QString subpath = workingPath;                            // path for the new SUBfolder in 'library'
 
@@ -778,7 +773,7 @@ void mainWindow::on_AddFolderButton_clicked()                      // "Add Categ
 void mainWindow::on_RemoveFolderButton_clicked()                    // "Remove Category Folder" button
 {
     QString path = QDir::currentPath();                          // path for new folder in 'library'
-    path=path+"/../../library/";
+    path=path+"/examples/";
 
     QString subpath = workingPath;                               // path for the new SUBfolder in 'library'
 
@@ -836,7 +831,7 @@ void mainWindow::on_RenameCategoryButton_clicked()                  // "ReName C
     //QMessageBox::information(this, "ReName", "Please enter a new name: ");   //TESTING
 
     QString path = QDir::currentPath();                          // path for new folder in 'library'
-    path=path+"/../../library/";
+    path=path+"/examples/";
 
     QString subpath = workingPath;                               // path for the new SUBfolder in 'library'
 
