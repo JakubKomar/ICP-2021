@@ -100,6 +100,7 @@ void mainWindow::on_newApk_clicked(){
         delete curentApk;
     this->curentApk=new aplication();
     this->viewedBlock=this->curentApk;
+    ui->renameApkEdit->setText(curentApk->getName());
     refresh();
 }
 
@@ -508,6 +509,7 @@ void mainWindow::loadBegin(QString path)
     else
         QMessageBox::information(this, "error", "Cant load block to empty aplikation .");
     file.close();
+    ui->renameApkEdit->setText(curentApk->getName());
     on_goBackFromEditor_clicked();
 }
 void mainWindow::loadAtom(QDomElement element,bool useIdFromSave,bool usePos,bool loadConnections, QList<connLog> * connections,compozit * placeToLoad){
@@ -551,12 +553,12 @@ void mainWindow::loadComp(QDomElement element,bool useIdFromSave,bool usePos,boo
         }
         else
             pointer=placeToLoad->addCompozite(element.attribute("id","-7").toInt());
-        pointer->setName( element.attribute("name",""));
         if(usePos){
             pointer->x= element.attribute("x","0").toInt();
             pointer->y= element.attribute("y","0").toInt();
         }
     }
+    pointer->setName( element.attribute("name",""));
     QList<connLog> connections;
     QDomElement Component=element.firstChild().toElement();
     while(!Component.isNull()){
