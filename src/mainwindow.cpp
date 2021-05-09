@@ -256,7 +256,7 @@ void mainWindow::buildAtomic(QFile * file,atomic * ptr)
     stream<<ptr->code;
     stream.flush();
     foreach(port * item,ptr->outputs){buildOutput(file,item);}
-    stream<<"}\n";
+    stream<<"\n}\n";
 
 }
 void mainWindow::buildCompozite(QFile * file,compozit * ptr)
@@ -293,16 +293,16 @@ void mainWindow::buildInput(QFile * file,port * ptr){
      if(ptr->connectedTo!=nullptr){
          switch (ptr->valType) {
              case port::Vint:
-                stream<<"\t int "<<ptr->name<<"=memory["<<ptr->inBlock->getId()<<"]["<<ptr->name<<"].Int;\n";
+                stream<<"\t int "<<ptr->name<<"=memory.find("<<ptr->inBlock->getId()<<")->find(\""<<ptr->name<<"\").value().Int;\n";
                 break;
              case port::Vdouble:
-                stream<<"\t double "<<ptr->name<<"=memory["<<ptr->inBlock->getId()<<"]["<<ptr->name<<"].Double;\n";
+                stream<<"\t double "<<ptr->name<<"=memory.find("<<ptr->inBlock->getId()<<")->find(\""<<ptr->name<<"\").value().Double;\n";
                 break;
              case port::Vstring:
-                stream<<"\t QString "<<ptr->name<<"=memory["<<ptr->inBlock->getId()<<"]["<<ptr->name<<"].String;\n";
+                stream<<"\t QString "<<ptr->name<<"=memory.find("<<ptr->inBlock->getId()<<")->find(\""<<ptr->name<<"\").value().String;\n";
                 break;
              case port::Vbool:
-                stream<<"\t bool "<<ptr->name<<"=memory["<<ptr->inBlock->getId()<<"]["<<ptr->name<<"].bool;\n";
+                stream<<"\t bool "<<ptr->name<<"=memory.find("<<ptr->inBlock->getId()<<")->find(\""<<ptr->name<<"\").value().Bool;\n";
                 break;
          }
      }
