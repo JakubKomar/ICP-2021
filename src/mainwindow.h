@@ -217,9 +217,9 @@ private:
     void buildHead(QFile* file);
     void buildInput(QFile * file,port * ptr);
     QStack<compozit*> callBackStack;
-    aplication * curentApk;
-    block * editedBlock;
-    atomic * editedAtBlock;
+    aplication * curentApk{nullptr};
+    block * editedBlock{nullptr};
+    atomic * editedAtBlock{nullptr};
     aplicationView * scene;
     Ui::mainWindow *ui;
     bool editingAtom{false};

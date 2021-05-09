@@ -15,8 +15,6 @@ mainWindow::mainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::mainWin
     ui->apkView->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
     ui->compoziteView->setScene(scene);
     ui->compoziteView->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
-    this->curentApk=NULL;
-    this->viewedBlock=NULL;
 }
 
 mainWindow::~mainWindow(){
@@ -227,45 +225,75 @@ void mainWindow::refreshPorts()
 }
 void mainWindow::on_Build_clicked()
 {
-    QDir dir = QDir::current();
-    dir.mkdir("apkBuild");
 
-    QFile file("apkBuild/apk.cpp");
-    if (!file.open(QIODevice::WriteOnly)){
-         QMessageBox::information(this, "error", "File cant be opened.");
-         return;
-    }
-    buildHead(&file);
-    foreach(atomic * item,curentApk->atomVect){
-        buildAtomic(&file,item);
-    }
+    if(curentApk!=nullptr){
+        QDir dir = QDir::current();
+        dir.mkdir("apkBuild");
 
-    file.close();
+        QFile file("apkBuild/apk.cpp");
+        if (!file.open(QIODevice::WriteOnly)){
+             QMessageBox::information(this, "error", "File cant be opened.");
+             return;
+        }
+        buildHead(&file);
+        foreach(atomic * item,curentApk->atomVect){
+            buildAtomic(&file,item);
+        }
+
+        file.close();
+    }
+    else{
+        QMessageBox::information(this, "error", "Cant build empty apk. Try create new apk.");
+    }
 }
 void mainWindow::buildAtomic(QFile * file,atomic * ptr)
 {
+
     QTextStream stream(file);
     stream<<"\n\tvoid function"<<ptr->getId()<<("(int id){\n");
+    stream.flush();
     foreach(port * item,ptr->inputs){buildInput(file,item);}
 
     stream<<ptr->code;
     stream<<"}\n";
+
 }
 void mainWindow::buildInput(QFile * file,port * ptr){
      QTextStream stream(file);
-     switch (ptr->valType) {
-         case port::Vint:
-            stream<<"\t\t int "<<ptr->name<<"=memory["<<ptr->inBlock->getId()<<"]["<<ptr->name<<"].Int;";
-            break;
-         case port::Vdouble:
-            stream<<"\t\t double "<<ptr->name<<"=memory["<<ptr->inBlock->getId()<<"]["<<ptr->name<<"].Double;";
-            break;
-         case port::Vstring:
-            stream<<"\t\t string "<<ptr->name<<"=memory["<<ptr->inBlock->getId()<<"]["<<ptr->name<<"].String;";
-            break;
-         case port::Vbool:
-            stream<<"\t\t bool "<<ptr->name<<"=memory["<<ptr->inBlock->getId()<<"]["<<ptr->name<<"].bool;";
-            break;
+     if(ptr->connectedTo!=nullptr){
+         switch (ptr->valType) {
+             case port::Vint:
+                stream<<"\t\t int "<<ptr->name<<"=memory["<<ptr->inBlock->getId()<<"]["<<ptr->name<<"].Int;\n";
+                break;
+             case port::Vdouble:
+                stream<<"\t\t double "<<ptr->name<<"=memory["<<ptr->inBlock->getId()<<"]["<<ptr->name<<"].Double;\n";
+                break;
+             case port::Vstring:
+                stream<<"\t\t QString "<<ptr->name<<"=memory["<<ptr->inBlock->getId()<<"]["<<ptr->name<<"].String;\n";
+                break;
+             case port::Vbool:
+                stream<<"\t\t bool "<<ptr->name<<"=memory["<<ptr->inBlock->getId()<<"]["<<ptr->name<<"].bool;\n";
+                break;
+         }
+     }
+     else{
+         switch (ptr->valType) {
+             case port::Vint:
+                stream<<"\t\t int "<<ptr->name<<"=QString(\""<<ptr->constant<<"\").toInt();\n";
+                break;
+             case port::Vdouble:
+                stream<<"\t\t double "<<ptr->name<<"=QString(\""<<ptr->constant<<"\").toDouble();\n";
+                break;
+             case port::Vstring:
+                stream<<"\t\t QString "<<ptr->name<<"=\""<<ptr->constant<<"\";\n";
+                break;
+             case port::Vbool:
+                if(ptr->constant=="true")
+                    stream<<"\t\t bool "<<ptr->name<<"=true;\n";
+                else
+                    stream<<"\t\t bool "<<ptr->name<<"=false;\n";
+                break;
+         }
      }
 }
 
