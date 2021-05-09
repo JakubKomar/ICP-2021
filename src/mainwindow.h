@@ -215,7 +215,10 @@ private:
      * interpreting function
     */
     void buildHead(QFile* file);
+    void buildSwitch(QFile* file,compozit * prt);
+    void buildCases(QFile *file, compozit *prt);
     void buildInput(QFile * file,port * ptr);
+    void buildOutput(QFile * file,port * ptr);
     QStack<compozit*> callBackStack;
     aplication * curentApk{nullptr};
     block * editedBlock{nullptr};

@@ -236,9 +236,9 @@ void mainWindow::on_Build_clicked()
              return;
         }
         buildHead(&file);
-        foreach(atomic * item,curentApk->atomVect){
-            buildAtomic(&file,item);
-        }
+        buildCompozite(&file,curentApk);
+        buildSwitch(&file,curentApk);
+
 
         file.close();
     }
@@ -250,13 +250,20 @@ void mainWindow::buildAtomic(QFile * file,atomic * ptr)
 {
 
     QTextStream stream(file);
-    stream<<"\n\tvoid function"<<ptr->getId()<<("(int id){\n");
+    stream<<"\nvoid function"<<ptr->getId()<<("(int id){\n");
     stream.flush();
     foreach(port * item,ptr->inputs){buildInput(file,item);}
-
     stream<<ptr->code;
+    stream.flush();
+    foreach(port * item,ptr->outputs){buildOutput(file,item);}
     stream<<"}\n";
 
+}
+void mainWindow::buildCompozite(QFile * file,compozit * ptr)
+{
+    foreach(atomic * item,ptr->atomVect){
+        buildAtomic(file,item);
+    }
 }
 void mainWindow::buildInput(QFile * file,port * ptr){
      QTextStream stream(file);
@@ -297,11 +304,13 @@ void mainWindow::buildInput(QFile * file,port * ptr){
      }
 }
 
+void mainWindow::buildOutput(QFile * file,port * ptr){
+    QTextStream stream(file);
+    foreach(port * item,ptr->PortConnToThis){
 
-void mainWindow::buildCompozite(QFile * file,compozit * prt)
-{
-
+    }
 }
+
 
 void mainWindow::buildHead(QFile * file){
 file->write(R""""(#include <algorithm>
@@ -316,7 +325,8 @@ file->write(R""""(#include <algorithm>
 #include <QDebug>
 using namespace std;
 
-
+void callBlock(int id);
+void functionSwitch(int id);
 enum TypeVal{
     Vint,
     Vdouble,
@@ -330,12 +340,42 @@ struct multiVar{
     bool Bool{false};
     string String{""};
 };
-void callBlock(int id);
-QHash<int,QHash<QString,multiVar>> memory;)""""
+
+QHash<int,QHash<QString,multiVar>> memory;
+
+)""""
 );
+
 }
-void mainWindow::saveBlock(QString path)
+
+void mainWindow::buildSwitch(QFile *file, compozit *prt)
 {
+     QTextStream stream(file);
+     stream<<R""""(
+void functionSwitch(int id){
+    switch(id){
+)""""
+;
+    stream.flush();
+    buildCases(file,prt);
+    stream<<"\t\t default:\n \t\t\t break;\n\t}\n}";
+}
+
+void mainWindow::buildCases(QFile *file, compozit *ptr)
+{
+    QTextStream stream(file);
+    foreach(block* item,ptr->atomVect){
+        stream<<"\t\t case "<<item->getId()<<":\n\t\t\t function"<<item->getId()<<"();\n\t\t\t break;\n";
+        stream.flush();
+    }
+    foreach(compozit * item,ptr->compVect){
+        stream<<"\t\t case "<<item->getId()<<":\n\t\t\t function"<<item->getId()<<"();\n\t\t\t break;\n";
+        stream.flush();
+        buildCases(file,item);
+    }
+}
+
+void mainWindow::saveBlock(QString path){
     QFile file(path);
     if(!file.open(QIODevice::WriteOnly)){
         QMessageBox::information(this, "error", "File cant be opened.");
