@@ -882,20 +882,22 @@ void mainWindow::on_treeView_doubleClicked(const QModelIndex &index)
     }
 }
 
-
 void mainWindow::on_listView_doubleClicked(const QModelIndex &index)
 {
     if(loadMode){
-        loadingMod=true;
         QString path = file -> fileInfo(index).absoluteFilePath();
-        loadBegin(path);
-        loadingMod=false;
-        loadMode=false;
-        refresh();
-        on_goBackFromEditor_clicked();
+        if(path.endsWith(".xml")){
+            loadingMod=true;
+            loadBegin(path);
+            loadingMod=false;
+            loadMode=false;
+            refresh();
+            on_goBackFromEditor_clicked();
+         }
+        else
+             QMessageBox::information(this, "error", "Folder cant be loaded");
     }
 }
-
 
 void mainWindow::on_goBackFromEditor_clicked()
 {
