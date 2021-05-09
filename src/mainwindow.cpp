@@ -706,7 +706,6 @@ void mainWindow::loadSocket(QDomElement element, QList<connLog> * connections, c
         }
     }
     if(!finded){
-        qDebug()<<"for socket is not findet internal reprezentation";
         return;
     }
     portSocket * newSocket=new portSocket(finded);
