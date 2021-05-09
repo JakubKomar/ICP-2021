@@ -217,6 +217,7 @@ private:
     void buildHead(QFile* file);
     void buildSwitch(QFile* file,compozit * prt);
     void buildCases(QFile *file, compozit *prt);
+    void buildFillHashTable(QFile * file,compozit * ptr);
     void buildInput(QFile * file,port * ptr);
     void buildOutput(QFile * file,port * ptr);
     QStack<compozit*> callBackStack;

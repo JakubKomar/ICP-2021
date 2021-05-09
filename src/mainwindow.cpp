@@ -288,6 +288,18 @@ void mainWindow::buildCompozite(QFile * file,compozit * ptr)
         buildCompozite(file,item);
     }
 }
+void mainWindow::buildFillHashTable(QFile * file,compozit * ptr)
+{
+    QTextStream stream(file);
+    stream<<"void fillTable(){\n";
+    stream.flush();
+    foreach(atomic * item,ptr->atomVect){
+         stream<<"\tme";
+    }
+        stream<<"\t\t default:\n \t\t\t break;\n\t}\n}";
+   stream<<"}\n";
+}
+
 void mainWindow::buildInput(QFile * file,port * ptr){
      QTextStream stream(file);
      if(ptr->connectedTo!=nullptr){
