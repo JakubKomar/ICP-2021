@@ -17,6 +17,37 @@ mainWindow::mainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::mainWin
     ui->compoziteView->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
     this->curentApk=NULL;
     this->viewedBlock=NULL;
+
+    ui->setupUi(this);
+
+    //--------------------------------------------
+    QString path = QDir::currentPath();
+    path=path+"/../../library/";                                // rootfolder to display = library folder
+    workingPath = path;
+
+
+    folder = new QFileSystemModel(this);                        // create the new model
+    folder -> setFilter(QDir::NoDotAndDotDot | QDir::AllDirs);  // show only directories (hide other)
+    folder -> setRootPath(path);                                // populate (folder) model (using set rootpath)
+    ui -> treeView -> setModel(folder);
+
+    QModelIndex index = folder->index(path, 0);
+    ui->treeView->setRootIndex(index);
+
+
+
+
+    file = new QFileSystemModel(this);
+    file -> setFilter(QDir::NoDotAndDotDot | QDir::Files);
+    file -> setRootPath(path);
+
+    file -> setNameFilters(QStringList() << "*.xml");           // show only xml files
+    file -> setNameFilterDisables(false);                       // hides filtered (grey) files
+
+    ui -> listView -> setModel(file);
+
+    index = file->index(path, 0);
+    ui->listView->setRootIndex(index);
 }
 
 mainWindow::~mainWindow(){
@@ -467,7 +498,7 @@ void mainWindow::loadBegin(QString path)
         loadComp(root,false,false,false,true,nullptr,this->curentApk);
     }
     else
-        qDebug()<<"unsuported save file";
+        QMessageBox::information(this, "error", "Cant load block to empty aplikation .");
     file.close();
 }
 void mainWindow::loadAtom(QDomElement element,bool useIdFromSave,bool usePos,bool loadConnections, QList<connLog> * connections,compozit * placeToLoad){
@@ -689,3 +720,152 @@ void mainWindow::loadSocket(QDomElement element, QList<connLog> * connections, c
     }
 }
 
+
+void mainWindow::on_renameApkButt_clicked()
+{
+   if(curentApk!=nullptr){
+       curentApk->setName(ui->renameApkEdit->text());
+   }
+   else
+        QMessageBox::information(this, "error", "Cant rename non existing apk.");
+}
+
+void mainWindow::on_treeView_clicked(const QModelIndex &index)     // when user clicks on a node in treeView (extract and set path in listView
+{
+    QString path = folder -> fileInfo(index).absoluteFilePath();
+    workingPath = path;
+    ui -> listView -> setRootIndex(file -> setRootPath(path));
+}
+
+void mainWindow::on_listView_clicked(const QModelIndex &index)     // get file path when clicked
+{
+    QString path = file -> fileInfo(index).absoluteFilePath();
+    qDebug()<<path;
+}
+
+void mainWindow::on_AddFolderButton_clicked()                      // "Add Category Folder" button
+{
+      QString path = QDir::currentPath();                       // path for new folder in 'library'
+      path=path+"/../../library/";
+
+      QString subpath = workingPath;                            // path for the new SUBfolder in 'library'
+
+
+      if(workingPath == path)
+      {
+          QString name = QString ("Category_%1").arg(QDateTime::currentMSecsSinceEpoch());
+              while(QDir(name).exists())
+              {
+                   name = QString ("Category_%1").arg(QDateTime::currentMSecsSinceEpoch());
+              }
+              QDir(path).mkdir(name);
+      }
+
+      else
+      {
+          QString name = QString ("Category_%1").arg(QDateTime::currentMSecsSinceEpoch());
+              while(QDir(name).exists())
+              {
+                   name = QString ("Category_%1").arg(QDateTime::currentMSecsSinceEpoch());
+              }
+              QDir(subpath).mkdir(name);
+      }
+}
+
+
+
+
+void mainWindow::on_RemoveFolderButton_clicked()                    // "Remove Category Folder" button
+{
+    QString path = QDir::currentPath();                          // path for new folder in 'library'
+    path=path+"/../../library/";
+
+    QString subpath = workingPath;                               // path for the new SUBfolder in 'library'
+
+    if(workingPath == path)
+    {
+        QDir dir(path);
+        dir.removeRecursively();
+    }
+
+    else
+    {
+        QDir dir(subpath);
+        dir.removeRecursively();
+    }
+
+}
+
+bool copyDirRecursively(QString sourceFolder, QString destFolder)
+{
+   bool success = false;
+   QDir sourceDir(sourceFolder);
+
+   if(!sourceDir.exists())
+       return false;
+
+   QDir destDir(destFolder);
+   if(!destDir.exists())
+       destDir.mkdir(destFolder);
+
+   QStringList files = sourceDir.entryList(QDir::Files);
+   for(int i = 0; i< files.count(); i++) {
+       QString srcName = sourceFolder + QDir::separator() + files[i];
+       QString destName = destFolder + QDir::separator() + files[i];
+       success = QFile::copy(srcName, destName);
+       if(!success)
+           return false;
+   }
+
+   files.clear();
+   files = sourceDir.entryList(QDir::AllDirs | QDir::NoDotAndDotDot);
+   for(int i = 0; i< files.count(); i++)
+   {
+       QString srcName = sourceFolder + QDir::separator() + files[i];
+       QString destName = destFolder + QDir::separator() + files[i];
+       success = copyDirRecursively(srcName, destName);
+       if(!success)
+           return false;
+   }
+
+   return true;
+}
+
+void mainWindow::on_RenameCategoryButton_clicked()                  // "ReName Category Folder" button:
+{
+    //QMessageBox::information(this, "ReName", "Please enter a new name: ");   //TESTING
+
+    QString path = QDir::currentPath();                          // path for new folder in 'library'
+    path=path+"/../../library/";
+
+    QString subpath = workingPath;                               // path for the new SUBfolder in 'library'
+
+    QString new_name = QInputDialog::getText(this, "Rename Catalog Folder", "Please enter a the new name: ");
+
+    if(workingPath == path)
+    {
+        QString path_update_final = path + new_name;
+
+
+        QDir(path).mkdir(new_name);
+
+        copyDirRecursively(path, path_update_final);
+
+        QDir dir(path);
+        dir.removeRecursively();
+    }
+
+    else
+    {
+        QString path_update1 = subpath+"/../";
+        QString path_update_final = path_update1 + new_name;
+
+
+        QDir(subpath).mkdir(new_name);
+
+        copyDirRecursively(subpath, path_update_final);
+
+        QDir dir(subpath);
+        dir.removeRecursively();
+    }
+}

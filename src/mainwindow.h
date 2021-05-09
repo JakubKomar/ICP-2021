@@ -20,6 +20,7 @@
 #include <QXmlStreamWriter>
 #include <QtXml>
 #include <QMessageBox>
+#include <QInputDialog>
 
 #include  "./gui/aplicationview.h"
 #include  "./gui/portlayout.h"
@@ -165,6 +166,8 @@ public:
     bool destructorMod{false};
     bool loadingMod{false};
     QXmlStreamWriter * writer; 
+
+    QString workingPath{""};
 private slots:
     void refreshSlot();
     void on_newApk_clicked();
@@ -184,6 +187,13 @@ private slots:
     void on_save_clicked();
     void on_load_clicked();
     void on_apkSave_clicked();
+    void on_renameApkButt_clicked();
+
+    void on_treeView_clicked(const QModelIndex &index);
+    void on_listView_clicked(const QModelIndex &index);
+    void on_AddFolderButton_clicked();
+    void on_RemoveFolderButton_clicked();
+    void on_RenameCategoryButton_clicked();
 
 private:
     /**
@@ -224,5 +234,8 @@ private:
     Ui::mainWindow *ui;
     bool editingAtom{false};
     QList <portLayout*> layoutList;
+
+    QFileSystemModel *folder;   // folder model = display folders
+    QFileSystemModel *file;     // file model = display files
 };
 #endif // FILESELECTOR_H
