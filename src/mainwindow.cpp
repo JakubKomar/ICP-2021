@@ -409,7 +409,28 @@ void mainWindow::buildOutput(QFile * file,port * ptr){
 void mainWindow::buildStorePart(QFile * file,port * ptr,port * startingPort){
     if((ptr->type==port::Pin)&&(ptr->inBlock->type==block::Tatomic)){
          QTextStream stream(file);
-         qDebug()<<"print";
+         switch (startingPort->valType) {
+             case port::Vint:
+                stream<<"\tif(memory.find("<<ptr->inBlock->getId()<<")->find(\""<<ptr->name<<"\").value().Int!="<<startingPort->name<<")\n";
+                stream<<"\t\tinstructionStack.push_back("<<ptr->inBlock->getId()<<");";
+                stream<<"\tmemory.find("<<ptr->inBlock->getId()<<")->find(\""<<ptr->name<<"\").value().Int="<<startingPort->name<<";\n";
+                break;
+             case port::Vdouble:
+                stream<<"\tif(memory.find("<<ptr->inBlock->getId()<<")->find(\""<<ptr->name<<"\").value().Double!="<<startingPort->name<<")\n";
+                stream<<"\t\tinstructionStack.push_back("<<ptr->inBlock->getId()<<");";
+                stream<<"\tmemory.find("<<ptr->inBlock->getId()<<")->find(\""<<ptr->name<<"\").value().Double="<<startingPort->name<<";\n";
+                break;
+             case port::Vstring:
+                stream<<"\tif(memory.find("<<ptr->inBlock->getId()<<")->find(\""<<ptr->name<<"\").value().String!="<<startingPort->name<<")\n";
+                stream<<"\t\tinstructionStack.push_back("<<ptr->inBlock->getId()<<");";
+                stream<<"\tmemory.find("<<ptr->inBlock->getId()<<")->find(\""<<ptr->name<<"\").value().String="<<startingPort->name<<";\n";
+                break;
+             case port::Vbool:
+                stream<<"\tif(memory.find("<<ptr->inBlock->getId()<<")->find(\""<<ptr->name<<"\").value().Bool!="<<startingPort->name<<")\n";
+                stream<<"\t\tinstructionStack.push_back("<<ptr->inBlock->getId()<<");";
+                stream<<"\tmemory.find("<<ptr->inBlock->getId()<<")->find(\""<<ptr->name<<"\").value().Bool="<<startingPort->name<<";\n";
+                break;
+         }
     }
     else if((ptr->type==port::Pin)&&(ptr->inBlock->type==block::Tcompozit)){//situace, kdy je kdy se připojuje na comp block
         if(ptr->socketPtr!=nullptr){
@@ -545,8 +566,9 @@ void mainWindow::buildMain(QFile *file)
 {
     file->write(R""""(
 int main(){
+    fillTable();
     functionMaster();
-    while(instructionStack.empty()){
+    while(!instructionStack.empty()){
         functionSwitch(instructionStack.pop());
     }
     return 0;
