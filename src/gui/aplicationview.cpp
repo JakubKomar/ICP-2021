@@ -90,8 +90,6 @@ void aplicationView::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
             if (auto port=dynamic_cast<portModel*>(item);port){
                 if(port->coreRepr->valType==bindingPort->valType && port->coreRepr->type!=bindingPort->type)
                 {
-                    qDebug()<<"success connection";
-
                     if( port->coreRepr->type==port::Pout){
                         if( bindingPort->connectedTo==port->coreRepr){
                              bindingPort->connectedTo=nullptr;

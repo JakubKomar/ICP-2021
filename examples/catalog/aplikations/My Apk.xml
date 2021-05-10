@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aplikation id="-1" name="My Apk" x="0" y="0">
+    <atomicBlock id="2" name="" x="-339" y="-92">
+        <code></code>
+        <port name="output1at" constant="" valType="int" type="output"/>
+    </atomicBlock>
+    <compositeBlock id="0" name="" x="-4" y="-97">
+        <port name="com2" constant="" valType="int" type="input" connectedToBlock="2" connectedToPort="output1at"/>
+        <socket x="-238" y="-117" imitating="com2" type="output"/>
+        <atomicBlock id="1" name="" x="46" y="-128">
+            <code></code>
+            <port name="at2" constant="" valType="int" type="input" connectedToBlock="-3" connectedToPort="com2"/>
+        </atomicBlock>
+    </compositeBlock>
+</aplikation>

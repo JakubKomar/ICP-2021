@@ -18,7 +18,6 @@ portSocket::portSocket(port * imitating):imitating(imitating)
 
 portSocket::~portSocket()
 {
-    qDebug()<<"socket destroyed";
 }
 
 void portSocket::addPort()

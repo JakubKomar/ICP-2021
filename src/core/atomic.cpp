@@ -15,5 +15,4 @@ atomic::atomic()
 
 atomic::~atomic()
 {
-    qDebug()<<"atomic destructor engage";
 }

@@ -27,7 +27,6 @@ port::port(port::Type type,block *inBlock):type(type),inBlock(inBlock)
 }
 port::~port()
 {
-    qDebug()<<"port destructor";
     foreach(port * item,PortConnToThis ){
         item->connectedTo=nullptr;
     }
@@ -40,7 +39,6 @@ port::~port()
             delete socketPtr;
         }
     }
-     qDebug()<<"port destructor end";
 }
 
 QString port::getName()

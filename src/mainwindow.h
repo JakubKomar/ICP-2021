@@ -292,12 +292,11 @@ private:
      * @param ptr-pointer to port which will be interpreted
     */
     void buildStorePart(QFile * file,port * ptr,port * startingPort);
-
-    void buildOutputStore(QFile * file,port * ptr);
-
-    QString getTargetPortName(port *ptr);
-
-    int getTargetBlock(port *ptr);
+    /**
+     * storing outputs to memmory
+     * @param file-file to writing
+     * @param ptr-pointer to port which will be interpreted
+    */
 
     QStack<compozit*> callBackStack;
     aplication * curentApk{nullptr};

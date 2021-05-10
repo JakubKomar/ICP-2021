@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<atomicBlock id="1" name="printf" x="0" y="0">
+    <code>if(wannaWrite)
+	cout&lt;&lt;&quot;your result is:&quot;&lt;&lt;toPrint;</code>
+    <port name="toPrint" constant="" valType="int" type="input"/>
+    <port name="wannaWrite" constant="" valType="bool" type="input"/>
+</atomicBlock>

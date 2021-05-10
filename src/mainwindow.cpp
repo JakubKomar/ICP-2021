@@ -162,7 +162,7 @@ void mainWindow::on_AtAddOutput_clicked(){
     }
 }
 
-void mainWindow::refresh()
+void mainWindow::refresh()  //znovu vykreslí scénu
 {
     if(viewedBlock){
         scene->cleanScene();
@@ -272,8 +272,8 @@ void mainWindow::on_Build_clicked()
         buildCompozite(&file,curentApk);
         buildSwitch(&file,curentApk);
         buildMain(&file);
-        QMessageBox::information(this, "succes", "Code was generated, you can find in in apkBuild folder.");
         file.close();
+         QMessageBox::information(this, "succes", "Code was generated, you can find in in apkBuild folder.");
     }
     else{
         QMessageBox::information(this, "error", "Cant build empty apk. Try create new apk.");
@@ -406,28 +406,28 @@ void mainWindow::buildOutput(QFile * file,port * ptr){
     }
 }
 
-void mainWindow::buildStorePart(QFile * file,port * ptr,port * startingPort){
+void mainWindow::buildStorePart(QFile * file,port * ptr,port * startingPort){//definuje ukládání do paměti v interpretovaném programu, zároveň přidává bloky k vyhodnocení, pokud je na portu změna
     if((ptr->type==port::Pin)&&(ptr->inBlock->type==block::Tatomic)){
          QTextStream stream(file);
          switch (startingPort->valType) {
              case port::Vint:
-                stream<<"\tif(memory.find("<<ptr->inBlock->getId()<<")->find(\""<<ptr->name<<"\").value().Int!="<<startingPort->name<<")\n";
-                stream<<"\t\tinstructionStack.push_back("<<ptr->inBlock->getId()<<");";
+                stream<<"\tif((memory.find("<<ptr->inBlock->getId()<<")->find(\""<<ptr->name<<"\").value().Int!="<<startingPort->name<<")&&(!instructionStack.contains("<<ptr->inBlock->getId()<<")))\n";
+                stream<<"\t\tinstructionStack.push_back("<<ptr->inBlock->getId()<<");\n";
                 stream<<"\tmemory.find("<<ptr->inBlock->getId()<<")->find(\""<<ptr->name<<"\").value().Int="<<startingPort->name<<";\n";
                 break;
              case port::Vdouble:
-                stream<<"\tif(memory.find("<<ptr->inBlock->getId()<<")->find(\""<<ptr->name<<"\").value().Double!="<<startingPort->name<<")\n";
-                stream<<"\t\tinstructionStack.push_back("<<ptr->inBlock->getId()<<");";
+                stream<<"\tif((memory.find("<<ptr->inBlock->getId()<<")->find(\""<<ptr->name<<"\").value().Double!="<<startingPort->name<<")&&(!instructionStack.contains("<<ptr->inBlock->getId()<<")))\n";
+                stream<<"\t\tinstructionStack.push_back("<<ptr->inBlock->getId()<<");\n";
                 stream<<"\tmemory.find("<<ptr->inBlock->getId()<<")->find(\""<<ptr->name<<"\").value().Double="<<startingPort->name<<";\n";
                 break;
              case port::Vstring:
-                stream<<"\tif(memory.find("<<ptr->inBlock->getId()<<")->find(\""<<ptr->name<<"\").value().String!="<<startingPort->name<<")\n";
-                stream<<"\t\tinstructionStack.push_back("<<ptr->inBlock->getId()<<");";
+                stream<<"\tif((memory.find("<<ptr->inBlock->getId()<<")->find(\""<<ptr->name<<"\").value().String!="<<startingPort->name<<")&&(!instructionStack.contains("<<ptr->inBlock->getId()<<")))\n";
+                stream<<"\t\tinstructionStack.push_back("<<ptr->inBlock->getId()<<");\n";
                 stream<<"\tmemory.find("<<ptr->inBlock->getId()<<")->find(\""<<ptr->name<<"\").value().String="<<startingPort->name<<";\n";
                 break;
              case port::Vbool:
-                stream<<"\tif(memory.find("<<ptr->inBlock->getId()<<")->find(\""<<ptr->name<<"\").value().Bool!="<<startingPort->name<<")\n";
-                stream<<"\t\tinstructionStack.push_back("<<ptr->inBlock->getId()<<");";
+                stream<<"\tif((memory.find("<<ptr->inBlock->getId()<<")->find(\""<<ptr->name<<"\").value().Bool!="<<startingPort->name<<")&&(!instructionStack.contains("<<ptr->inBlock->getId()<<")))\n";
+                stream<<"\t\tinstructionStack.push_back("<<ptr->inBlock->getId()<<");\n";
                 stream<<"\tmemory.find("<<ptr->inBlock->getId()<<")->find(\""<<ptr->name<<"\").value().Bool="<<startingPort->name<<";\n";
                 break;
          }
@@ -460,43 +460,6 @@ void mainWindow::buildStorePart(QFile * file,port * ptr,port * startingPort){
         qDebug()<<ptr->getName();
         qDebug()<<"unexpacted storege state";
     }
-}
-
-int mainWindow::getTargetBlock(port *ptr){
-    if(ptr->inBlock->type==block::TonlyPort&&ptr->socketPtr!=nullptr&&(ptr->socketPtr->imitating->PortConnToThis.empty())){
-        return getTargetBlock(ptr->socketPtr->imitating->PortConnToThis.first());
-    }
-    else
-        return ptr->inBlock->getId();
-}
-
-QString mainWindow::getTargetPortName(port *ptr){
-    if(ptr->inBlock->type==block::TonlyPort&&(ptr->socketPtr!=nullptr)&&(!ptr->socketPtr->imitating->PortConnToThis.empty())){
-        return getTargetPortName(ptr->socketPtr->imitating->PortConnToThis.first());
-    }
-    else
-        return ptr->name;
-}
-
-void mainWindow::buildOutputStore(QFile * file,port * ptr){
-    QTextStream stream(file);
-    stream<<"\n\t if("<<ptr->name<<"!= memory.find("<<getTargetBlock(ptr->PortConnToThis.first())<<")->find(\""<< getTargetPortName(ptr->PortConnToThis.first())<<"\").value().";
-    switch (ptr->valType) {
-        case port::Vint:
-           stream<<"Int;\n";
-           break;
-        case port::Vdouble:
-           stream<<"Double;\n";
-           break;
-        case port::Vstring:
-           stream<<"String\n";
-           break;
-        case port::Vbool:
-           stream<<"Bool";
-           break;
-    }
-    stream<<"\t{";
-    stream.flush();
 }
 
 void mainWindow::buildHead(QFile * file){
@@ -536,7 +499,7 @@ QStack<int>instructionStack;
 
 }
 
-void mainWindow::buildSwitch(QFile *file, compozit *prt)
+void mainWindow::buildSwitch(QFile *file, compozit *prt)    //swich na vygenerované funkce - jeden case= jeden blok
 {
      QTextStream stream(file);
      stream<<R""""(
@@ -562,7 +525,7 @@ void mainWindow::buildCases(QFile *file, compozit *ptr)
         buildCases(file,item);
     }
 }
-void mainWindow::buildMain(QFile *file)
+void mainWindow::buildMain(QFile *file) //hlavní ovládací struktura interpretovaného programu
 {
     file->write(R""""(
 int main(){
@@ -996,7 +959,6 @@ void mainWindow::on_treeView_clicked(const QModelIndex &index)     // when user 
 void mainWindow::on_listView_clicked(const QModelIndex &index)     // get file path when clicked
 {
     QString path = file -> fileInfo(index).absoluteFilePath();
-    qDebug()<<path;
 }
 //--------------------------------------------
 

@@ -10,13 +10,11 @@
 
 compozit::compozit()
 {
-    qDebug()<<"compozit constructor engage";
     this->type=Tcompozit;
 }
 
 compozit::~compozit()
 {
-    qDebug()<<"compozite destructor";
     qDeleteAll(compVect.begin(), compVect.end());
     compVect.clear();
     qDeleteAll(atomVect.begin(), atomVect.end());

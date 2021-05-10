@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aplikation id="-1" name="kalkulacka" x="0" y="0">
+    <atomicBlock id="0" name="selector" x="-340" y="-250">
+        <code>if(numbersSended&amp;&amp;operationSended){
+	switch(operation){
+		case 1:
+			scitani=true;
+			break;
+		case 2:	
+			odcitani=true;
+			break;
+		case 3:	
+			 nasobeni=true;
+			break;
+		case 4:
+			deleni=true;
+			break;	
+	}
+	
+}</code>
+        <port name="numbersSended" constant="false" valType="bool" type="input" connectedToBlock="1" connectedToPort="numbersSended"/>
+        <port name="operationSended" constant="false" valType="bool" type="input" connectedToBlock="2" connectedToPort="setOperation"/>
+        <port name="operation" constant="0" valType="int" type="input" connectedToBlock="2" connectedToPort="opOut"/>
+        <port name="scitani" constant="" valType="bool" type="output"/>
+        <port name="odcitani" constant="" valType="bool" type="output"/>
+        <port name="nasobeni" constant="" valType="bool" type="output"/>
+        <port name="deleni" constant="" valType="bool" type="output"/>
+    </atomicBlock>
+    <atomicBlock id="1" name="nactiCisla" x="-760" y="-369">
+        <code>double x;
+double y;
+cout &lt;&lt; &quot;Add two numbers program &quot;; // Type a number and press enter
+cout &lt;&lt; &quot;Type a first number: &quot;; // Type a number and press enter
+cin &gt;&gt; x; // Get user input from the keyboard
+cout &lt;&lt; &quot;Type a  second number: &quot;; // Type a number and press enter
+cin &gt;&gt; y; // Get user input from the keyboard
+
+
+output1=x;
+output2=y;
+numbersSended=true;</code>
+        <port name="output1" constant="" valType="double" type="output"/>
+        <port name="output2" constant="" valType="double" type="output"/>
+        <port name="numbersSended" constant="" valType="bool" type="output"/>
+    </atomicBlock>
+    <atomicBlock id="2" name="vyberOperace" x="-752" y="-116">
+        <code>int x=0;
+while(true){
+	cout &lt;&lt; &quot;Select operation: 1 add, 2sub, 3mul,4 div &quot;; // Type a number and press enter
+	cin &gt;&gt; x; // Get user input from the keyboard
+	if(x&lt;5||x&gt;1){
+		break;
+	}
+}
+opOut=x;
+setOperation=true;
+
+</code>
+        <port name="opOut" constant="" valType="int" type="output"/>
+        <port name="setOperation" constant="" valType="bool" type="output"/>
+    </atomicBlock>
+    <atomicBlock id="5" name="printf" x="279" y="-316">
+        <code>if(wannaWrite)
+	cout&lt;&lt;&quot;your result is:&quot;&lt;&lt;toPrint;</code>
+        <port name="toPrint" constant="" valType="double" type="input" connectedToBlock="3" connectedToPort="result"/>
+        <port name="wannaWrite" constant="" valType="bool" type="input" connectedToBlock="3" connectedToPort="validOut"/>
+    </atomicBlock>
+    <compositeBlock id="3" name="alu" x="-63" y="-316">
+        <port name="number1" constant="0" valType="double" type="input" connectedToBlock="1" connectedToPort="output1"/>
+        <port name="number2" constant="0" valType="double" type="input" connectedToBlock="1" connectedToPort="output2"/>
+        <port name="add" constant="false" valType="bool" type="input" connectedToBlock="0" connectedToPort="scitani"/>
+        <port name="sub" constant="false" valType="bool" type="input" connectedToBlock="0" connectedToPort="odcitani"/>
+        <port name="mul" constant="false" valType="bool" type="input" connectedToBlock="0" connectedToPort="nasobeni"/>
+        <port name="div" constant="false" valType="bool" type="input" connectedToBlock="0" connectedToPort="deleni"/>
+        <port name="result" constant="" valType="double" type="output"/>
+        <port name="validOut" constant="" valType="bool" type="output"/>
+        <socket x="-376" y="-564" imitating="number1" type="output"/>
+        <socket x="-374" y="-503" imitating="number2" type="output"/>
+        <socket x="486" y="-409" imitating="result" type="input" connectedToBlock="11" connectedToPort="output1"/>
+        <socket x="-215" y="-333" imitating="add" type="output"/>
+        <socket x="-214" y="-190" imitating="sub" type="output"/>
+        <socket x="-206" y="-59" imitating="mul" type="output"/>
+        <socket x="-221" y="92" imitating="div" type="output"/>
+        <socket x="487" y="-355" imitating="validOut" type="input" connectedToBlock="11" connectedToPort="valid"/>
+        <atomicBlock id="6" name="addDouble" x="-211" y="-458">
+            <code>output1=input1+input2;
+valid=true;</code>
+            <port name="input1" constant="0" valType="double" type="input" connectedToBlock="-3" connectedToPort="number1"/>
+            <port name="input2" constant="0" valType="double" type="input" connectedToBlock="-3" connectedToPort="number2"/>
+            <port name="output1" constant="" valType="double" type="output"/>
+            <port name="valid" constant="" valType="bool" type="output"/>
+        </atomicBlock>
+        <atomicBlock id="8" name="subDouble" x="-216" y="-288">
+            <code>output1=input1-input2;
+valid=true;</code>
+            <port name="input1" constant="0" valType="double" type="input" connectedToBlock="-3" connectedToPort="number1"/>
+            <port name="input2" constant="0" valType="double" type="input" connectedToBlock="-3" connectedToPort="number2"/>
+            <port name="output1" constant="" valType="double" type="output"/>
+            <port name="valid" constant="" valType="bool" type="output"/>
+        </atomicBlock>
+        <atomicBlock id="9" name="mulDouble" x="-210" y="-152">
+            <code>output1=input1*input2;
+valid=true;</code>
+            <port name="input1" constant="0" valType="double" type="input" connectedToBlock="-3" connectedToPort="number1"/>
+            <port name="input2" constant="0" valType="double" type="input" connectedToBlock="-3" connectedToPort="number2"/>
+            <port name="output1" constant="" valType="double" type="output"/>
+            <port name="valid" constant="" valType="bool" type="output"/>
+        </atomicBlock>
+        <atomicBlock id="10" name="divDouble" x="-212" y="-12">
+            <code>output1=input1/input2;
+valid=true;</code>
+            <port name="input1" constant="0" valType="double" type="input" connectedToBlock="-3" connectedToPort="number1"/>
+            <port name="input2" constant="0" valType="double" type="input" connectedToBlock="-3" connectedToPort="number2"/>
+            <port name="output1" constant="" valType="double" type="output"/>
+            <port name="valid" constant="" valType="bool" type="output"/>
+        </atomicBlock>
+        <atomicBlock id="11" name="" x="228" y="-426">
+            <code>if(sadd){
+	output1=add;
+	valid=true;
+}
+else if(ssub){
+	output1=sub;
+	valid=true;
+}
+else if(smull){
+	output1=mull;
+	valid=true;
+}
+else if(sdiv){
+	output1=div;
+	valid=true;
+}</code>
+            <port name="add" constant="" valType="double" type="input" connectedToBlock="6" connectedToPort="output1"/>
+            <port name="sub" constant="" valType="double" type="input" connectedToBlock="8" connectedToPort="output1"/>
+            <port name="mull" constant="" valType="double" type="input" connectedToBlock="9" connectedToPort="output1"/>
+            <port name="div" constant="" valType="double" type="input" connectedToBlock="10" connectedToPort="output1"/>
+            <port name="sadd" constant="false" valType="bool" type="input" connectedToBlock="12" connectedToPort="output1"/>
+            <port name="ssub" constant="false" valType="bool" type="input" connectedToBlock="13" connectedToPort="output1"/>
+            <port name="smull" constant="false" valType="bool" type="input" connectedToBlock="14" connectedToPort="output1"/>
+            <port name="sdiv" constant="false" valType="bool" type="input" connectedToBlock="15" connectedToPort="output1"/>
+            <port name="output1" constant="" valType="double" type="output"/>
+            <port name="valid" constant="" valType="bool" type="output"/>
+        </atomicBlock>
+        <atomicBlock id="12" name="and" x="13" y="-392">
+            <code>output1=input1&amp;input2;</code>
+            <port name="input1" constant="false" valType="bool" type="input" connectedToBlock="6" connectedToPort="valid"/>
+            <port name="input2" constant="false" valType="bool" type="input" connectedToBlock="-3" connectedToPort="add"/>
+            <port name="output1" constant="" valType="bool" type="output"/>
+        </atomicBlock>
+        <atomicBlock id="13" name="and" x="16" y="-293">
+            <code>output1=input1&amp;input2;</code>
+            <port name="input1" constant="false" valType="bool" type="input" connectedToBlock="8" connectedToPort="valid"/>
+            <port name="input2" constant="false" valType="bool" type="input" connectedToBlock="-3" connectedToPort="sub"/>
+            <port name="output1" constant="" valType="bool" type="output"/>
+        </atomicBlock>
+        <atomicBlock id="14" name="and" x="17" y="-119">
+            <code>output1=input1&amp;input2;</code>
+            <port name="input1" constant="false" valType="bool" type="input" connectedToBlock="9" connectedToPort="valid"/>
+            <port name="input2" constant="false" valType="bool" type="input" connectedToBlock="-3" connectedToPort="mul"/>
+            <port name="output1" constant="" valType="bool" type="output"/>
+        </atomicBlock>
+        <atomicBlock id="15" name="and" x="17" y="1">
+            <code>output1=input1&amp;input2;</code>
+            <port name="input1" constant="false" valType="bool" type="input" connectedToBlock="10" connectedToPort="valid"/>
+            <port name="input2" constant="false" valType="bool" type="input" connectedToBlock="-3" connectedToPort="div"/>
+            <port name="output1" constant="" valType="bool" type="output"/>
+        </atomicBlock>
+    </compositeBlock>
+</aplikation>

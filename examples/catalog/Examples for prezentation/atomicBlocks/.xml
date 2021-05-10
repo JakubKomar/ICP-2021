@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<atomicBlock id="0" name="" x="0" y="0">
+    <code>if(numbersSended&amp;&amp;operationSended){
+	switch(operation){
+		case 1:
+			scitani=true;
+			break;
+		case 2:	
+			odcitani=true;
+			break;
+		case 3:	
+			 nasobeni=true;
+			break;
+		case 4:
+			deleni=true;
+			break;	
+	}
+	
+}</code>
+    <port name="number1" constant="0" valType="double" type="input"/>
+    <port name="nuber2" constant="0" valType="double" type="input"/>
+    <port name="numbersSended" constant="false" valType="bool" type="input"/>
+    <port name="operationSended" constant="false" valType="bool" type="input"/>
+    <port name="operation" constant="0" valType="int" type="input"/>
+    <port name="scitani" constant="" valType="bool" type="output"/>
+    <port name="odcitani" constant="" valType="bool" type="output"/>
+    <port name="nasobeni" constant="" valType="bool" type="output"/>
+    <port name="deleni" constant="" valType="bool" type="output"/>
+</atomicBlock>

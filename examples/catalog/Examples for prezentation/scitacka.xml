@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aplikation id="-1" name="scitacka" x="0" y="0">
+    <atomicBlock id="0" name="add" x="-307" y="-206">
+        <code>if(validNumbers){
+	output1=input1+input2;
+	output2=true;
+}
+else{
+	output1=0;
+	output2=false;
+}</code>
+        <port name="input1" constant="0" valType="int" type="input" connectedToBlock="2" connectedToPort="output1"/>
+        <port name="input2" constant="0" valType="int" type="input" connectedToBlock="2" connectedToPort="output2"/>
+        <port name="validNumbers" constant="true" valType="bool" type="input" connectedToBlock="2" connectedToPort="numbersSended"/>
+        <port name="output1" constant="" valType="int" type="output"/>
+        <port name="output2" constant="" valType="bool" type="output"/>
+    </atomicBlock>
+    <atomicBlock id="1" name="printf" x="-12" y="-209">
+        <code>if(wannaWrite)
+	cout&lt;&lt;&quot;your result is:&quot;&lt;&lt;toPrint;</code>
+        <port name="toPrint" constant="" valType="int" type="input" connectedToBlock="0" connectedToPort="output1"/>
+        <port name="wannaWrite" constant="" valType="bool" type="input" connectedToBlock="0" connectedToPort="output2"/>
+    </atomicBlock>
+    <atomicBlock id="2" name="getNumbers" x="-596" y="-208">
+        <code>int x;
+int y;
+cout &lt;&lt; &quot;Add two numbers program &quot;; // Type a number and press enter
+cout &lt;&lt; &quot;Type a first number: &quot;; // Type a number and press enter
+cin &gt;&gt; x; // Get user input from the keyboard
+cout &lt;&lt; &quot;Type a  second number: &quot;; // Type a number and press enter
+cin &gt;&gt; y; // Get user input from the keyboard
+
+
+output1=x;
+output2=y;
+numbersSended=true;</code>
+        <port name="output1" constant="" valType="int" type="output"/>
+        <port name="output2" constant="" valType="int" type="output"/>
+        <port name="numbersSended" constant="" valType="bool" type="output"/>
+    </atomicBlock>
+</aplikation>

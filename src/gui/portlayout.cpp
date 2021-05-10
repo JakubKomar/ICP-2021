@@ -8,7 +8,7 @@
  */
 #include "portlayout.h"
 
-portLayout::portLayout(QWidget * place,port * corePtr):corePtr(corePtr)
+portLayout::portLayout(QWidget * place,port * corePtr):corePtr(corePtr) //přidává do listu widgety pro manipulaci se vstupy/výstupy
 {
     this->deletedGraphic=false;
     QVBoxLayout * layout=qobject_cast<QVBoxLayout*>(place->layout());

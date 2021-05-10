@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<atomicBlock id="2" name="nactiCisla" x="0" y="0">
+    <code>int x;
+int y;
+cout &lt;&lt; &quot;Add two numbers program &quot;; // Type a number and press enter
+cout &lt;&lt; &quot;Type a first number: &quot;; // Type a number and press enter
+cin &gt;&gt; x; // Get user input from the keyboard
+cout &lt;&lt; &quot;Type a  second number: &quot;; // Type a number and press enter
+cin &gt;&gt; y; // Get user input from the keyboard
+
+
+output1=x;
+output2=y;
+numbersSended=true;</code>
+    <port name="output1" constant="" valType="int" type="output"/>
+    <port name="output2" constant="" valType="int" type="output"/>
+    <port name="numbersSended" constant="" valType="bool" type="output"/>
+</atomicBlock>

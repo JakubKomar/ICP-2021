@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aplikation id="-1" name="UkazkaRekurze" x="0" y="0">
+    <atomicBlock id="0" name="rekurze" x="-440" y="-260">
+        <code>if(start&amp;&amp;(input1&lt;20)){
+	output1=input1+1;
+	cout&lt;&lt;output1&lt;&lt;&quot;\n&quot;;
+}
+else{
+	output1=input1;}</code>
+        <port name="input1" constant="" valType="int" type="input" connectedToBlock="0" connectedToPort="output1"/>
+        <port name="start" constant="true" valType="bool" type="input"/>
+        <port name="output1" constant="" valType="int" type="output"/>
+    </atomicBlock>
+</aplikation>

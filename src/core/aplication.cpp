@@ -17,7 +17,6 @@ aplication::aplication()
 
 aplication::~aplication()
 {
-    qDebug()<<"aplication destructor engage";
 }
 
 int aplication::getNewId()

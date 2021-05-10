@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<atomicBlock id="6" name="addDouble" x="0" y="0">
+    <code>output1=input1+input2;</code>
+    <port name="input1" constant="0" valType="double" type="input"/>
+    <port name="input2" constant="0" valType="double" type="input"/>
+    <port name="output1" constant="" valType="double" type="output"/>
+    <port name="valid" constant="" valType="bool" type="output"/>
+</atomicBlock>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<atomicBlock id="0" name="add" x="0" y="0">
+    <code>output1=input1+input2;</code>
+    <port name="input1" constant="0" valType="int" type="input"/>
+    <port name="input2" constant="0" valType="int" type="input"/>
+    <port name="output1" constant="" valType="int" type="output"/>
+</atomicBlock>
