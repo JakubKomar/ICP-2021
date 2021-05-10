@@ -15,6 +15,7 @@ mainWindow::mainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::mainWin
     ui->apkView->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
     ui->compoziteView->setScene(scene);
     ui->compoziteView->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
+
     this->curentApk=NULL;
     this->viewedBlock=NULL;
 
@@ -254,52 +255,125 @@ void mainWindow::refreshPorts()
 }
 void mainWindow::on_Build_clicked()
 {
-    QDir dir = QDir::current();
-    dir.mkdir("apkBuild");
 
-    QFile file("apkBuild/apk.cpp");
-    if (!file.open(QIODevice::WriteOnly)){
-         QMessageBox::information(this, "error", "File cant be opened.");
-         return;
-    }
-    buildHead(&file);
-    foreach(atomic * item,curentApk->atomVect){
-        buildAtomic(&file,item);
-    }
+    if(curentApk!=nullptr){
+        QDir dir = QDir::current();
+        dir.mkdir("apkBuild");
 
-    file.close();
+        QFile file("apkBuild/apk.cpp");
+        if (!file.open(QIODevice::WriteOnly)){
+             QMessageBox::information(this, "error", "File cant be opened.");
+             return;
+        }
+        buildHead(&file);
+        buildCompozite(&file,curentApk);
+        buildSwitch(&file,curentApk);
+
+
+        file.close();
+    }
+    else{
+        QMessageBox::information(this, "error", "Cant build empty apk. Try create new apk.");
+    }
 }
 void mainWindow::buildAtomic(QFile * file,atomic * ptr)
 {
-    QTextStream stream(file);
-    stream<<"\n\tvoid function"<<ptr->getId()<<("(int id){\n");
-    foreach(port * item,ptr->inputs){buildInput(file,item);}
 
+    QTextStream stream(file);
+    stream<<"\nvoid function"<<ptr->getId()<<("(){\n");
+    stream.flush();
+    foreach(port * item,ptr->inputs){buildInput(file,item);}
     stream<<ptr->code;
-    stream<<"}\n";
+    stream.flush();
+    foreach(port * item,ptr->outputs){buildOutput(file,item);}
+    stream<<"\n}\n";
+
 }
+void mainWindow::buildCompozite(QFile * file,compozit * ptr)
+{
+    QTextStream stream(file);
+    if(ptr->getId()!=-1)
+        stream<<"\nvoid function"<<ptr->getId()<<("(){\n");
+    else
+        stream<<"\nvoid functionMaster(){\n";
+    stream.flush();
+    foreach(port * item,ptr->inputs){buildInput(file,item);}
+    stream.flush();
+    foreach(atomic * item,ptr->atomVect){
+         stream<<"\t  functionSwitch("<<item->getId()<<(");\n");
+         stream.flush();
+    }
+    foreach(compozit * item,ptr->compVect){
+         stream<<"\t  functionSwitch("<<item->getId()<<(");\n");
+         stream.flush();
+    }
+
+    foreach(port * item,ptr->outputs){buildOutput(file,item);}
+    stream<<"}\n";
+    stream.flush();
+    foreach(atomic * item,ptr->atomVect){
+        buildAtomic(file,item);
+    }
+    foreach(compozit * item,ptr->compVect){
+        buildCompozite(file,item);
+    }
+}
+void mainWindow::buildFillHashTable(QFile * file,compozit * ptr)
+{
+    QTextStream stream(file);
+    stream<<"void fillTable(){\n";
+    stream.flush();
+    foreach(atomic * item,ptr->atomVect){
+         stream<<"\tme";
+    }
+        stream<<"\t\t default:\n \t\t\t break;\n\t}\n}";
+   stream<<"}\n";
+}
+
 void mainWindow::buildInput(QFile * file,port * ptr){
      QTextStream stream(file);
-     switch (ptr->valType) {
-         case port::Vint:
-            stream<<"\t\t int "<<ptr->name<<"=memory["<<ptr->inBlock->getId()<<"]["<<ptr->name<<"].Int;";
-            break;
-         case port::Vdouble:
-            stream<<"\t\t double "<<ptr->name<<"=memory["<<ptr->inBlock->getId()<<"]["<<ptr->name<<"].Double;";
-            break;
-         case port::Vstring:
-            stream<<"\t\t string "<<ptr->name<<"=memory["<<ptr->inBlock->getId()<<"]["<<ptr->name<<"].String;";
-            break;
-         case port::Vbool:
-            stream<<"\t\t bool "<<ptr->name<<"=memory["<<ptr->inBlock->getId()<<"]["<<ptr->name<<"].bool;";
-            break;
+     if(ptr->connectedTo!=nullptr){
+         switch (ptr->valType) {
+             case port::Vint:
+                stream<<"\t int "<<ptr->name<<"=memory.find("<<ptr->inBlock->getId()<<")->find(\""<<ptr->name<<"\").value().Int;\n";
+                break;
+             case port::Vdouble:
+                stream<<"\t double "<<ptr->name<<"=memory.find("<<ptr->inBlock->getId()<<")->find(\""<<ptr->name<<"\").value().Double;\n";
+                break;
+             case port::Vstring:
+                stream<<"\t QString "<<ptr->name<<"=memory.find("<<ptr->inBlock->getId()<<")->find(\""<<ptr->name<<"\").value().String;\n";
+                break;
+             case port::Vbool:
+                stream<<"\t bool "<<ptr->name<<"=memory.find("<<ptr->inBlock->getId()<<")->find(\""<<ptr->name<<"\").value().Bool;\n";
+                break;
+         }
+     }
+     else{
+         switch (ptr->valType) {
+             case port::Vint:
+                stream<<"\t int "<<ptr->name<<"=QString(\""<<ptr->constant<<"\").toInt();\n";
+                break;
+             case port::Vdouble:
+                stream<<"\t double "<<ptr->name<<"=QString(\""<<ptr->constant<<"\").toDouble();\n";
+                break;
+             case port::Vstring:
+                stream<<"\t QString "<<ptr->name<<"=\""<<ptr->constant<<"\";\n";
+                break;
+             case port::Vbool:
+                if(ptr->constant=="true")
+                    stream<<"\t bool "<<ptr->name<<"=true;\n";
+                else
+                    stream<<"\t bool "<<ptr->name<<"=false;\n";
+                break;
+         }
      }
 }
 
-void mainWindow::buildCompozite(QFile * file,compozit * prt)
-{
+void mainWindow::buildOutput(QFile * file,port * ptr){
+    QTextStream stream(file);
+    foreach(port * item,ptr->PortConnToThis){
 
-}
+    }
 
 void mainWindow::buildHead(QFile * file){
 file->write(R""""(#include <algorithm>
@@ -314,7 +388,8 @@ file->write(R""""(#include <algorithm>
 #include <QDebug>
 using namespace std;
 
-
+void callBlock(int id);
+void functionSwitch(int id);
 enum TypeVal{
     Vint,
     Vdouble,
@@ -328,12 +403,42 @@ struct multiVar{
     bool Bool{false};
     string String{""};
 };
-void callBlock(int id);
-QHash<int,QHash<QString,multiVar>> memory;)""""
+
+QHash<int,QHash<QString,multiVar>> memory;
+
+)""""
 );
+
 }
-void mainWindow::saveBlock(QString path)
+
+void mainWindow::buildSwitch(QFile *file, compozit *prt)
 {
+     QTextStream stream(file);
+     stream<<R""""(
+void functionSwitch(int id){
+    switch(id){
+)""""
+;
+    stream.flush();
+    buildCases(file,prt);
+    stream<<"\t\t default:\n \t\t\t break;\n\t}\n}";
+}
+
+void mainWindow::buildCases(QFile *file, compozit *ptr)
+{
+    QTextStream stream(file);
+    foreach(block* item,ptr->atomVect){
+        stream<<"\t\t case "<<item->getId()<<":\n\t\t\t function"<<item->getId()<<"();\n\t\t\t break;\n";
+        stream.flush();
+    }
+    foreach(compozit * item,ptr->compVect){
+        stream<<"\t\t case "<<item->getId()<<":\n\t\t\t function"<<item->getId()<<"();\n\t\t\t break;\n";
+        stream.flush();
+        buildCases(file,item);
+    }
+}
+
+void mainWindow::saveBlock(QString path){
     if(editingAtom){
         path=path+"/"+editedAtBlock->getName()+".xml";
     }

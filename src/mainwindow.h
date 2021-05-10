@@ -239,16 +239,20 @@ private:
      * @param file-file to writing
     */
     void buildHead(QFile* file);
+    void buildSwitch(QFile* file,compozit * prt);
+    void buildCases(QFile *file, compozit *prt);
+    void buildFillHashTable(QFile * file,compozit * ptr);
     /**
      * interpreting function
      * @param file-file to writing
      * @param ptr-pointer to port which will be interpreted
     */
     void buildInput(QFile * file,port * ptr);
+    void buildOutput(QFile * file,port * ptr);
     QStack<compozit*> callBackStack;
-    aplication * curentApk;
-    block * editedBlock;
-    atomic * editedAtBlock;
+    aplication * curentApk{nullptr};
+    block * editedBlock{nullptr};
+    atomic * editedAtBlock{nullptr};
     aplicationView * scene;
     Ui::mainWindow *ui;
     bool editingAtom{false};
