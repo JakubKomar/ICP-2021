@@ -289,7 +289,7 @@ void mainWindow::buildAtomic(QFile * file,atomic * ptr)
     foreach(port * item,ptr->outputs){buildOutput(file,item);}
     stream<<ptr->code;
     stream.flush();
-    foreach(port * item,ptr->outputs){buildStorePart(file,item);}
+    foreach(port * item,ptr->outputs){buildStorePart(file,item,item);}
     stream<<"\n}\n";
 
 }
@@ -406,9 +406,39 @@ void mainWindow::buildOutput(QFile * file,port * ptr){
     }
 }
 
-void mainWindow::buildStorePart(QFile * file,port * ptr){
-    QTextStream stream(file);
-    foreach(port * item,ptr->PortConnToThis){buildOutputStore(file,item);}
+void mainWindow::buildStorePart(QFile * file,port * ptr,port * startingPort){
+    if((ptr->type==port::Pin)&&(ptr->inBlock->type==block::Tatomic)){
+         QTextStream stream(file);
+         qDebug()<<"print";
+    }
+    else if((ptr->type==port::Pin)&&(ptr->inBlock->type==block::Tcompozit)){//situace, kdy je kdy se připojuje na comp block
+        if(ptr->socketPtr!=nullptr){
+             foreach(port * item,ptr->socketPtr->viewedPort->PortConnToThis){
+                 buildStorePart(file,item,startingPort);
+             }
+        }
+        else
+            qDebug()<<"cant reach socket in compozite - input";
+    }
+    else if((ptr->type==port::Pin)&&(ptr->inBlock->type==block::TonlyPort)){
+        portSocket * cast= dynamic_cast<portSocket*>(ptr->inBlock);
+        if(!cast){
+            qDebug()<<"socket cast failed";
+            return;
+        }
+        foreach(port * item,cast->imitating->PortConnToThis){
+            buildStorePart(file,item,startingPort);
+        }
+    }
+    else if((ptr->type==port::Pout)&&(ptr==startingPort)){
+        foreach(port * item,ptr->PortConnToThis){
+            buildStorePart(file,item,startingPort);
+        }
+    }
+    else {
+        qDebug()<<ptr->getName();
+        qDebug()<<"unexpacted storege state";
+    }
 }
 
 int mainWindow::getTargetBlock(port *ptr){
@@ -446,7 +476,6 @@ void mainWindow::buildOutputStore(QFile * file,port * ptr){
     }
     stream<<"\t{";
     stream.flush();
-
 }
 
 void mainWindow::buildHead(QFile * file){
