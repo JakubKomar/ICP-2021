@@ -842,26 +842,28 @@ void mainWindow::on_renameApkButt_clicked()
         QMessageBox::information(this, "error", "Cant rename non existing apk.");
 }
 
+//--------------------------------------------
 void mainWindow::on_treeView_clicked(const QModelIndex &index)     // when user clicks on a node in treeView (extract and set path in listView
 {
     QString path = folder -> fileInfo(index).absoluteFilePath();
     workingPath = path;
     ui -> listView -> setRootIndex(file -> setRootPath(path));
 }
+//--------------------------------------------
 
 void mainWindow::on_listView_clicked(const QModelIndex &index)     // get file path when clicked
 {
     QString path = file -> fileInfo(index).absoluteFilePath();
+    qDebug()<<path;
 }
+//--------------------------------------------
 
 void mainWindow::on_AddFolderButton_clicked()                      // "Add Category Folder" button
 {
-      qDebug()<<"tady";
       QString path = QDir::currentPath();                       // path for new folder in 'library'
       path=path+"/examples/";
 
       QString subpath = workingPath;                            // path for the new SUBfolder in 'library'
-
 
       if(workingPath == path)
       {
@@ -872,7 +874,6 @@ void mainWindow::on_AddFolderButton_clicked()                      // "Add Categ
               }
               QDir(path).mkdir(name);
       }
-
       else
       {
           QString name = QString ("Category_%1").arg(QDateTime::currentMSecsSinceEpoch());
@@ -896,6 +897,7 @@ void mainWindow::on_RemoveFolderButton_clicked()                    // "Remove C
         QDir dir(path);
         dir.removeRecursively();
     }
+
     else
     {
         QDir dir(subpath);
@@ -903,78 +905,72 @@ void mainWindow::on_RemoveFolderButton_clicked()                    // "Remove C
     }
 
 }
+//--------------------------------------------
 
-bool copyDirRecursively(QString sourceFolder, QString destFolder)
-{
-   bool success = false;
-   QDir sourceDir(sourceFolder);
-
-   if(!sourceDir.exists())
-       return false;
-
-   QDir destDir(destFolder);
-   if(!destDir.exists())
-       destDir.mkdir(destFolder);
-
-   QStringList files = sourceDir.entryList(QDir::Files);
-   for(int i = 0; i< files.count(); i++) {
-       QString srcName = sourceFolder + QDir::separator() + files[i];
-       QString destName = destFolder + QDir::separator() + files[i];
-       success = QFile::copy(srcName, destName);
-       if(!success)
-           return false;
-   }
-
-   files.clear();
-   files = sourceDir.entryList(QDir::AllDirs | QDir::NoDotAndDotDot);
-   for(int i = 0; i< files.count(); i++)
+bool copyDirRecursively(QString sourceFolder, QString destFolder)       // function to copy a folder's contents into another folder (if it doesn't exist, it is created)
    {
-       QString srcName = sourceFolder + QDir::separator() + files[i];
-       QString destName = destFolder + QDir::separator() + files[i];
-       success = copyDirRecursively(srcName, destName);
-       if(!success)
+       bool success = false;
+       QDir sourceDir(sourceFolder);
+
+       if(!sourceDir.exists())
            return false;
+
+       QDir destDir(destFolder);
+       if(!destDir.exists())
+           destDir.mkdir(destFolder);
+
+       QStringList files = sourceDir.entryList(QDir::Files);
+       for(int i = 0; i< files.count(); i++) {
+           QString srcName = sourceFolder + QDir::separator() + files[i];
+           QString destName = destFolder + QDir::separator() + files[i];
+           success = QFile::copy(srcName, destName);
+           if(!success)
+               return false;
+       }
+
+       files.clear();
+       files = sourceDir.entryList(QDir::AllDirs | QDir::NoDotAndDotDot);
+       for(int i = 0; i< files.count(); i++)
+       {
+           QString srcName = sourceFolder + QDir::separator() + files[i];
+           QString destName = destFolder + QDir::separator() + files[i];
+           success = copyDirRecursively(srcName, destName);
+           if(!success)
+               return false;
+       }
+
+       return true;
    }
 
-   return true;
-}
-
-void mainWindow::on_RenameCategoryButton_clicked()                  // "ReName Category Folder" button:
+void mainWindow::on_RenameCategoryButton_clicked()                  // "ReName Category Folder" button (WARNING: do not click without selecting a folder or library is deleted)
 {
-    //QMessageBox::information(this, "ReName", "Please enter a new name: ");   //TESTING
-
     QString path = QDir::currentPath();                          // path for new folder in 'library'
     path=path+"/examples/";
 
     QString subpath = workingPath;                               // path for the new SUBfolder in 'library'
-
     QString new_name = QInputDialog::getText(this, "Rename Catalog Folder", "Please enter a the new name: ");
 
     if(workingPath == path)
     {
         QString path_update_final = path + new_name;
 
-        QDir(path).mkdir(new_name);
 
         copyDirRecursively(path, path_update_final);
 
         QDir dir(path);
         dir.removeRecursively();
     }
-
     else
     {
         QString path_update1 = subpath+"/../";
         QString path_update_final = path_update1 + new_name;
-
-
-        QDir(subpath).mkdir(new_name);
 
         copyDirRecursively(subpath, path_update_final);
 
         QDir dir(subpath);
         dir.removeRecursively();
     }
+
 }
 
 void mainWindow::on_treeView_doubleClicked(const QModelIndex &index)
