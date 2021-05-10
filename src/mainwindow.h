@@ -19,7 +19,13 @@
 #include <QTextStream>
 #include <QXmlStreamWriter>
 #include <QtXml>
+#include <QDir>
+#include <QDialog>
 #include <QMessageBox>
+#include <QInputDialog>
+#include <QFileSystemModel>
+#include <stdio.h>
+#include <cstdio>
 
 #include  "./gui/aplicationview.h"
 #include  "./gui/portlayout.h"
@@ -165,6 +171,8 @@ public:
     bool destructorMod{false};
     bool loadingMod{false};
     QXmlStreamWriter * writer; 
+
+    QString workingPath{""};
 private slots:
     void refreshSlot();
     void on_newApk_clicked();
@@ -184,6 +192,17 @@ private slots:
     void on_save_clicked();
     void on_load_clicked();
     void on_apkSave_clicked();
+    void on_renameApkButt_clicked();
+
+    void on_AddFolderButton_clicked();
+    void on_RemoveFolderButton_clicked();
+    void on_RenameCategoryButton_clicked();
+    void on_treeView_clicked(const QModelIndex &index);
+    void on_listView_clicked(const QModelIndex &index);
+
+    void on_treeView_doubleClicked(const QModelIndex &index);
+    void on_listView_doubleClicked(const QModelIndex &index);
+    void on_goBackFromEditor_clicked();
 
 private:
     /**
@@ -204,20 +223,30 @@ private:
     */
     void refreshPorts();
     /**
-     * interpreting function
+     * interpreting atomic block
+     * @param file-file to writing
+     * @param ptr-pointer to atomic block which will be interpreted
     */
     void buildAtomic(QFile * file,atomic * prt);
     /**
      * interpreting function
+     * @param file-file to writing
+     * @param ptr-pointer to composite block which will be interpreted
     */
     void buildCompozite(QFile * file,compozit * prt);
     /**
-     * interpreting function
+     * creating header of interpreting code
+     * @param file-file to writing
     */
     void buildHead(QFile* file);
     void buildSwitch(QFile* file,compozit * prt);
     void buildCases(QFile *file, compozit *prt);
     void buildFillHashTable(QFile * file,compozit * ptr);
+    /**
+     * interpreting function
+     * @param file-file to writing
+     * @param ptr-pointer to port which will be interpreted
+    */
     void buildInput(QFile * file,port * ptr);
     void buildOutput(QFile * file,port * ptr);
     QStack<compozit*> callBackStack;
@@ -228,5 +257,11 @@ private:
     Ui::mainWindow *ui;
     bool editingAtom{false};
     QList <portLayout*> layoutList;
+
+    QFileSystemModel *folder;   // folder model = display folders
+    QFileSystemModel *file;     // file model = display files
+    bool loadMode{false};
+    bool storMode{false};
+    int pageHistory{0};
 };
 #endif // FILESELECTOR_H

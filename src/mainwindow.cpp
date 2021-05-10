@@ -15,6 +15,35 @@ mainWindow::mainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::mainWin
     ui->apkView->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
     ui->compoziteView->setScene(scene);
     ui->compoziteView->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
+
+    this->curentApk=NULL;
+    this->viewedBlock=NULL;
+
+    //catalog setup
+    QString path = QDir::currentPath();
+    path=path+"/examples/";  // rootfolder to display = library folder
+    workingPath = path;
+
+
+    folder = new QFileSystemModel(this);                        // create the new model
+    folder -> setFilter(QDir::NoDotAndDotDot | QDir::AllDirs);  // show only directories (hide other)
+    folder -> setRootPath(path);                                // populate (folder) model (using set rootpath)
+    ui -> treeView -> setModel(folder);
+
+    QModelIndex index = folder->index(path, 0);
+    ui->treeView->setRootIndex(index);
+
+    file = new QFileSystemModel(this);
+    file -> setFilter(QDir::NoDotAndDotDot | QDir::Files);
+    file -> setRootPath(path);
+
+    file -> setNameFilters(QStringList() << "*.xml");           // show only xml files
+    file -> setNameFilterDisables(false);                       // hides filtered (grey) files
+
+    ui -> listView -> setModel(file);
+
+    index = file->index(path, 0);
+    ui->listView->setRootIndex(index);
 }
 
 mainWindow::~mainWindow(){
@@ -72,6 +101,7 @@ void mainWindow::on_newApk_clicked(){
         delete curentApk;
     this->curentApk=new aplication();
     this->viewedBlock=this->curentApk;
+    ui->renameApkEdit->setText(curentApk->getName());
     refresh();
 }
 
@@ -344,8 +374,6 @@ void mainWindow::buildOutput(QFile * file,port * ptr){
     foreach(port * item,ptr->PortConnToThis){
 
     }
-}
-
 
 void mainWindow::buildHead(QFile * file){
 file->write(R""""(#include <algorithm>
@@ -411,6 +439,16 @@ void mainWindow::buildCases(QFile *file, compozit *ptr)
 }
 
 void mainWindow::saveBlock(QString path){
+    if(editingAtom){
+        path=path+"/"+editedAtBlock->getName()+".xml";
+    }
+    else if(viewedBlock==curentApk)
+    {
+        path=path+"/"+viewedBlock->getName()+".xml";
+    }
+    else{
+        path=path+"/"+viewedBlock->getName()+".xml";
+    }
     QFile file(path);
     if(!file.open(QIODevice::WriteOnly)){
         QMessageBox::information(this, "error", "File cant be opened.");
@@ -438,8 +476,10 @@ void mainWindow::saveBlock(QString path){
 void mainWindow::on_apkSave_clicked(){ on_save_clicked();}
 void mainWindow::on_save_clicked()
 {
-    QString path="MyXml.xml";
-    saveBlock(path);
+    storMode=true;
+    pageHistory= ui->screenSwitch->currentIndex();
+    ui->screenSwitch->setCurrentIndex(2);
+    ui->catologDisp->setText("store");
 }
 
 void mainWindow::saveAtom(atomic *ptr,bool saveConnections,bool savePosition)
@@ -538,11 +578,10 @@ void mainWindow::savePort(port *ptr,bool saveConnections)
 void mainWindow::on_loadApk_clicked(){on_load_clicked();}
 void mainWindow::on_load_clicked()
 {    
-    QString path="MyXml.xml";
-    loadingMod=true;
-    loadBegin(path);
-    loadingMod=false;
-    refresh();
+    loadMode=true;
+    pageHistory= ui->screenSwitch->currentIndex();
+    ui->screenSwitch->setCurrentIndex(2);
+    ui->catologDisp->setText("load");
 }
 
 void mainWindow::loadBegin(QString path)
@@ -560,6 +599,7 @@ void mainWindow::loadBegin(QString path)
     }
     else if((root.tagName()=="compositeBlock")&&(viewedBlock!=nullptr)){
         loadComp(root,false,false,false,false,nullptr,viewedBlock);
+
     }
     else if((root.tagName()=="aplikation")){
         if(curentApk!=NULL)
@@ -568,10 +608,13 @@ void mainWindow::loadBegin(QString path)
         this->viewedBlock=this->curentApk;
         refresh();
         loadComp(root,false,false,false,true,nullptr,this->curentApk);
+        ui->screenSwitch->setCurrentIndex(0);
     }
     else
-        qDebug()<<"unsuported save file";
+        QMessageBox::information(this, "error", "Cant load block to empty aplikation .");
     file.close();
+    ui->renameApkEdit->setText(curentApk->getName());
+    on_goBackFromEditor_clicked();
 }
 void mainWindow::loadAtom(QDomElement element,bool useIdFromSave,bool usePos,bool loadConnections, QList<connLog> * connections,compozit * placeToLoad){
     atomic * pointer;
@@ -614,12 +657,12 @@ void mainWindow::loadComp(QDomElement element,bool useIdFromSave,bool usePos,boo
         }
         else
             pointer=placeToLoad->addCompozite(element.attribute("id","-7").toInt());
-        pointer->setName( element.attribute("name",""));
         if(usePos){
             pointer->x= element.attribute("x","0").toInt();
             pointer->y= element.attribute("y","0").toInt();
         }
     }
+    pointer->setName( element.attribute("name",""));
     QList<connLog> connections;
     QDomElement Component=element.firstChild().toElement();
     while(!Component.isNull()){
@@ -746,7 +789,6 @@ void mainWindow::loadPort(QDomElement element,block * ptr,bool loadConections, Q
     {
         qDebug()<<"invalid port";
     }
-
 }
 
 void mainWindow::loadSocket(QDomElement element, QList<connLog> * connections, compozit *ptr)
@@ -769,7 +811,6 @@ void mainWindow::loadSocket(QDomElement element, QList<connLog> * connections, c
         }
     }
     if(!finded){
-        qDebug()<<"for socket is not findet internal reprezentation";
         return;
     }
     portSocket * newSocket=new portSocket(finded);
@@ -790,5 +831,183 @@ void mainWindow::loadSocket(QDomElement element, QList<connLog> * connections, c
             connections->append(item);
         }
     }
+}
+
+void mainWindow::on_renameApkButt_clicked()
+{
+   if(curentApk!=nullptr){
+       curentApk->setName(ui->renameApkEdit->text());
+   }
+   else
+        QMessageBox::information(this, "error", "Cant rename non existing apk.");
+}
+
+void mainWindow::on_treeView_clicked(const QModelIndex &index)     // when user clicks on a node in treeView (extract and set path in listView
+{
+    QString path = folder -> fileInfo(index).absoluteFilePath();
+    workingPath = path;
+    ui -> listView -> setRootIndex(file -> setRootPath(path));
+}
+
+void mainWindow::on_listView_clicked(const QModelIndex &index)     // get file path when clicked
+{
+    QString path = file -> fileInfo(index).absoluteFilePath();
+}
+
+void mainWindow::on_AddFolderButton_clicked()                      // "Add Category Folder" button
+{
+      qDebug()<<"tady";
+      QString path = QDir::currentPath();                       // path for new folder in 'library'
+      path=path+"/examples/";
+
+      QString subpath = workingPath;                            // path for the new SUBfolder in 'library'
+
+
+      if(workingPath == path)
+      {
+          QString name = QString ("Category_%1").arg(QDateTime::currentMSecsSinceEpoch());
+              while(QDir(name).exists())
+              {
+                   name = QString ("Category_%1").arg(QDateTime::currentMSecsSinceEpoch());
+              }
+              QDir(path).mkdir(name);
+      }
+
+      else
+      {
+          QString name = QString ("Category_%1").arg(QDateTime::currentMSecsSinceEpoch());
+              while(QDir(name).exists())
+              {
+                   name = QString ("Category_%1").arg(QDateTime::currentMSecsSinceEpoch());
+              }
+              QDir(subpath).mkdir(name);
+      }
+}
+
+void mainWindow::on_RemoveFolderButton_clicked()                    // "Remove Category Folder" button
+{
+    QString path = QDir::currentPath();                          // path for new folder in 'library'
+    path=path+"/examples/";
+
+    QString subpath = workingPath;                               // path for the new SUBfolder in 'library'
+
+    if(workingPath == path)
+    {
+        QDir dir(path);
+        dir.removeRecursively();
+    }
+    else
+    {
+        QDir dir(subpath);
+        dir.removeRecursively();
+    }
+
+}
+
+bool copyDirRecursively(QString sourceFolder, QString destFolder)
+{
+   bool success = false;
+   QDir sourceDir(sourceFolder);
+
+   if(!sourceDir.exists())
+       return false;
+
+   QDir destDir(destFolder);
+   if(!destDir.exists())
+       destDir.mkdir(destFolder);
+
+   QStringList files = sourceDir.entryList(QDir::Files);
+   for(int i = 0; i< files.count(); i++) {
+       QString srcName = sourceFolder + QDir::separator() + files[i];
+       QString destName = destFolder + QDir::separator() + files[i];
+       success = QFile::copy(srcName, destName);
+       if(!success)
+           return false;
+   }
+
+   files.clear();
+   files = sourceDir.entryList(QDir::AllDirs | QDir::NoDotAndDotDot);
+   for(int i = 0; i< files.count(); i++)
+   {
+       QString srcName = sourceFolder + QDir::separator() + files[i];
+       QString destName = destFolder + QDir::separator() + files[i];
+       success = copyDirRecursively(srcName, destName);
+       if(!success)
+           return false;
+   }
+
+   return true;
+}
+
+void mainWindow::on_RenameCategoryButton_clicked()                  // "ReName Category Folder" button:
+{
+    //QMessageBox::information(this, "ReName", "Please enter a new name: ");   //TESTING
+
+    QString path = QDir::currentPath();                          // path for new folder in 'library'
+    path=path+"/examples/";
+
+    QString subpath = workingPath;                               // path for the new SUBfolder in 'library'
+
+    QString new_name = QInputDialog::getText(this, "Rename Catalog Folder", "Please enter a the new name: ");
+
+    if(workingPath == path)
+    {
+        QString path_update_final = path + new_name;
+
+        QDir(path).mkdir(new_name);
+
+        copyDirRecursively(path, path_update_final);
+
+        QDir dir(path);
+        dir.removeRecursively();
+    }
+
+    else
+    {
+        QString path_update1 = subpath+"/../";
+        QString path_update_final = path_update1 + new_name;
+
+
+        QDir(subpath).mkdir(new_name);
+
+        copyDirRecursively(subpath, path_update_final);
+
+        QDir dir(subpath);
+        dir.removeRecursively();
+    }
+}
+
+void mainWindow::on_treeView_doubleClicked(const QModelIndex &index)
+{
+    if(storMode){
+        QString path = folder -> fileInfo(index).absoluteFilePath();
+        saveBlock(path);
+        QMessageBox::information(this, "success", "Block was saved.");
+        storMode=false;
+    }
+}
+
+void mainWindow::on_listView_doubleClicked(const QModelIndex &index)
+{
+    if(loadMode){
+        QString path = file -> fileInfo(index).absoluteFilePath();
+        if(path.endsWith(".xml")){
+            loadingMod=true;
+            loadBegin(path);
+            loadingMod=false;
+            loadMode=false;
+            refresh();
+            on_goBackFromEditor_clicked();
+         }
+        else
+             QMessageBox::information(this, "error", "Folder cant be loaded");
+    }
+}
+
+void mainWindow::on_goBackFromEditor_clicked()
+{
+    ui->screenSwitch->setCurrentIndex(pageHistory);
+    loadMode=false;
+    storMode=false;
 }
 
