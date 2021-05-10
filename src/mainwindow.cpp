@@ -253,6 +253,8 @@ void mainWindow::refreshPorts()
          layoutList.append(layout);
      }
 }
+
+//-----------------------------------------------------interpreting/building part---------------------------------------------------------------------------------------
 void mainWindow::on_Build_clicked()
 {
 
@@ -266,10 +268,11 @@ void mainWindow::on_Build_clicked()
              return;
         }
         buildHead(&file);
+        buildFillHashTable(&file,curentApk);
         buildCompozite(&file,curentApk);
         buildSwitch(&file,curentApk);
-
-
+        buildMain(&file);
+        QMessageBox::information(this, "succes", "Code was generated, you can find in in apkBuild folder.");
         file.close();
     }
     else{
@@ -283,9 +286,10 @@ void mainWindow::buildAtomic(QFile * file,atomic * ptr)
     stream<<"\nvoid function"<<ptr->getId()<<("(){\n");
     stream.flush();
     foreach(port * item,ptr->inputs){buildInput(file,item);}
+    foreach(port * item,ptr->outputs){buildOutput(file,item);}
     stream<<ptr->code;
     stream.flush();
-    foreach(port * item,ptr->outputs){buildOutput(file,item);}
+    foreach(port * item,ptr->outputs){buildStorePart(file,item);}
     stream<<"\n}\n";
 
 }
@@ -297,8 +301,6 @@ void mainWindow::buildCompozite(QFile * file,compozit * ptr)
     else
         stream<<"\nvoid functionMaster(){\n";
     stream.flush();
-    foreach(port * item,ptr->inputs){buildInput(file,item);}
-    stream.flush();
     foreach(atomic * item,ptr->atomVect){
          stream<<"\t  functionSwitch("<<item->getId()<<(");\n");
          stream.flush();
@@ -307,8 +309,6 @@ void mainWindow::buildCompozite(QFile * file,compozit * ptr)
          stream<<"\t  functionSwitch("<<item->getId()<<(");\n");
          stream.flush();
     }
-
-    foreach(port * item,ptr->outputs){buildOutput(file,item);}
     stream<<"}\n";
     stream.flush();
     foreach(atomic * item,ptr->atomVect){
@@ -321,13 +321,32 @@ void mainWindow::buildCompozite(QFile * file,compozit * ptr)
 void mainWindow::buildFillHashTable(QFile * file,compozit * ptr)
 {
     QTextStream stream(file);
-    stream<<"void fillTable(){\n";
+    stream<<"void fillTable(){\n\t multiVar tamplate;\n";
     stream.flush();
+    buildAddCompRecordsToHash(file,ptr);
+    stream<<"}\n";
+}
+
+void mainWindow::buildAddCompRecordsToHash(QFile * file,compozit * ptr)
+{
+    QTextStream stream(file);
     foreach(atomic * item,ptr->atomVect){
-         stream<<"\tme";
+        buildAddRecordToHash(file,item);
+
     }
-        stream<<"\t\t default:\n \t\t\t break;\n\t}\n}";
-   stream<<"}\n";
+    stream.flush();
+    foreach(compozit * item,ptr->compVect){buildAddCompRecordsToHash(file,item);}
+}
+
+void mainWindow::buildAddRecordToHash(QFile * file,atomic * ptr){
+    QTextStream stream(file);
+    stream<<"\n\tQHash<QString,multiVar> subtable"<<ptr->getId()<<";\n";
+    foreach(port * item,ptr->inputs){
+        stream<<"\tsubtable"<<ptr->getId()<<".insert(\""<<item->name<<"\",tamplate);\n";
+        stream.flush();
+    }
+    stream<<"\tmemory.insert("<<ptr->getId()<<",subtable"<<ptr->getId()<<");\n";
+    stream.flush();
 }
 
 void mainWindow::buildInput(QFile * file,port * ptr){
@@ -371,10 +390,65 @@ void mainWindow::buildInput(QFile * file,port * ptr){
 
 void mainWindow::buildOutput(QFile * file,port * ptr){
     QTextStream stream(file);
-    foreach(port * item,ptr->PortConnToThis){
-
+    switch (ptr->valType) {
+        case port::Vint:
+           stream<<"\t int "<<ptr->name<<"=0;\n";
+           break;
+        case port::Vdouble:
+           stream<<"\t double "<<ptr->name<<"=0;\n";
+           break;
+        case port::Vstring:
+           stream<<"\t QString "<<ptr->name<<"=\"\";\n";
+           break;
+        case port::Vbool:
+           stream<<"\t bool "<<ptr->name<<"=false;\n";
+           break;
     }
 }
+
+void mainWindow::buildStorePart(QFile * file,port * ptr){
+    QTextStream stream(file);
+    foreach(port * item,ptr->PortConnToThis){buildOutputStore(file,item);}
+}
+
+int mainWindow::getTargetBlock(port *ptr){
+    if(ptr->inBlock->type==block::TonlyPort&&ptr->socketPtr!=nullptr&&(ptr->socketPtr->imitating->PortConnToThis.empty())){
+        return getTargetBlock(ptr->socketPtr->imitating->PortConnToThis.first());
+    }
+    else
+        return ptr->inBlock->getId();
+}
+
+QString mainWindow::getTargetPortName(port *ptr){
+    if(ptr->inBlock->type==block::TonlyPort&&(ptr->socketPtr!=nullptr)&&(!ptr->socketPtr->imitating->PortConnToThis.empty())){
+        return getTargetPortName(ptr->socketPtr->imitating->PortConnToThis.first());
+    }
+    else
+        return ptr->name;
+}
+
+void mainWindow::buildOutputStore(QFile * file,port * ptr){
+    QTextStream stream(file);
+    stream<<"\n\t if("<<ptr->name<<"!= memory.find("<<getTargetBlock(ptr->PortConnToThis.first())<<")->find(\""<< getTargetPortName(ptr->PortConnToThis.first())<<"\").value().";
+    switch (ptr->valType) {
+        case port::Vint:
+           stream<<"Int;\n";
+           break;
+        case port::Vdouble:
+           stream<<"Double;\n";
+           break;
+        case port::Vstring:
+           stream<<"String\n";
+           break;
+        case port::Vbool:
+           stream<<"Bool";
+           break;
+    }
+    stream<<"\t{";
+    stream.flush();
+
+}
+
 void mainWindow::buildHead(QFile * file){
 file->write(R""""(#include <algorithm>
 #include <iostream>
@@ -386,6 +460,7 @@ file->write(R""""(#include <algorithm>
 #include <functional>
 #include <QHash>
 #include <QDebug>
+#include <QStack>
 using namespace std;
 
 void callBlock(int id);
@@ -405,7 +480,7 @@ struct multiVar{
 };
 
 QHash<int,QHash<QString,multiVar>> memory;
-
+QStack<int>instructionStack;
 )""""
 );
 
@@ -437,6 +512,22 @@ void mainWindow::buildCases(QFile *file, compozit *ptr)
         buildCases(file,item);
     }
 }
+void mainWindow::buildMain(QFile *file)
+{
+    file->write(R""""(
+int main(){
+    functionMaster();
+    while(instructionStack.empty()){
+        functionSwitch(instructionStack.pop());
+    }
+    return 0;
+}
+
+    )""""
+    );
+}
+
+//-------------------------------------------------------------saving part -------------------------------------------------------------------------------
 
 void mainWindow::saveBlock(QString path){
     if(editingAtom){
@@ -574,6 +665,8 @@ void mainWindow::savePort(port *ptr,bool saveConnections)
          writer->writeAttribute("type","output");
      writer->writeEndElement();
 }
+
+//-----------------------------------------------------loading part--------------------------------------------------------------------------------------
 
 void mainWindow::on_loadApk_clicked(){on_load_clicked();}
 void mainWindow::on_load_clicked()
@@ -764,7 +857,6 @@ void mainWindow::loadPort(QDomElement element,block * ptr,bool loadConections, Q
            portPtr->valType=port::Vint;
         }
         else if(valType=="double"){
-
            portPtr->valType=port::Vdouble;
         }
         else if(valType=="string"){
@@ -814,11 +906,11 @@ void mainWindow::loadSocket(QDomElement element, QList<connLog> * connections, c
         return;
     }
     portSocket * newSocket=new portSocket(finded);
+    finded->socketPtr=newSocket;
     connect(newSocket,SIGNAL(destroyed()),this,SLOT(refreshSlot()));
     newSocket->x=element.attribute("x","0").toInt();
     newSocket->y=element.attribute("y","0").toInt();
     ptr->insidePorts.append(newSocket);
-    finded->socketPtr=newSocket;
 
     if(connections!=nullptr){
         connLog item;
@@ -842,14 +934,13 @@ void mainWindow::on_renameApkButt_clicked()
         QMessageBox::information(this, "error", "Cant rename non existing apk.");
 }
 
-//--------------------------------------------
+//--------------------------------------------catalog part---------------------------------------------//
 void mainWindow::on_treeView_clicked(const QModelIndex &index)     // when user clicks on a node in treeView (extract and set path in listView
 {
     QString path = folder -> fileInfo(index).absoluteFilePath();
     workingPath = path;
     ui -> listView -> setRootIndex(file -> setRootPath(path));
 }
-//--------------------------------------------
 
 void mainWindow::on_listView_clicked(const QModelIndex &index)     // get file path when clicked
 {
@@ -905,7 +996,6 @@ void mainWindow::on_RemoveFolderButton_clicked()                    // "Remove C
     }
 
 }
-//--------------------------------------------
 
 bool copyDirRecursively(QString sourceFolder, QString destFolder)       // function to copy a folder's contents into another folder (if it doesn't exist, it is created)
    {

@@ -239,16 +239,66 @@ private:
      * @param file-file to writing
     */
     void buildHead(QFile* file);
+    /**
+     * create main function
+     * @param file-file to writing
+    */
+    void buildMain(QFile *file);
+    /**
+     * this swich calling function which represents blocks
+     * @param file-file to writing
+     * @param Ptr- block to process
+    */
     void buildSwitch(QFile* file,compozit * prt);
+    /**
+     * build cases for switch, case represent one block
+     * @param file-file to writing
+     * @param Ptr- block to process
+    */
     void buildCases(QFile *file, compozit *prt);
+    /**
+     * building inicialization function for memmory
+     * @param file-file to writing
+     * @param ptr- block to process
+    */
     void buildFillHashTable(QFile * file,compozit * ptr);
     /**
-     * interpreting function
+     * build inicializetion of memmory for every block in code
+     * @param file-file to writing
+     * @param ptr-adding all table inputs into memory
+    */
+    void buildAddRecordToHash(QFile * file,atomic * ptr);
+    /**
+     * adding all inputs to hashtable
+     * @param file-file to writing
+     * @param compPtr- block to process
+    */
+    void buildAddCompRecordsToHash(QFile * file,compozit * ptr);
+    /**
+     * inicializete inputs before code of atomic block
      * @param file-file to writing
      * @param ptr-pointer to port which will be interpreted
     */
     void buildInput(QFile * file,port * ptr);
+    /**
+     * inicializete outputs before code of atomic block
+     * @param file-file to writing
+     * @param ptr-pointer to port which will be interpreted
+    */
     void buildOutput(QFile * file,port * ptr);
+    /**
+     * storing outputs to memmory
+     * @param file-file to writing
+     * @param ptr-pointer to port which will be interpreted
+    */
+    void buildStorePart(QFile * file,port * ptr);
+
+    void buildOutputStore(QFile * file,port * ptr);
+
+    QString getTargetPortName(port *ptr);
+
+    int getTargetBlock(port *ptr);
+
     QStack<compozit*> callBackStack;
     aplication * curentApk{nullptr};
     block * editedBlock{nullptr};
