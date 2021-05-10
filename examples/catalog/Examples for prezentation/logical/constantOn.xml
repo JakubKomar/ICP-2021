@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<atomicBlock id="2" name="constantOn" x="0" y="0">
+    <code>output1=true;</code>
+    <port name="output1" constant="" valType="bool" type="output"/>
+</atomicBlock>

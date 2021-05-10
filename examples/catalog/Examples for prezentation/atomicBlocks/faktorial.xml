@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<atomicBlock id="0" name="faktorial" x="0" y="0">
+    <code>if(start&amp;&amp;TargetFaktorial!=0){
+	cout&lt;&lt;previusFaktorial;
+	if(previusFaktorial&lt;=TargetFaktorial){
+		acutalFactorial=previusFaktorial;
+		acutalFactorial++;
+		result=previuseResult*acutalFactorial;	
+		cout&lt;&lt;result;	
+	}
+	else{
+		acutalFactorial=previusFaktorial;
+		result=previuseResult;
+		if(previusFaktorial==TargetFaktorial)
+			valid=true;
+		
+	}
+}
+</code>
+    <port name="previuseResult" constant="" valType="int" type="input"/>
+    <port name="TargetFaktorial" constant="" valType="int" type="input"/>
+    <port name="start" constant="true" valType="bool" type="input"/>
+    <port name="previusFaktorial" constant="" valType="int" type="input"/>
+    <port name="valid" constant="" valType="bool" type="output"/>
+    <port name="result" constant="" valType="int" type="output"/>
+    <port name="acutalFactorial" constant="" valType="int" type="output"/>
+</atomicBlock>

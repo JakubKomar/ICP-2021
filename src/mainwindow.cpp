@@ -273,7 +273,7 @@ void mainWindow::on_Build_clicked()
         buildSwitch(&file,curentApk);
         buildMain(&file);
         file.close();
-         QMessageBox::information(this, "succes", "Code was generated, you can find in in apkBuild folder.");
+         QMessageBox::information(this, "succes", "Code was generated, you can find in interpreted folder. For compilating call qmake and then make.");
     }
     else{
         QMessageBox::information(this, "error", "Cant build empty apk. Try create new apk.");
@@ -438,13 +438,10 @@ void mainWindow::buildStorePart(QFile * file,port * ptr,port * startingPort){//d
                  buildStorePart(file,item,startingPort);
              }
         }
-        else
-            qDebug()<<"cant reach socket in compozite - input";
     }
     else if((ptr->type==port::Pin)&&(ptr->inBlock->type==block::TonlyPort)){
         portSocket * cast= dynamic_cast<portSocket*>(ptr->inBlock);
         if(!cast){
-            qDebug()<<"socket cast failed";
             return;
         }
         foreach(port * item,cast->imitating->PortConnToThis){
@@ -455,10 +452,6 @@ void mainWindow::buildStorePart(QFile * file,port * ptr,port * startingPort){//d
         foreach(port * item,ptr->PortConnToThis){
             buildStorePart(file,item,startingPort);
         }
-    }
-    else {
-        qDebug()<<ptr->getName();
-        qDebug()<<"unexpacted storege state";
     }
 }
 
@@ -489,7 +482,7 @@ struct multiVar{
     int  Int{0};
     double Double{0};
     bool Bool{false};
-    string String{""};
+    QString String{""};
 };
 
 QHash<int,QHash<QString,multiVar>> memory;
@@ -544,6 +537,10 @@ int main(){
 //-------------------------------------------------------------saving part -------------------------------------------------------------------------------
 
 void mainWindow::saveBlock(QString path){
+    if(curentApk==nullptr){
+          QMessageBox::information(this, "error", "Empty apk cant be saved");
+          return;
+    }
     if(editingAtom){
         path=path+"/"+editedAtBlock->getName()+".xml";
     }
@@ -717,12 +714,16 @@ void mainWindow::loadBegin(QString path)
         loadComp(root,false,false,false,true,nullptr,this->curentApk);
         ui->screenSwitch->setCurrentIndex(0);
     }
-    else
-        QMessageBox::information(this, "error", "Cant load block to empty aplikation .");
+    else{
+        QMessageBox::information(this, "error", "Cant load block to empty aplikation .");     
+        file.close();
+        return;
+    }
     file.close();
     ui->renameApkEdit->setText(curentApk->getName());
     on_goBackFromEditor_clicked();
 }
+
 void mainWindow::loadAtom(QDomElement element,bool useIdFromSave,bool usePos,bool loadConnections, QList<connLog> * connections,compozit * placeToLoad){
     atomic * pointer;
     if(!useIdFromSave){
@@ -743,9 +744,6 @@ void mainWindow::loadAtom(QDomElement element,bool useIdFromSave,bool usePos,boo
         }
         else if((Component.tagName())=="port"){
             loadPort(Component,pointer,loadConnections,connections);
-        }
-        else{
-            qDebug()<<"unknown element in atomic block";
         }
         Component = Component.nextSibling().toElement();
     }
@@ -785,16 +783,13 @@ void mainWindow::loadComp(QDomElement element,bool useIdFromSave,bool usePos,boo
         else if((Component.tagName())=="socket"){
             loadSocket(Component,&connections, pointer);
         }
-        else{
-            qDebug()<<"unknown element in atomic block";
-        }
         Component = Component.nextSibling().toElement();
     }
     foreach(connLog item,connections){
-        qDebug()<<item.id<<"  "<<item.portName<<"  "<<item.portPtr->name;
         loadConnection(item,pointer);
     }
 }
+
 void mainWindow::loadConnection(connLog log,compozit * compPtr){
     port * target=nullptr;
     foreach(atomic * item,compPtr->atomVect){
@@ -848,8 +843,6 @@ void mainWindow::loadConnection(connLog log,compozit * compPtr){
         log.portPtr->connectedTo=target;
         target->PortConnToThis.append(log.portPtr);
     }
-    else
-        qDebug()<<"connection not found";
 }
 
 void mainWindow::loadPort(QDomElement element,block * ptr,bool loadConections, QList<connLog> * connections){
@@ -861,7 +854,6 @@ void mainWindow::loadPort(QDomElement element,block * ptr,bool loadConections, Q
         else if(type=="output")
             portPtr=ptr->addPort(false);
         else{
-             qDebug()<<"missing port type";
              return;
         }
         portPtr->name=element.attribute("name","name didnt load");
@@ -890,10 +882,6 @@ void mainWindow::loadPort(QDomElement element,block * ptr,bool loadConections, Q
                 connections->append(item);
             }
         }
-    }
-    else
-    {
-        qDebug()<<"invalid port";
     }
 }
 

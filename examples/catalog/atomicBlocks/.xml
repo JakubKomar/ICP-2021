@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<atomicBlock id="2" name="" x="0" y="0">
-    <code></code>
-    <port name="output1" constant="" valType="int" type="output"/>
-    <port name="output2" constant="" valType="int" type="output"/>
-</atomicBlock>

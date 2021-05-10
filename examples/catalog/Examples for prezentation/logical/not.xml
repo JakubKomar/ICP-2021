@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<atomicBlock id="1" name="not" x="0" y="0">
+    <code>if(input1){
+	output1=false;
+}
+else{
+	output1=true;
+}</code>
+    <port name="input1" constant="" valType="bool" type="input"/>
+    <port name="output1" constant="" valType="bool" type="output"/>
+</atomicBlock>

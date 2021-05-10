@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<compositeBlock id="4" name="xor" x="0" y="0">
+    <port name="input1" constant="false" valType="bool" type="input"/>
+    <port name="input2" constant="false" valType="bool" type="input"/>
+    <port name="output1" constant="" valType="bool" type="output"/>
+    <socket x="-496" y="-39" imitating="input1" type="output"/>
+    <socket x="-502" y="-246" imitating="input2" type="output"/>
+    <socket x="545" y="-152" imitating="output1" type="input" connectedToBlock="10" connectedToPort="output1"/>
+    <atomicBlock id="6" name="not" x="-234" y="-90">
+        <code>if(input1){
+	output1=false;
+}
+else{
+	output1=true;
+}</code>
+        <port name="input1" constant="" valType="bool" type="input" connectedToBlock="-3" connectedToPort="input2"/>
+        <port name="output1" constant="" valType="bool" type="output"/>
+    </atomicBlock>
+    <atomicBlock id="7" name="not" x="-228" y="-188">
+        <code>if(input1){
+	output1=false;
+}
+else{
+	output1=true;
+}</code>
+        <port name="input1" constant="" valType="bool" type="input" connectedToBlock="-3" connectedToPort="input1"/>
+        <port name="output1" constant="" valType="bool" type="output"/>
+    </atomicBlock>
+    <atomicBlock id="8" name="and" x="23" y="-79">
+        <code>if(input1&amp;&amp;input2)
+	output1=true;
+else
+	output1=false;</code>
+        <port name="input1" constant="false" valType="bool" type="input" connectedToBlock="6" connectedToPort="output1"/>
+        <port name="input2" constant="false" valType="bool" type="input" connectedToBlock="-3" connectedToPort="input1"/>
+        <port name="output1" constant="" valType="bool" type="output"/>
+    </atomicBlock>
+    <atomicBlock id="9" name="and" x="5" y="-253">
+        <code>if(input1&amp;&amp;input2)
+	output1=true;
+else
+	output1=false;</code>
+        <port name="input1" constant="false" valType="bool" type="input" connectedToBlock="-3" connectedToPort="input2"/>
+        <port name="input2" constant="false" valType="bool" type="input" connectedToBlock="7" connectedToPort="output1"/>
+        <port name="output1" constant="" valType="bool" type="output"/>
+    </atomicBlock>
+    <atomicBlock id="10" name="or" x="288" y="-166">
+        <code>if(input1||input2)
+	output1=true;
+else
+	output1=false;</code>
+        <port name="input1" constant="false" valType="bool" type="input" connectedToBlock="9" connectedToPort="output1"/>
+        <port name="input2" constant="alse" valType="bool" type="input" connectedToBlock="8" connectedToPort="output1"/>
+        <port name="output1" constant="" valType="bool" type="output"/>
+    </atomicBlock>
+</compositeBlock>

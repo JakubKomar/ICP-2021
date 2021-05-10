@@ -1,38 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <aplikation id="-1" name="factorial" x="0" y="0">
-    <atomicBlock id="0" name="faktorial" x="-288" y="-391">
-        <code>if(start){
-	if(previusFaktorial&lt;=faktorial){
-		calculedFact=input1;
-		calculedFact++;
-		result=previuseResult*calculedFact;		
-	}
-	else
-		valid=true;
-}</code>
-        <port name="previuseResult" constant="" valType="int" type="input" connectedToBlock="0" connectedToPort="calculatedFact"/>
-        <port name="TargetFaktorial" constant="1" valType="int" type="input" connectedToBlock="3" connectedToPort="output1"/>
-        <port name="start" constant="true" valType="bool" type="input" connectedToBlock="3" connectedToPort="numbersSended"/>
-        <port name="previusFaktorial" constant="" valType="int" type="input" connectedToBlock="0" connectedToPort="acutalFactorial"/>
-        <port name="valid" constant="" valType="bool" type="output"/>
-        <port name="calculatedFact" constant="" valType="int" type="output"/>
-        <port name="acutalFactorial" constant="" valType="int" type="output"/>
-    </atomicBlock>
     <atomicBlock id="1" name="printf" x="46" y="-368">
         <code>if(valid)
-	cout&lt;&lt;&quot;result is: &quot;&lt;&lt;toPtrint&lt;&lt;&quot;\n&quot;;</code>
-        <port name="toPrint" constant="" valType="int" type="input" connectedToBlock="0" connectedToPort="calculatedFact"/>
-        <port name="valid" constant="" valType="bool" type="input" connectedToBlock="0" connectedToPort="valid"/>
+	cout&lt;&lt;&quot;result is: &quot;&lt;&lt;toPrint&lt;&lt;&quot;\n&quot;;</code>
+        <port name="toPrint" constant="" valType="int" type="input" connectedToBlock="3" connectedToPort="result"/>
+        <port name="valid" constant="" valType="bool" type="input" connectedToBlock="3" connectedToPort="valid"/>
     </atomicBlock>
-    <atomicBlock id="3" name="nactiCisla" x="-652" y="-357">
-        <code>int x;
-int y;
-cout &lt;&lt; &quot;Program for calculating factorials \n&quot;; 
+    <atomicBlock id="2" name="nactiCisla" x="-652" y="-357">
+        <code>cout &lt;&lt; &quot;Program for calculating factorials \n&quot;; 
 cout &lt;&lt; &quot;Type target faktorial: &quot;;
-cin &gt;&gt; output1; // Get user input from the keyboard
-
+int x;
+cin &gt;&gt; x; // Get user input from the keyboard
+output1=x;
 numbersSended=true;</code>
         <port name="output1" constant="" valType="int" type="output"/>
         <port name="numbersSended" constant="" valType="bool" type="output"/>
+    </atomicBlock>
+    <atomicBlock id="3" name="faktorial" x="-311" y="-386">
+        <code>if(start){
+	if(previusFaktorial==0){
+		previusFaktorial=1;
+		previuseResult=1;
+	}
+	if(previusFaktorial&lt;TargetFaktorial){
+		acutalFactorial=previusFaktorial;
+		acutalFactorial++;
+		result=previuseResult*acutalFactorial;	
+	}
+	else{
+		acutalFactorial=previusFaktorial;
+		result=previuseResult;
+		if(previusFaktorial==TargetFaktorial)
+			valid=true;
+		
+	}
+}
+</code>
+        <port name="previuseResult" constant="" valType="int" type="input" connectedToBlock="3" connectedToPort="result"/>
+        <port name="TargetFaktorial" constant="" valType="int" type="input" connectedToBlock="2" connectedToPort="output1"/>
+        <port name="start" constant="true" valType="bool" type="input" connectedToBlock="2" connectedToPort="numbersSended"/>
+        <port name="previusFaktorial" constant="" valType="int" type="input" connectedToBlock="3" connectedToPort="acutalFactorial"/>
+        <port name="valid" constant="" valType="bool" type="output"/>
+        <port name="result" constant="" valType="int" type="output"/>
+        <port name="acutalFactorial" constant="" valType="int" type="output"/>
     </atomicBlock>
 </aplikation>

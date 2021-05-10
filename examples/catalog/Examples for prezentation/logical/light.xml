@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<atomicBlock id="0" name="light" x="0" y="0">
+    <code>if(input1){
+cout&lt;&lt;&quot;light on\n&quot;;
+}
+else{
+cout&lt;&lt;&quot;light off\n&quot;;
+}</code>
+    <port name="input1" constant="false" valType="bool" type="input"/>
+</atomicBlock>

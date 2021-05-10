@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aplikation id="-1" name="rezistors" x="0" y="0">
+    <atomicBlock id="0" name="userInput" x="-576" y="-81">
+        <code>double x;
+double y;
+cout &lt;&lt; &quot;Program for  calculating resistance of rezistors\n&quot;; // Type a number and press enter
+cout &lt;&lt; &quot;Type a first rezistor in ohm: \n&quot;; // Type a number and press enter
+cin &gt;&gt; x; // Get user input from the keyboard
+cout &lt;&lt; &quot;Type a second rezistor in ohm:\n&quot;; // Type a number and press enter
+cin &gt;&gt; y; // Get user input from the keyboard
+int z=0;
+while(z!=1&amp;&amp;z!=2){
+	cout &lt;&lt; &quot;select involvement 1-serial,2-parallel :\n&quot;; 
+	cin &gt;&gt; z; // Get user input from the keyboard
+}	
+
+
+
+rezistor1=x;
+rezistor2=y;
+mod=z;
+inputSet=true;</code>
+        <port name="rezistor1" constant="" valType="double" type="output"/>
+        <port name="rezistor2" constant="" valType="double" type="output"/>
+        <port name="inputSet" constant="" valType="bool" type="output"/>
+        <port name="mod" constant="" valType="int" type="output"/>
+    </atomicBlock>
+    <atomicBlock id="9" name="printf" x="109" y="-56">
+        <code>if(enable&amp;&amp;(toPrint!=0))
+	cout&lt;&lt;&quot;result is: &quot;&lt;&lt;toPrint&lt;&lt;&quot;\n&quot;;</code>
+        <port name="toPrint" constant="" valType="double" type="input" connectedToBlock="1" connectedToPort="result"/>
+        <port name="enable" constant="true" valType="bool" type="input" connectedToBlock="0" connectedToPort="inputSet"/>
+    </atomicBlock>
+    <compositeBlock id="1" name="execution" x="-236" y="-339">
+        <port name="rez1" constant="0" valType="double" type="input" connectedToBlock="0" connectedToPort="rezistor1"/>
+        <port name="rez2" constant="0" valType="double" type="input" connectedToBlock="0" connectedToPort="rezistor2"/>
+        <port name="mode" constant="1" valType="int" type="input" connectedToBlock="0" connectedToPort="mod"/>
+        <port name="result" constant="" valType="double" type="output"/>
+        <socket x="-324" y="-138" imitating="rez1" type="output"/>
+        <socket x="-326" y="-236" imitating="rez2" type="output"/>
+        <socket x="472" y="-176" imitating="result" type="input" connectedToBlock="8" connectedToPort="output1"/>
+        <socket x="-61" y="-182" imitating="mode" type="output"/>
+        <atomicBlock id="8" name="switch" x="211" y="-197">
+            <code>if(control==1)
+	output1=input1;
+else if(control==2)
+	output1=input2;</code>
+            <port name="control" constant="0" valType="int" type="input" connectedToBlock="-3" connectedToPort="mode"/>
+            <port name="input1" constant="0" valType="double" type="input" connectedToBlock="7" connectedToPort="output1"/>
+            <port name="input2" constant="0" valType="double" type="input" connectedToBlock="6" connectedToPort="output1"/>
+            <port name="output1" constant="" valType="double" type="output"/>
+        </atomicBlock>
+        <compositeBlock id="6" name="paraler" x="-59" y="-28">
+            <port name="input1" constant="" valType="double" type="input" connectedToBlock="-3" connectedToPort="rez2"/>
+            <port name="input2" constant="" valType="double" type="input" connectedToBlock="-3" connectedToPort="rez1"/>
+            <port name="output1" constant="" valType="double" type="output"/>
+            <socket x="-270" y="40" imitating="input1" type="output"/>
+            <socket x="-283" y="-73" imitating="input2" type="output"/>
+            <socket x="568" y="-75" imitating="output1" type="input" connectedToBlock="14" connectedToPort="output1"/>
+            <atomicBlock id="12" name="add" x="28" y="-11">
+                <code>output1=input1+input2;</code>
+                <port name="input1" constant="0" valType="double" type="input" connectedToBlock="-3" connectedToPort="input2"/>
+                <port name="input2" constant="0" valType="double" type="input" connectedToBlock="-3" connectedToPort="input1"/>
+                <port name="output1" constant="" valType="double" type="output"/>
+            </atomicBlock>
+            <atomicBlock id="13" name="mullDouble" x="18" y="-190">
+                <code>output1=input1*input2;</code>
+                <port name="input1" constant="0" valType="double" type="input" connectedToBlock="-3" connectedToPort="input2"/>
+                <port name="input2" constant="0" valType="double" type="input" connectedToBlock="-3" connectedToPort="input1"/>
+                <port name="output1" constant="" valType="double" type="output"/>
+            </atomicBlock>
+            <atomicBlock id="14" name="div" x="259" y="-95">
+                <code>output1=input1/input2;</code>
+                <port name="input1" constant="0" valType="double" type="input" connectedToBlock="13" connectedToPort="output1"/>
+                <port name="input2" constant="0" valType="double" type="input" connectedToBlock="12" connectedToPort="output1"/>
+                <port name="output1" constant="" valType="double" type="output"/>
+            </atomicBlock>
+        </compositeBlock>
+        <compositeBlock id="7" name="serial" x="-58" y="-332">
+            <port name="input1" constant="" valType="double" type="input" connectedToBlock="-3" connectedToPort="rez2"/>
+            <port name="input2" constant="" valType="double" type="input" connectedToBlock="-3" connectedToPort="rez1"/>
+            <port name="output1" constant="" valType="double" type="output"/>
+            <socket x="246" y="-102" imitating="output1" type="input" connectedToBlock="11" connectedToPort="output1"/>
+            <socket x="-231" y="-34" imitating="input1" type="output"/>
+            <socket x="-240" y="-149" imitating="input2" type="output"/>
+            <atomicBlock id="11" name="add" x="5" y="-131">
+                <code>output1=input1+input2;</code>
+                <port name="input1" constant="0" valType="double" type="input" connectedToBlock="-3" connectedToPort="input2"/>
+                <port name="input2" constant="0" valType="double" type="input" connectedToBlock="-3" connectedToPort="input1"/>
+                <port name="output1" constant="" valType="double" type="output"/>
+            </atomicBlock>
+        </compositeBlock>
+    </compositeBlock>
+</aplikation>

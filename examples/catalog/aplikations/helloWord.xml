@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aplikation id="-1" name="helloWord" x="0" y="0">
+    <atomicBlock id="0" name="hello" x="-569" y="-262">
+        <code>output1=&quot;hello&quot;;</code>
+        <port name="output1" constant="" valType="string" type="output"/>
+    </atomicBlock>
+    <atomicBlock id="1" name="word" x="-557" y="-153">
+        <code>output1=&quot; word&quot;;</code>
+        <port name="output1" constant="" valType="string" type="output"/>
+    </atomicBlock>
+    <atomicBlock id="2" name="add strings" x="-264" y="-210">
+        <code>output1=input1+input2;
+</code>
+        <port name="input1" constant="&quot;&quot;" valType="string" type="input" connectedToBlock="0" connectedToPort="output1"/>
+        <port name="input2" constant="&quot;&quot;" valType="string" type="input" connectedToBlock="1" connectedToPort="output1"/>
+        <port name="output1" constant="" valType="string" type="output"/>
+    </atomicBlock>
+    <atomicBlock id="3" name="printf" x="19" y="-216">
+        <code>if((toPrint!=&quot;&quot;)&amp;&amp;(!disable)){
+	cout&lt;&lt;toPrint.toUtf8().constData()&lt;&lt;&quot;\n&quot;;
+	printed=true;
+}
+else{
+	printed=disable;
+}</code>
+        <port name="toPrint" constant="" valType="string" type="input" connectedToBlock="2" connectedToPort="output1"/>
+        <port name="disable" constant="false" valType="bool" type="input" connectedToBlock="3" connectedToPort="printed"/>
+        <port name="printed" constant="" valType="bool" type="output"/>
+    </atomicBlock>
+</aplikation>

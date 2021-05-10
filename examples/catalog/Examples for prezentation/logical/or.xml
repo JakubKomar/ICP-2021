@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<atomicBlock id="3" name="or" x="0" y="0">
+    <code>if(input1||input2)
+	output1=true;
+else
+	output1=false;</code>
+    <port name="input1" constant="false" valType="bool" type="input"/>
+    <port name="input2" constant="alse" valType="bool" type="input"/>
+    <port name="output1" constant="" valType="bool" type="output"/>
+</atomicBlock>
