@@ -260,9 +260,9 @@ void mainWindow::on_Build_clicked()
 
     if(curentApk!=nullptr){
         QDir dir = QDir::current();
-        dir.mkdir("apkBuild");
+        dir.mkdir("interpreted");
 
-        QFile file("apkBuild/apk.cpp");
+        QFile file("interpreted/apk.cpp");
         if (!file.open(QIODevice::WriteOnly)){
              QMessageBox::information(this, "error", "File cant be opened.");
              return;

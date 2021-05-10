@@ -4,7 +4,7 @@ greaterThan(QT_MAJOR_VERSION, 4):
 CONFIG += c++17
 
 SOURCES += \
-    test.cpp
+    apk.cpp
 
 HEADERS += \
     
