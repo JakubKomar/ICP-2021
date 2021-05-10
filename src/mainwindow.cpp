@@ -374,7 +374,7 @@ void mainWindow::buildOutput(QFile * file,port * ptr){
     foreach(port * item,ptr->PortConnToThis){
 
     }
-
+}
 void mainWindow::buildHead(QFile * file){
 file->write(R""""(#include <algorithm>
 #include <iostream>
