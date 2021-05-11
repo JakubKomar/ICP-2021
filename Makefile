@@ -12,14 +12,12 @@ build:
 	cp ICP-projekt-2021 ../
 
 pack: clean
-	zip -r xkomar33-xkolev00.zip src/ examples/ iterpreted/  makefile README.txt 
+	zip -r xkomar33-xkolev00.zip src/ examples/ iterpreted/ /doc  makefile README.txt 
 
 run:
 	test -f ICP-projekt-2021 && ./ICP-projekt-2021
 
 doxygen:
-	if [ -d "doc" ]; then rm -r doc; fi && \
-	mkdir doxygen && \
 	doxygen src/doxygen/Doxyfile
 
 clean:
